@@ -1,5 +1,5 @@
 # FlowLite
-
+![FlowLite animation demo](assets/flowlite-animation-demo.gif)
 ### Ask AI. Get an interactive relationship map.
 
 FlowLite turns natural language requests into interactive relationship maps.
@@ -57,7 +57,7 @@ It is about giving AI a stable structure format, then using the browser as an in
 ---
 
 ## Screenshot / Demo
-![FlowLite animation demo](assets/flowlite-animation-demo.gif)
+
 
 ### Main screen
 
