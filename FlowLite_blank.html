@@ -1,0 +1,3056 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="FlowLite blank edition. Create and edit interactive structural diagrams from plain text that can be passed to AI.">
+<title>FlowLite Blank v1.0.0</title>
+<style>
+  :root{--bg:#f8fafc;--panel:#fff;--border:#e2e8f0;--text:#0f172a;--sub:#64748b;--accent:#2563eb;--edge:#94a3b8;--node:#fff;--shadow:0 8px 20px rgba(15,23,42,.08);--danger:#dc2626;--green:#16a34a}
+  *{box-sizing:border-box} body{margin:0;height:100vh;display:flex;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--text);background:var(--bg);overflow:hidden}
+  #left{width:390px;min-width:260px;max-width:72vw;display:flex;flex-direction:column;background:var(--panel);border-right:1px solid var(--border);z-index:5}
+  #splitter{width:7px;flex:0 0 7px;cursor:col-resize;background:linear-gradient(to right,#e2e8f0,#f8fafc);z-index:7;position:relative}
+  #splitter::after{content:"";position:absolute;left:2px;top:50%;width:3px;height:46px;transform:translateY(-50%);border-radius:999px;background:#cbd5e1}
+  #splitter:hover{background:#dbeafe}
+  #toolbar{display:flex;flex-wrap:wrap;gap:8px;padding:12px;border-bottom:1px solid var(--border)}
+  .toolbar-menu{position:relative;display:inline-flex}.toolbar-flyout{display:none;position:absolute;left:0;top:calc(100% + 7px);z-index:30;background:rgba(255,255,255,.96);border:1px solid var(--border);border-radius:10px;padding:8px;box-shadow:var(--shadow);min-width:170px;max-height:380px;overflow:auto;gap:6px;flex-direction:column}.toolbar-menu.open .toolbar-flyout{display:flex}.toolbar-flyout button{width:100%;text-align:left;white-space:nowrap}.slot-empty{opacity:.55}.slot-meta{font-size:10px;color:var(--sub);font-weight:600}#toast{position:fixed;left:50%;top:18px;transform:translateX(-50%) translateY(-12px);z-index:9999;background:#111827;color:#fff;border-radius:999px;padding:10px 16px;font-size:13px;font-weight:800;box-shadow:0 12px 30px rgba(15,23,42,.24);opacity:0;pointer-events:none;transition:opacity .18s ease,transform .18s ease}#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  button{border:1px solid var(--border);background:#f1f5f9;color:var(--text);border-radius:8px;padding:8px 10px;font-size:12px;font-weight:700;cursor:pointer} button:hover{background:#e2e8f0} button.primary{background:var(--text);color:#fff;border-color:var(--text)} button.danger{background:#fee2e2;color:#991b1b;border-color:#fecaca} button.danger:hover{background:#fecaca} button.active{background:#dbeafe;border-color:#60a5fa;color:#1d4ed8} button.context-active{background:#dcfce7!important;border-color:#86efac!important;color:#166534!important;box-shadow:0 0 0 2px rgba(34,197,94,.14)}
+  #editor{flex:1;border:0;resize:none;outline:0;padding:16px;font:13px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--text)}
+  #status{border-top:1px solid var(--border);padding:8px 12px;font-size:12px;color:var(--sub);min-height:34px;white-space:pre-wrap}
+  #help{border-top:1px solid var(--border);padding:8px 12px;font-size:11px;line-height:1.45;color:#64748b;background:#f8fafc}
+  #right{flex:1;position:relative;overflow:hidden;background:var(--bg);transition:background-color .15s ease}
+  #right::before{content:"";position:absolute;inset:0;background-image:radial-gradient(#cbd5e1 1px,transparent 1px);background-size:24px 24px;opacity:.55;pointer-events:none}
+  #viewport{position:absolute;left:0;top:0;transform-origin:0 0;width:1px;height:1px}
+  #edgeLayer{position:absolute;left:0;top:0;overflow:visible;pointer-events:auto}
+  .node{position:absolute;min-width:92px;max-width:240px;padding:11px 14px;background:var(--node);border:1.5px solid var(--text);border-radius:12px;box-shadow:var(--shadow);font-size:13px;text-align:center;user-select:none;cursor:grab;white-space:pre-wrap;transform:translate(-50%,-50%)}
+  .node:hover{box-shadow:0 10px 24px rgba(37,99,235,.16)}.node:active{cursor:grabbing}.node.selected{border-color:var(--accent);background:#eff6ff;box-shadow:0 0 0 5px rgba(37,99,235,.26),0 12px 28px rgba(37,99,235,.18),var(--shadow)}.node.related{border-color:#f59e0b;background:#fff7ed;box-shadow:0 0 0 4px rgba(245,158,11,.18),var(--shadow)}.node.connect-source{border-color:var(--green);box-shadow:0 0 0 4px rgba(22,163,74,.18),var(--shadow)}
+  .node.decision{border-radius:8px;transform:translate(-50%,-50%) rotate(45deg);min-width:78px;min-height:78px;display:flex;align-items:center;justify-content:center}.node.decision .inner{transform:rotate(-45deg)}.node.decision.selected{box-shadow:0 0 0 4px rgba(37,99,235,.18),var(--shadow)}.node.decision.connect-source{box-shadow:0 0 0 4px rgba(22,163,74,.18),var(--shadow)}
+  .node.terminal{border-radius:999px}.node.data{border-radius:12px;background:#f8fafc}.node.note{border-style:dashed;background:#fffbeb}
+   .node.manual-rect{border-radius:2px}.node.manual-round{border-radius:12px}.node.manual-circle{border-radius:999px;min-width:86px;min-height:86px;display:flex;align-items:center;justify-content:center}.node.manual-ellipse{border-radius:999px;min-width:128px}.node.manual-double{border:4px double #0f172a;border-radius:12px}.node.manual-diamond{border-radius:8px;transform:translate(-50%,-50%) rotate(45deg);min-width:86px;min-height:86px;display:flex;align-items:center;justify-content:center}.node.manual-diamond .inner{transform:rotate(-45deg)}.node.manual-parallelogram,.node.manual-hexagon,.node.manual-trapezoid{border:none!important;background:transparent!important;box-shadow:none;overflow:visible;isolation:isolate;padding:13px 20px}.node.manual-parallelogram .inner,.node.manual-hexagon .inner,.node.manual-trapezoid .inner{position:relative;z-index:2}.node.manual-parallelogram::before,.node.manual-hexagon::before,.node.manual-trapezoid::before{content:"";position:absolute;inset:0;background:#0f172a;z-index:0;pointer-events:none}.node.manual-parallelogram::after,.node.manual-hexagon::after,.node.manual-trapezoid::after{content:"";position:absolute;inset:2px;background:var(--manual-fill,#fff);z-index:1;pointer-events:none}.node.manual-parallelogram::before,.node.manual-parallelogram::after{clip-path:polygon(15% 0,100% 0,85% 100%,0 100%)}.node.manual-hexagon::before,.node.manual-hexagon::after{clip-path:polygon(18% 0,82% 0,100% 50%,82% 100%,18% 100%,0 50%)}.node.manual-trapezoid{min-width:100px;min-height:90px;padding:18px 20px 26px}.node.manual-trapezoid::before,.node.manual-trapezoid::after{clip-path:polygon(50% 100%,0 0,100% 0)}
+  .node.manual-document,.node.manual-star,.node.manual-heart{border:none!important;background:transparent!important;box-shadow:none;overflow:visible;isolation:isolate;padding:13px 20px}
+  .node.manual-document .inner,.node.manual-star .inner,.node.manual-heart .inner{position:relative;z-index:2}
+  .node.manual-document::before,.node.manual-star::before,.node.manual-heart::before{content:"";position:absolute;inset:0;background:#0f172a;z-index:0;pointer-events:none}
+  .node.manual-document::after,.node.manual-star::after,.node.manual-heart::after{content:"";position:absolute;inset:2px;background:var(--manual-fill,#fff);z-index:1;pointer-events:none}
+  .node.manual-document::before,.node.manual-document::after{clip-path:polygon(0 0,78% 0,100% 22%,100% 100%,0 100%)}
+  .node.manual-star{min-width:96px;min-height:88px;display:flex;align-items:center;justify-content:center;padding:16px 18px}
+  .node.manual-star::before,.node.manual-star::after{clip-path:polygon(50% 2%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+  .node.manual-heart{min-width:102px;min-height:88px;display:flex;align-items:center;justify-content:center;padding:18px 18px}
+  .node.manual-heart::before,.node.manual-heart::after{clip-path:polygon(50% 95%,20% 70%,8% 45%,10% 22%,25% 8%,40% 12%,50% 24%,60% 12%,75% 8%,90% 22%,92% 45%,80% 70%)}
+  .node.manual-size-m{font-size:15px;padding:18px 26px}.node.manual-size-l{font-size:18px;padding:24px 36px}.node.manual-size-m.manual-circle{min-width:112px;min-height:112px}.node.manual-size-l.manual-circle{min-width:146px;min-height:146px}.node.manual-size-m.manual-ellipse{min-width:164px;min-height:72px}.node.manual-size-l.manual-ellipse{min-width:210px;min-height:92px}.node.manual-size-m.manual-diamond{min-width:112px;min-height:112px}.node.manual-size-l.manual-diamond{min-width:146px;min-height:146px}.node.manual-size-m.manual-parallelogram,.node.manual-size-m.manual-hexagon,.node.manual-size-m.manual-document,.node.manual-size-m.manual-double{min-width:146px;min-height:72px}.node.manual-size-l.manual-parallelogram,.node.manual-size-l.manual-hexagon,.node.manual-size-l.manual-document,.node.manual-size-l.manual-double{min-width:190px;min-height:92px}.node.manual-size-m.manual-trapezoid{min-width:130px;min-height:118px;padding:24px 26px 34px}.node.manual-size-l.manual-trapezoid{min-width:165px;min-height:150px;padding:34px 34px 44px}.node.manual-size-m.manual-star{min-width:128px;min-height:118px;padding:24px 26px}.node.manual-size-l.manual-star{min-width:165px;min-height:150px;padding:34px 34px}.node.manual-size-m.manual-heart{min-width:132px;min-height:116px;padding:25px 26px}.node.manual-size-l.manual-heart{min-width:168px;min-height:148px;padding:34px 34px}.node.manual-parallelogram.selected::before,.node.manual-hexagon.selected::before,.node.manual-trapezoid.selected::before{background:var(--accent)}.node.manual-parallelogram.related::before,.node.manual-hexagon.related::before,.node.manual-trapezoid.related::before{background:#f59e0b}.node.manual-parallelogram.connect-source::before,.node.manual-hexagon.connect-source::before,.node.manual-trapezoid.connect-source::before{background:var(--green)}
+  .connected-edge-label{fill:#b45309;stroke:#fff7ed}.connected-edge{stroke:#f59e0b;stroke-width:3.5}.selected-edge-label{fill:#1d4ed8;stroke:#eff6ff}.edge{pointer-events:stroke;cursor:pointer}.edge-hit{pointer-events:stroke;cursor:pointer;stroke:transparent;stroke-width:18;fill:none}.edge-label{pointer-events:auto;cursor:pointer}.selected-edge{stroke:#2563eb;stroke-width:4}
+  #editTools,#functionTools,#layoutTools,#analysisTools,#tagTools,#clearTools{position:absolute;right:14px;z-index:20;background:rgba(255,255,255,.88);border:1px solid var(--border);border-radius:10px;padding:6px;box-shadow:var(--shadow)}
+  #editTools{top:14px;display:flex;flex-direction:row;gap:6px;align-items:center;z-index:90}
+  #editTools button{width:auto;min-width:48px;padding:7px 8px;font-size:11px}
+   .mini-menu{position:relative;display:inline-flex}.mini-menu.open .mini-flyout{display:flex}.mini-flyout{display:none;position:absolute;right:0;top:calc(100% + 8px);z-index:9999;background:rgba(255,255,255,.98);border:1px solid var(--border);border-radius:10px;padding:8px;box-shadow:0 12px 28px rgba(15,23,42,.18);gap:6px;flex-wrap:wrap;width:max-content;min-width:0}.color-swatch{width:28px!important;min-width:28px!important;height:28px!important;padding:0!important;border-radius:999px!important;border:1px solid #cbd5e1!important}.shape-btn,.line-kind-btn,.size-btn{width:96px!important;min-width:96px!important;height:32px!important;padding:7px 8px!important;text-align:center;white-space:nowrap}.line-kind-btn.current{outline:2px solid #86efac;outline-offset:1px;background:#dcfce7!important;color:#166534!important}.shape-btn.current,.size-btn.current{outline:none;background:#f1f5f9!important;color:var(--text)!important}#colorTools.open #colorFlyout{display:grid;grid-template-columns:repeat(5,28px);grid-auto-rows:28px;gap:6px;width:max-content;min-width:0}#shapeTools.open #shapeFlyout{display:grid;grid-template-columns:repeat(2,96px);gap:6px;width:max-content;min-width:0}#lineKindTools.open #lineKindFlyout{display:grid;grid-template-columns:repeat(2,96px);gap:6px;width:max-content;min-width:0}#sizeTools.open #sizeFlyout{display:grid;grid-template-columns:repeat(3,96px);gap:6px;width:max-content;min-width:0}
+  #functionTools,#layoutTools,#analysisTools,#tagTools,#clearTools{display:flex;flex-direction:column;gap:6px;min-width:82px}
+  #functionTools{top:68px}
+  #layoutTools{top:122px}
+  #analysisTools{top:176px}
+  #tagTools{top:230px}
+  #clearTools{top:284px}
+  #functionTools button,#layoutTools button,#analysisTools button,#tagTools button,#clearTools button{width:100%;padding:7px 8px;font-size:11px}
+  #clearTools .clear-view-btn{background:#f1f5f9}
+  #clearTools .clear-view-btn.active{background:#fee2e2;border-color:#fca5a5;color:#991b1b}
+  .main-tool{font-weight:800}
+  #functionFlyout,#layoutFlyout,#analysisFlyout,#tagFlyout{display:none;position:absolute;right:calc(100% + 8px);top:0;background:rgba(255,255,255,.96);border:1px solid var(--border);border-radius:10px;padding:6px;box-shadow:var(--shadow);gap:6px;white-space:nowrap}
+  #functionTools.open #functionFlyout,#layoutTools.open #layoutFlyout,#analysisTools.open #analysisFlyout{display:flex;flex-direction:row}
+  #tagTools.open #tagFlyout{display:block}
+  #functionFlyout button,#layoutFlyout button,#analysisFlyout button{width:auto;min-width:62px;padding:7px 8px;font-size:11px}
+  #layoutFlyout .layout-separator,#functionFlyout .layout-separator,#editTools .tool-separator{display:inline-block;width:1px;min-height:28px;background:#cbd5e1;margin:2px 3px;align-self:stretch}
+  #editTools .tool-separator{flex:0 0 1px}
+
+  #tagFlyout{width:280px;max-height:484px;max-height:min(484px,calc(100vh - 238px));overflow:hidden;white-space:normal}
+  #tagPanel{display:flex;flex-direction:column;gap:6px}
+  .tag-panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;font-weight:800;color:#334155}
+  .tag-list{display:flex;flex-direction:column;gap:4px;max-height:385px;max-height:min(385px,calc(100vh - 306px));overflow:auto;overscroll-behavior:contain;scrollbar-width:thin}
+  .tag-row{display:grid;grid-template-columns:18px 1fr auto;align-items:center;gap:7px;border:1px solid #e2e8f0;border-radius:8px;background:#fff;padding:6px 7px;cursor:pointer;font-size:12px;text-align:left}
+  .tag-row:hover{background:#f8fafc;border-color:#cbd5e1}
+  .tag-row.active{outline:2px solid #86efac;background:#dcfce7}
+  .tag-dot{width:13px;height:13px;border-radius:999px;border:1px solid #cbd5e1;background:#fff}
+  .tag-name{font-weight:800;color:#334155;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .tag-count{font-size:11px;color:#64748b;font-weight:800}
+  .tag-hint{font-size:11px;line-height:1.35;color:#64748b;white-space:normal}
+  .node.tag-dim{opacity:.22}
+  .node.tag-focus{border-width:3px;box-shadow:0 0 0 3px rgba(37,99,235,.16),0 8px 22px rgba(15,23,42,.16)}
+  .edge.tag-dim,.edge-label.tag-dim{opacity:.16}
+  .edge.tag-focus{stroke-width:4}
+  .node.selection-dim{opacity:.14;filter:grayscale(.48) saturate(.52)}
+  .node.selection-context{opacity:.92;filter:none;z-index:5}
+  .node.tag-focus.selection-context{border-width:3px;box-shadow:0 0 0 3px rgba(37,99,235,.14),0 8px 22px rgba(15,23,42,.14),var(--shadow)}
+  .node.selection-focus{opacity:1;filter:none;z-index:6;border-width:3px;box-shadow:0 0 0 5px rgba(37,99,235,.20),0 12px 28px rgba(15,23,42,.18),var(--shadow)}
+  .node.selected.selection-focus{z-index:8;box-shadow:0 0 0 6px rgba(37,99,235,.32),0 14px 34px rgba(37,99,235,.24),var(--shadow)}
+  .node.related.selection-focus{z-index:7;box-shadow:0 0 0 5px rgba(245,158,11,.28),0 12px 28px rgba(245,158,11,.20),var(--shadow)}
+  .node.selection-chain-2{opacity:.72;filter:saturate(.76);z-index:4;border-width:2.2px;box-shadow:0 0 0 3px rgba(37,99,235,.10),0 8px 20px rgba(15,23,42,.10),var(--shadow)}
+  .node.selection-chain-3{opacity:.46;filter:grayscale(.22) saturate(.58);z-index:3;border-width:1.8px;box-shadow:0 0 0 2px rgba(37,99,235,.06),var(--shadow)}
+  .edge.selection-dim,.edge-label.selection-dim{opacity:.08}
+  .edge.selection-context,.edge-label.selection-context{opacity:.66}
+  .edge.tag-focus.selection-context{stroke-width:3.6}
+  .edge.selection-focus{opacity:1;stroke:#f59e0b;stroke-width:4.2}
+  .edge-label.selection-focus{opacity:1;fill:#b45309;font-weight:800;stroke:#fff7ed;stroke-width:5px}
+  .edge.selection-chain-2{opacity:.58;stroke:#fdba74;stroke-width:3.0}
+  .edge-label.selection-chain-2{opacity:.62;fill:#d97706;font-weight:700;stroke:#fff7ed;stroke-width:4px}
+  .edge.selection-chain-3{opacity:.38;stroke:#fed7aa;stroke-width:2.2}
+  .edge-label.selection-chain-3{opacity:.44;fill:#fb923c;font-weight:600;stroke:#fffbeb;stroke-width:3px}
+  .edge-label{font:12px sans-serif;fill:#475569;paint-order:stroke;stroke:#f8fafc;stroke-width:4px;stroke-linejoin:round}
+  .node.rank-high{border-width:3px;background:#fefce8}.node.rank-mid{border-width:2.3px;background:#f0fdf4}.node.rank-low{opacity:.92}.node.local-d1{border-color:#f97316;background:#fff7ed}.node.local-d2{border-color:#facc15;background:#fefce8}.node.local-d3{border-color:#a3e635;background:#f7fee7}
+  .rank-badge{position:absolute;right:-8px;top:-10px;min-width:24px;height:22px;padding:2px 6px;border-radius:999px;background:#111827;color:#fff;font-size:11px;font-weight:800;line-height:18px;box-shadow:0 4px 10px rgba(15,23,42,.18);transform:none}.rank-badge.degree{background:#7c3aed}.rank-badge.bridge{background:#dc2626}.rank-badge.closeness{background:#0891b2}.rank-badge.local{background:#f97316}.rank-badge.community{background:#334155}.node.community-c1{background:#eff6ff;border-color:#60a5fa}.node.community-c2{background:#f0fdf4;border-color:#4ade80}.node.community-c3{background:#fefce8;border-color:#facc15}.node.community-c4{background:#fff7ed;border-color:#fb923c}.node.community-c5{background:#fdf2f8;border-color:#f472b6}.node.community-c6{background:#f5f3ff;border-color:#a78bfa}.node.community-c7{background:#ecfeff;border-color:#22d3ee}.node.community-c8{background:#f1f5f9;border-color:#94a3b8}
+  .local-edge{stroke:#f97316;stroke-width:3.5}
+</style>
+</head>
+<body>
+<!-- FLOWLITE_SOURCE_EDITABLE_START: USER AND AI MAY EDIT THIS PLAINTEXT -->
+<script type="text/plain" id="flowlite-source">
+title: New FlowLite Diagram
+direction: Flow
+
+#nodes
+
+#styles
+
+#edges
+</script>
+<!-- FLOWLITE_SOURCE_EDITABLE_END -->
+
+<!-- FLOWLITE_LAYOUT_START: SAVED NODE POSITIONS ONLY -->
+<script type="application/json" id="flowlite-layout">
+{}
+</script>
+<!-- FLOWLITE_LAYOUT_END -->
+
+<!-- FLOWLITE_SAVES_START: UP TO 10 PLAINTEXT SNAPSHOTS -->
+<script type="application/json" id="flowlite-saves">
+[
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null
+]
+</script>
+<!-- FLOWLITE_SAVES_END -->
+
+<!-- FLOWLITE_MANUAL_META_START: MANUAL COLORS AND SHAPES -->
+<script type="application/json" id="flowlite-manual-meta">
+{}
+</script>
+<!-- FLOWLITE_MANUAL_META_END -->
+
+<!-- FLOWLITE_RELATION_SPEC_START: RELATION REFERENCE -->
+<script type="text/plain" id="flowlite-relation-spec">
+FlowLite Notation Specification v1.1 draft
+
+FlowLite is a plain-text notation for describing objects, relationships, and layers, then visualizing them as a structural diagram.
+
+Core principles:
+1. Nodes represent objects.
+2. Edges represent relationships between objects.
+3. Tags represent metadata layers, attributes, states, or classifications attached to objects.
+4. Tags are optional. Small or simple flow diagrams do not need tags.
+5. The semantic relationships of the diagram should be represented by edges. Do not use tags as substitutes for relationships.
+6. Color coding should use tags from the same dimension. Do not mix unrelated dimensions such as era, role, country, and field in one color layer.
+
+1. Nodes
+- A node represents an object in the diagram.
+- An object may be a person, concept, process, data item, organization, file, task, hypothesis, paper, feature, or state.
+
+Node syntax:
+A[Normal process]
+B{Decision}
+C((Start or end))
+D[(Data)]
+N>Note]
+
+Node IDs:
+- Edges must use node IDs, not display labels.
+- IDs should mainly use letters, numbers, and underscores.
+
+2. Edges
+- An edge represents a semantic relationship between nodes.
+- Edge kinds are not just visual styles; they represent relationship types.
+- When the relationship is ambiguous, avoid forcing a strong edge kind. Use A -- B : label as a supplemental relationship.
+
+Recommended syntax:
+A -> B : label
+
+A -> B : action, flow, causality, reference
+- Background: linguistics / SVO structure
+- Definition: A acts on B, moves to B, calls B, uses B, affects B, or refers to B. A is close to the subject and B to the object.
+- Examples: User -> Browser : operates / API -> Database : reads and writes / Hypothesis -> Experiment : tested by
+- Note: Do not use this for simple association or same-level relationships.
+
+A => B : membership, containment, classification, composition, inheritance
+- Background: mathematics / set theory; programming / type, class, inheritance
+- Definition: A is an element, subset, subtype, component, implementation, or inheriting object of B. This corresponds to A in B, A subset B, A is-a B, or A part-of B.
+- Examples: Frontend => WebApp : screen side / Parser => CoreModule : component / Zeus => Olympians : chief god
+- Note: This does not mean A and B are identical. Use == for identity or aliasing.
+
+A == B : identity, equivalence, alias, correspondence
+- Background: mathematics / equivalence relation
+- Definition: A and B are logically the same entity, the same concept, aliases, or have a clear one-to-one correspondence. A can be treated as equal to B.
+- Examples: UserID == AccountID : same identifier / JPY == JapaneseYen : alias
+- Note: Do not use this for membership, classification, parent-child, or component relationships.
+
+A -- B : association, unclassified, supplemental relationship
+- Background: graph theory / undirected graph
+- Definition: A and B are related, but the relationship cannot clearly be classified as direction, membership, identity, interaction, or blocking.
+- Examples: Notice -- World : note / ResearchTheme -- Paper : related
+- Note: When in doubt, use this edge and clarify the relationship with a label.
+
+A <-> B : interaction, bidirectional relationship
+- Background: graph theory / bidirectional edge; systems theory / feedback
+- Definition: A and B affect each other, synchronize, exchange, or act in both directions.
+- Examples: Browser <-> Session : login state / Theory <-> Observation : mutual influence
+- Note: If the relation merely means similar, near, or associated, use -- instead.
+
+A -x-> B : blocking, prohibition, constraint, refutation
+- Background: programming / logic gates, constraints, access control
+- Definition: A clearly stops, prohibits, denies, refutes, or prevents the execution, validity, arrival, access, or adoption of B.
+- Examples: Validation -x-> BusinessLogic : blocks invalid input / FailedResult -x-> Hypothesis : refutes
+- Note: This is a strong relationship. Do not overuse it. For weak contrast, mismatch, or comparison, use A -- B : label.
+
+3. Tags
+- Tags are metadata layers, attributes, states, or classifications attached to nodes.
+- A tag is not a node.
+- A tag is not an edge.
+- A tag does not directly represent a semantic relationship in the diagram.
+- Tags are optional. Simple diagrams do not need tags.
+- Tags show the perspective from which objects are being observed in the current diagram.
+
+Tag syntax:
+NodeID[Display label] +Tag1 +Tag2 +Tag3
+
+Tag engine rules:
+- Tags begin with +.
+- Up to 3 tags per node are recognized.
+- A fourth or later +Tag is ignored by the engine.
+- AI output should not attach more than 3 tags to one node.
+- Use only the minimum tags needed.
+
+Good use cases for tags:
+- classification
+- state
+- importance
+- work target
+- review target
+- display group
+- responsibility
+- layer
+- type
+- use case
+
+Information that should be expressed by edges instead of tags:
+- A calls B
+- A moves to B
+- A belongs to B
+- A is identical to B
+- A blocks B
+- A interacts with B
+
+Example:
+API[API] +UsesDatabase
+
+If the relationship should be explicit, write it as an edge instead:
+
+API -> Database : reads and writes
+
+Example:
+LiuBei[Liu Bei] +Shu
+
+This is acceptable as classification metadata. If Shu should appear as an object in the diagram, write it as a node and an edge:
+
+Shu[Shu]
+LiuBei => Shu : member of
+
+Tags are auxiliary metadata, not substitutes for semantic relationships.
+
+4. Tags and styles
+- Tags can have colors through #styles.
+- The style specification supports tag color, node-level color/shape/size/position, edge color, and canvas background. This keeps the plain text as the source of truth for the complete drawing.
+- Use #RRGGBB color values when possible.
+
+Style syntax:
+#styles
++Tag color:#RRGGBB
+@NodeID color:#RRGGBB shape:star size:l x:100 y:200
+@edge:EdgeID color:#RRGGBB
+@canvas background:#RRGGBB
+
+Color priority:
+1. Per-node GUI color
+2. Tag color matching #styles
+3. Default color
+
+Multiple tags:
+- If a node has multiple tags, FlowLite searches #styles from left to right and uses the first matching tag color.
+- Put the tag whose color should apply as far left as possible.
+- A node-specific @NodeID style overrides tag color and basic node shape.
+- Supported shape values: round, rect, circle, ellipse, diamond, parallelogram, hexagon, trapezoid, document, star, heart, double.
+- Supported size values: m and l. Omit size for the default small size.
+- x and y store manual coordinates in the same plain text, so HTML/SVG output can be regenerated from the notation.
+
+Example:
+CaoCao[Cao Cao] +Wei +Ruler +Important
+LiuBei[Liu Bei] +Shu +Ruler +Protagonist
+
+#styles
++Wei color:#dbeafe
++Shu color:#dcfce7
+
+5. Color-coding guidelines
+- Color coding is useful, but unstructured color use produces meaningless decoration.
+- Before adding colors, decide which layer you want to show.
+- Only color tags from the same dimension.
+- Define #styles only for the layer you want to focus on.
+- Tags that do not need color do not need style definitions.
+- A node may have multiple tags, but not every tag needs color.
+
+Good color layers:
+- By country: +Wei / +Shu / +Wu
+- By role: +Theory / +Experiment / +Synthesis / +Interpretation
+- By state: +TODO / +Done / +Blocked
+
+Bad color layers:
+- +Theory
+- +19thCentury
+- +Germany
+- +QuantumTheory
+
+If role, era, country, and field are all color targets at the same time, the meaning of color becomes weak.
+
+Physics example:
+Einstein1905SR[Einstein 1905
+Special Relativity] +Theory +Relativity +Core
+MichelsonMorley1887[Michelson-Morley 1887
+Ether Problem] +Experiment +Relativity
+Planck1900[Planck 1900
+Blackbody Radiation] +Theory +Quantum
+
+#styles
++Theory color:#dbeafe
++Experiment color:#dcfce7
++Core color:#fde68a
+
+Here the first tag represents whether the item is theory or experiment. Later tags add detail. If +Relativity and +Quantum do not appear in #styles, they do not affect color.
+
+Color-coding questions:
+- What is the main classification axis in this diagram?
+- Can that axis be represented consistently by the first tag?
+- Can the second and third tags remain supplemental?
+- Is a tag-and-color layer enough, or should the category be a node?
+
+Nodes versus tags:
+- Use nodes and edges when you want to show semantic relationships.
+- Use tags when classification support is enough.
+- To keep the graph small, cross-cutting classifications often work better as tags.
+
+6. Information layers
+- Layer 1: objects, represented by nodes.
+- Layer 2: relationships, represented by edges.
+- Layer 3: attributes, states, and classifications, represented by tags.
+- Layer 4: visual appearance, represented by #styles. GUI changes are written back into #styles so the plain text can recreate the drawing.
+
+Principles:
+- Semantic relationships belong in edges.
+- Cross-cutting classifications and states belong in tags.
+- Visual appearance belongs in #styles or GUI settings.
+- Tags are optional.
+
+7. Layout modes
+direction: Horizontal / Vertical / Circle / Grid / Focus / Top / Flow / Compact / Lane / Cluster
+Use direction: Flow by default. Use Compact to reduce area, Lane to separate nodes into horizontal lanes by first tag, and Cluster to show elliptical clusters by first tag.
+</script>
+<!-- FLOWLITE_RELATION_SPEC_END -->
+
+<div id="left">
+  <div id="toolbar">
+    <button onclick="copySpecText()">AI Prompt</button>
+    <div class="toolbar-menu" id="dataMenu">
+      <button onclick="toggleTopMenu('dataMenu')">Data</button>
+      <div class="toolbar-flyout">
+        <button onclick="resetData()">New</button>
+        <div id="dataSlots"></div>
+      </div>
+    </div>
+    <div class="toolbar-menu" id="saveMenu">
+      <button onclick="toggleTopMenu('saveMenu')" class="primary">Save</button>
+      <div class="toolbar-flyout">
+        <button onclick="saveTextSlot()">Save Text</button>
+        <button onclick="deleteTextSlot()">Delete Text</button>
+        <button onclick="saveSvg()">Save SVG</button>
+        <button onclick="saveHtml()">Save HTML</button>
+      </div>
+    </div>
+  </div>
+  <textarea id="editor" spellcheck="false"></textarea>
+  <div id="help">Double-click: edit node or edge label<br>Ctrl/Cmd+click: multi-select; Drag after multi-select: move as group; Ctrl/Cmd additional selection: show relationship depth; Delete: delete selection<br>Wheel: zoom; Drag background: pan<br>Undo applies to: structure, layout, color, shape, size, edge kind, connection, deletion / Not included: save slots, HTML save, SVG save, zoom, pan</div>
+  <div id="status">Ready: blank FlowLite file. Data slots 1-10 are empty.</div>
+</div>
+<div id="splitter" title="Resize left and right panes"></div>
+<div id="toast">Copied</div>
+<div id="right">
+  <div id="editTools"><button id="newNodeBtn" onclick="createNewNode()">New</button><button id="connectBtn" onclick="startConnectMode()">Connect</button><button id="deleteBtn" onclick="deleteSelection()">Delete</button><span class="tool-separator"></span><div class="mini-menu" id="lineKindTools"><button id="lineKindMenuBtn" onclick="toggleLineKindMenu()">Edge Kind</button><div class="mini-flyout" id="lineKindFlyout"><button class="line-kind-btn" title="Action: A moves to, uses, or affects B" onclick="applyEdgeKind('directed')">→ Action</button><button class="line-kind-btn" title="Membership: A is part, type, or component of B" onclick="applyEdgeKind('belongs')">⇒ Belongs</button><button class="line-kind-btn" title="Identity: A and B are the same, aliases, or correspond" onclick="applyEdgeKind('identity')">= Identity</button><button class="line-kind-btn" title="Association: related without a stronger type" onclick="applyEdgeKind('association')">— Assoc</button><button class="line-kind-btn" title="Mutual: A and B interact with each other" onclick="applyEdgeKind('mutual')">↔ Mutual</button><button class="line-kind-btn" title="Block: A stops or prohibits B" onclick="applyEdgeKind('block')">× Block</button></div></div><div class="mini-menu" id="colorTools"><button id="colorMenuBtn" onclick="toggleColorMenu()">Color</button><div class="mini-flyout" id="colorFlyout"><button class="color-swatch" title="Default" onclick="applyNodeColor('')" style="background:#ffffff"></button><button class="color-swatch" title="Off White" onclick="applyNodeColor('#f8fafc')" style="background:#f8fafc"></button><button class="color-swatch" title="Gray 1" onclick="applyNodeColor('#e2e8f0')" style="background:#e2e8f0"></button><button class="color-swatch" title="Gray 2" onclick="applyNodeColor('#cbd5e1')" style="background:#cbd5e1"></button><button class="color-swatch" title="Gray 3" onclick="applyNodeColor('#94a3b8')" style="background:#94a3b8"></button><button class="color-swatch" title="Red 1" onclick="applyNodeColor('#fee2e2')" style="background:#fee2e2"></button><button class="color-swatch" title="Red 2" onclick="applyNodeColor('#fecaca')" style="background:#fecaca"></button><button class="color-swatch" title="Red 3" onclick="applyNodeColor('#fca5a5')" style="background:#fca5a5"></button><button class="color-swatch" title="Red 4" onclick="applyNodeColor('#f87171')" style="background:#f87171"></button><button class="color-swatch" title="Red 5" onclick="applyNodeColor('#ef4444')" style="background:#ef4444"></button><button class="color-swatch" title="Orange 1" onclick="applyNodeColor('#ffedd5')" style="background:#ffedd5"></button><button class="color-swatch" title="Orange 2" onclick="applyNodeColor('#fed7aa')" style="background:#fed7aa"></button><button class="color-swatch" title="Orange 3" onclick="applyNodeColor('#fdba74')" style="background:#fdba74"></button><button class="color-swatch" title="Orange 4" onclick="applyNodeColor('#fb923c')" style="background:#fb923c"></button><button class="color-swatch" title="Orange 5" onclick="applyNodeColor('#f97316')" style="background:#f97316"></button><button class="color-swatch" title="Yellow 1" onclick="applyNodeColor('#fef9c3')" style="background:#fef9c3"></button><button class="color-swatch" title="Yellow 2" onclick="applyNodeColor('#fde68a')" style="background:#fde68a"></button><button class="color-swatch" title="Yellow 3" onclick="applyNodeColor('#fcd34d')" style="background:#fcd34d"></button><button class="color-swatch" title="Yellow 4" onclick="applyNodeColor('#facc15')" style="background:#facc15"></button><button class="color-swatch" title="Yellow 5" onclick="applyNodeColor('#eab308')" style="background:#eab308"></button><button class="color-swatch" title="Green 1" onclick="applyNodeColor('#dcfce7')" style="background:#dcfce7"></button><button class="color-swatch" title="Green 2" onclick="applyNodeColor('#bbf7d0')" style="background:#bbf7d0"></button><button class="color-swatch" title="Green 3" onclick="applyNodeColor('#86efac')" style="background:#86efac"></button><button class="color-swatch" title="Green 4" onclick="applyNodeColor('#4ade80')" style="background:#4ade80"></button><button class="color-swatch" title="Green 5" onclick="applyNodeColor('#22c55e')" style="background:#22c55e"></button><button class="color-swatch" title="Blue 1" onclick="applyNodeColor('#dbeafe')" style="background:#dbeafe"></button><button class="color-swatch" title="Blue 2" onclick="applyNodeColor('#bfdbfe')" style="background:#bfdbfe"></button><button class="color-swatch" title="Blue 3" onclick="applyNodeColor('#93c5fd')" style="background:#93c5fd"></button><button class="color-swatch" title="Blue 4" onclick="applyNodeColor('#60a5fa')" style="background:#60a5fa"></button><button class="color-swatch" title="Blue 5" onclick="applyNodeColor('#3b82f6')" style="background:#3b82f6"></button><button class="color-swatch" title="Purple 1" onclick="applyNodeColor('#ede9fe')" style="background:#ede9fe"></button><button class="color-swatch" title="Purple 2" onclick="applyNodeColor('#ddd6fe')" style="background:#ddd6fe"></button><button class="color-swatch" title="Purple 3" onclick="applyNodeColor('#c4b5fd')" style="background:#c4b5fd"></button><button class="color-swatch" title="Purple 4" onclick="applyNodeColor('#a78bfa')" style="background:#a78bfa"></button><button class="color-swatch" title="Purple 5" onclick="applyNodeColor('#8b5cf6')" style="background:#8b5cf6"></button></div></div><div class="mini-menu" id="shapeTools"><button id="shapeMenuBtn" onclick="toggleShapeMenu()">Shape</button><div class="mini-flyout" id="shapeFlyout"><button class="shape-btn" onclick="applyNodeShape('round')">▢ Round</button><button class="shape-btn" onclick="applyNodeShape('rect')">□ Rect</button><button class="shape-btn" onclick="applyNodeShape('circle')">○ Circle</button><button class="shape-btn" onclick="applyNodeShape('ellipse')">⬭ Ellipse</button><button class="shape-btn" onclick="applyNodeShape('diamond')">◇ Diamond</button><button class="shape-btn" onclick="applyNodeShape('parallelogram')">▱ Parallelogram</button><button class="shape-btn" onclick="applyNodeShape('hexagon')">⬡ Hexagon</button><button class="shape-btn" onclick="applyNodeShape('trapezoid')">▽ Triangle</button><button class="shape-btn" onclick="applyNodeShape('double')">▣ Double</button><button class="shape-btn" onclick="applyNodeShape('document')">◰ Document</button><button class="shape-btn" onclick="applyNodeShape('heart')">♡ Heart</button><button class="shape-btn" onclick="applyNodeShape('star')">☆ Star</button></div></div><div class="mini-menu" id="sizeTools"><button id="sizeMenuBtn" onclick="toggleSizeMenu()">Size</button><div class="mini-flyout" id="sizeFlyout"><button class="size-btn" onclick="applyNodeSize('')">Small</button><button class="size-btn" onclick="applyNodeSize('m')">Medium</button><button class="size-btn" onclick="applyNodeSize('l')">Large</button></div></div></div>
+  <div id="functionTools"><button class="main-tool" onclick="toggleFunctionMenu()">Tools</button><div id="functionFlyout"><button onclick="undo()">Undo</button><button onclick="redo()">Redo</button><span class="layout-separator"></span><button onclick="zoomBy(.85)">−</button><button onclick="zoomBy(1.15)">＋</button><button onclick="fitToContent()">Fit</button><button onclick="resetView()">100%</button></div></div>
+  <div id="layoutTools"><button class="main-tool" onclick="toggleLayoutMenu()">Layout</button><div id="layoutFlyout"><button onclick="layoutHorizontal()" title="Horizontal: arrange nodes left to right">Horizontal</button><button onclick="layoutVertical()" title="Vertical: arrange nodes top to bottom">Vertical</button><button onclick="layoutCircle()" title="Circle: arrange nodes on a circle">Circle</button><button onclick="layoutGrid()" title="Grid: arrange nodes in a grid">Grid</button><span class="layout-separator"></span><button onclick="layoutFocus()" title="Focus: place high-degree or high-rank nodes near the center">Focus</button><button onclick="layoutTop()" title="Top: place high-degree or high-rank nodes toward the top">Top</button><button onclick="layoutFlow()" title="Flow: keep the main -> path centered and put branches, notes, and blocks to the sides">Flow</button><span class="layout-separator"></span><button onclick="layoutCompact()" title="Compact: reduce area while preserving the main path">Compact</button><button onclick="layoutLane()" title="Lane: separate horizontal lanes by first tag">Lane</button><button onclick="layoutCluster()" title="Cluster: create elliptical clusters by first tag and place high-degree nodes near the center">Cluster</button></div></div>
+  <div id="analysisTools"><button class="main-tool" onclick="toggleAnalysisMenu()">Analyze</button><div id="analysisFlyout"><button onclick="showDegreeRank()" title="Degree: many connections">Degree</button><button onclick="showBridgeRank()" title="Bridge: connects groups">Bridge</button><button onclick="showClosenessRank()" title="Closeness: near the whole graph">Close</button><button onclick="showCommunity()" title="Community: detect groups">Groups</button><button onclick="showLocalRank()" title="Selected: close to selected node">Selected</button></div></div>
+  <div id="tagTools"><button class="main-tool" onclick="toggleTagMenu()" title="Tag list: counts, highlight, and recolor tags">Tags</button><div id="tagFlyout"><div id="tagPanel"></div></div></div>
+  <div id="clearTools"><button id="clearViewBtn" class="main-tool clear-view-btn" onclick="clearTagAndViewSelection()" title="Clear tag highlight, selection, and temporary analysis view">Clear</button></div>
+  <div id="viewport"><svg id="edgeLayer"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"></path></marker><marker id="arrow-belongs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#16a34a"></path></marker><marker id="arrow-block" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M 1 1 L 11 11 M 11 1 L 1 11" stroke="#dc2626" stroke-width="2" fill="none"></path></marker><marker id="arrow-connected" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#f59e0b"></path></marker><marker id="arrow-selected" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"></path></marker></defs></svg></div>
+</div>
+<script>
+(function(){
+  'use strict';
+  const FLOWLITE_VERSION='1.2.29';
+  const sourceEl=document.getElementById('flowlite-source');
+  const layoutEl=document.getElementById('flowlite-layout');
+  const manualMetaEl=document.getElementById('flowlite-manual-meta');
+  const savesEl=document.getElementById('flowlite-saves');
+  const editor=document.getElementById('editor');
+  const status=document.getElementById('status');
+  const right=document.getElementById('right');
+  const splitter=document.getElementById('splitter');
+  const viewport=document.getElementById('viewport');
+  const edgeLayer=document.getElementById('edgeLayer');
+  const connectBtn=document.getElementById('connectBtn');
+  const initialSourceString=sourceEl.textContent.trim();
+  const initialLayoutString=layoutEl.textContent.trim();
+  const initialManualMetaString=manualMetaEl?manualMetaEl.textContent.trim():'{}';
+  const NEW_SOURCE_TEXT="title: New FlowLite Diagram\ndirection: Flow\n\n#nodes\n\n#edges\n";
+  let graph=readData();
+  let manualMeta=readManualMeta();
+  let scale=1, panX=30, panY=30;
+  let resizingSplit=false, resizeStartX=0, resizeStartWidth=0;
+  let dragNode=null, dragStart=null, panStart=null, debounce=null;
+  let dragRenderFrame=null;
+  let selectedNodeId=null, selectedEdgeId=null, connectMode=false, connectSourceId=null;
+  let selectedNodeIds=new Set(), selectedEdgeIds=new Set();
+  let selectionAnchorNodeId=null;
+  let lastEdgeClickId=null, lastEdgeClickAt=0;
+  let analysisMode=null, analysisRanks={}, analysisScores={}, localDistances={}, communityLabels={};
+  let analysisCacheKey='';
+  let activeTag=null;
+  let parseWarnings=[];
+  let lastNodeClickId=null, lastNodeClickAt=0;
+  let undoStack=[], redoStack=[], suppressHistory=false;
+  const ALLOWED_MANUAL_SHAPES=new Set(['rect','round','circle','ellipse','diamond','parallelogram','hexagon','trapezoid','document','star','heart','double','wavy','cloud']);
+  const ALLOWED_MANUAL_SIZES=new Set(['m','l']);
+
+  function safeId(s){return String(s||'').trim().replace(/\s+/g,'_').replace(/[\[\]\{\}\(\):]/g,'_')||'node'}
+  function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+  function safeCssColor(color,fallback=''){const v=String(color||'').trim();return /^#[0-9a-fA-F]{6}$/.test(v)?v:fallback}
+  function safeScriptText(s){return String(s??'').replace(/<\/script/gi,'<\\/script')}
+  function restoreScriptText(s){return String(s??'').replace(/<\\\/script/gi,'<\/script')}
+  function setSourceScriptText(text){sourceEl.textContent='\n'+safeScriptText(String(text||'').trim())+'\n'}
+  function getSourceScriptText(){return restoreScriptText(sourceEl.textContent||'').trim()}
+  function jsonScriptText(value){return '\n'+safeScriptText(JSON.stringify(value,null,2))+'\n'}
+  function setJsonScriptText(el,value){if(el)el.textContent=jsonScriptText(value)}
+  function splitLabelLines(text,maxChars=14){
+    const out=[];
+    for(const raw of String(text??'').split(/\n/)){
+      let line=raw.trim();
+      if(!line){out.push('');continue}
+      while(line.length>maxChars){out.push(line.slice(0,maxChars));line=line.slice(maxChars)}
+      out.push(line);
+    }
+    return out.length?out:[''];
+  }
+  function estimateTextWidth(lines){
+    const maxLen=Math.max(...lines.map(x=>Array.from(x).reduce((n,ch)=>n+(/[\u3000-\u9fff\u3040-\u30ff]/.test(ch)?1.7:1),0)));
+    return Math.max(116,Math.min(240,Math.round(maxLen*7+34)));
+  }
+  function nodePlainStyle(id){return (graph&&graph.meta&&graph.meta.nodeStyles&&graph.meta.nodeStyles[id])||{}}
+  function nodeVisualMeta(id){return {...((manualMeta&&manualMeta[id])||{}), ...nodePlainStyle(id)}}
+  function nodeSizeScaleById(id){
+    const m=nodeVisualMeta(id);
+    return m.size==='l'?1.50:(m.size==='m'?1.25:1);
+  }
+  function edgePadForNode(id, base){
+    const scale=nodeSizeScaleById(id);
+    return base + (scale-1)*44;
+  }
+  function graphNodeById(id){return (graph.nodes||[]).find(n=>n.id===id)||null}
+  function currentNodeShape(id){
+    const n=graphNodeById(id);
+    const meta=nodeVisualMeta(id);
+    let sh=(meta.shape||(n&&n.shape)||'process');
+    if(sh==='wavy')sh='double';
+    if(sh==='cloud')sh='parallelogram';
+    return sh;
+  }
+  function nodeDomMetrics(id){
+    const sh=currentNodeShape(id);
+    const els=viewport?viewport.querySelectorAll('.node'):[];
+    for(const el of els){
+      if(el.dataset&&el.dataset.id===id){
+        const r=el.getBoundingClientRect();
+        const s=scale||1;
+        const w=Math.max(20,r.width/s);
+        const h=Math.max(20,r.height/s);
+        return {w,h,shape:sh};
+      }
+    }
+    return null;
+  }
+  function svgNodeMetrics(id){
+    const n=graphNodeById(id);
+    const sh=currentNodeShape(id);
+    const lines=splitLabelLines(n?n.label:id,14);
+    const lineH=16;
+    const nodeW=estimateTextWidth(lines);
+    const nodeH=Math.max(44,lines.length*lineH+22);
+    const sizeScale=nodeSizeScaleById(id);
+    let w=Math.round(nodeW*sizeScale), h=Math.round(nodeH*sizeScale);
+    if(['trapezoid','star','heart'].includes(sh)){
+      const minW = sh==='heart' ? (sizeScale>=1.5?168:(sizeScale>=1.25?132:102)) : (sizeScale>=1.5?165:(sizeScale>=1.25?128:100));
+      const minH = sh==='heart' ? (sizeScale>=1.5?148:(sizeScale>=1.25?116:88)) : (sizeScale>=1.5?150:(sizeScale>=1.25?118:90));
+      w=Math.max(w,minW);
+      h=Math.max(h,minH);
+    }
+    if(sh==='circle'){
+      const d=Math.max(w,h);
+      w=d; h=d;
+    }else if(sh==='diamond'){
+      // The SVG diamond extends 14px in each direction, so endpoint clipping uses the same outer shape.
+      w+=28; h+=28;
+    }
+    return {w,h,shape:sh,lines,lineH};
+  }
+  function nodeMetricsForEdge(id, mode){
+    if(mode==='dom')return nodeDomMetrics(id)||svgNodeMetrics(id);
+    return svgNodeMetrics(id);
+  }
+  function boundaryDistanceForNode(metrics, ux, uy){
+    const hx=Math.max(8,(metrics&&metrics.w||92)/2);
+    const hy=Math.max(8,(metrics&&metrics.h||44)/2);
+    const ax=Math.abs(ux), ay=Math.abs(uy);
+    const sh=(metrics&&metrics.shape)||'process';
+    if(sh==='circle')return Math.max(hx,hy);
+    if(sh==='ellipse'||sh==='heart'){
+      return 1/Math.sqrt((ux*ux)/(hx*hx)+(uy*uy)/(hy*hy));
+    }
+    if(sh==='diamond'){
+      return 1/((ax/hx)+(ay/hy)||1);
+    }
+    if(sh==='star'){
+      return 1/Math.sqrt((ux*ux)/(hx*hx)+(uy*uy)/(hy*hy));
+    }
+    return Math.min(ax>0?hx/ax:Infinity,ay>0?hy/ay:Infinity);
+  }
+  function markerClearance(kind, side){
+    const k=normalizeEdgeKind(kind);
+    if(side==='start')return k==='mutual'?18:7;
+    if(k==='association'||k==='identity')return 7;
+    if(k==='belongs')return 20;
+    if(k==='block')return 19;
+    return 18;
+  }
+  function edgeEndpointPoints(e, mode){
+    const a=graph.layout[e.from], b=graph.layout[e.to];
+    if(!a||!b)return null;
+    const dx=b.x-a.x, dy=b.y-a.y, len=Math.hypot(dx,dy)||1;
+    const ux=dx/len, uy=dy/len;
+    const fromM=nodeMetricsForEdge(e.from,mode);
+    const toM=nodeMetricsForEdge(e.to,mode);
+    let padA=boundaryDistanceForNode(fromM,ux,uy)+markerClearance(e.kind,'start');
+    let padB=boundaryDistanceForNode(toM,ux,uy)+markerClearance(e.kind,'end');
+    const maxTotal=Math.max(0,len-24);
+    if(padA+padB>maxTotal&&padA+padB>0){
+      const r=maxTotal/(padA+padB);
+      padA*=r; padB*=r;
+    }
+    const x1=a.x+ux*padA, y1=a.y+uy*padA;
+    const x2=b.x-ux*padB, y2=b.y-uy*padB;
+    return {a,b,dx,dy,len,ux,uy,padA,padB,x1,y1,x2,y2};
+  }
+  function cloneGraph(g){return JSON.parse(JSON.stringify(g))}
+  function cloneState(){return {graph:cloneGraph(graph), manualMeta:cloneGraph(manualMeta||{})}}
+  function pushHistory(){if(suppressHistory)return;undoStack.push(cloneState());if(undoStack.length>10)undoStack.shift();redoStack=[]}
+  function syncPrimarySelection(){
+    selectedNodeId=(selectedNodeIds.size===1 && selectedEdgeIds.size===0)?Array.from(selectedNodeIds)[0]:null;
+    selectedEdgeId=(selectedEdgeIds.size===1 && selectedNodeIds.size===0)?Array.from(selectedEdgeIds)[0]:null;
+  }
+  function selectionCounts(){return {nodes:selectedNodeIds.size,edges:selectedEdgeIds.size,total:selectedNodeIds.size+selectedEdgeIds.size}}
+  function hasSelection(){return selectedNodeIds.size>0||selectedEdgeIds.size>0}
+  function hasViewSelectionState(){return hasSelection()||!!activeTag||!!analysisMode||!!connectMode||!!connectSourceId}
+  function updateClearButtonState(){const btn=document.getElementById('clearViewBtn');if(btn){const on=hasViewSelectionState();btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',on?'true':'false')}updateContextToolState()}
+  function setContextButton(id,on){const el=document.getElementById(id);if(el)el.classList.toggle('context-active',!!on)}
+  function updateContextToolState(){
+    const c=selectionCounts();
+    const hasNode=c.nodes>0;
+    const hasEdge=c.edges>0;
+    const tagOnly=!!activeTag&&!hasNode&&!hasEdge;
+    setContextButton('newNodeBtn',!hasNode&&!hasEdge&&!activeTag);
+    setContextButton('connectBtn',hasNode&&!hasEdge);
+    setContextButton('deleteBtn',hasNode&&!hasEdge);
+    setContextButton('colorMenuBtn',hasNode||hasEdge||tagOnly);
+    setContextButton('shapeMenuBtn',hasNode&&!hasEdge);
+    setContextButton('sizeMenuBtn',hasNode&&!hasEdge);
+    setContextButton('lineKindMenuBtn',hasEdge&&!hasNode);
+  }
+  function getSingleSelectedNodeId(){return (selectedNodeIds.size===1&&selectedEdgeIds.size===0)?Array.from(selectedNodeIds)[0]:null}
+  function normalizeSelectionAnchor(){
+    if(selectionAnchorNodeId&&selectedNodeIds.has(selectionAnchorNodeId))return selectionAnchorNodeId;
+    selectionAnchorNodeId=selectedNodeIds.size?Array.from(selectedNodeIds)[0]:null;
+    return selectionAnchorNodeId;
+  }
+  function clearSelectionState(){selectedNodeIds.clear();selectedEdgeIds.clear();selectionAnchorNodeId=null;syncPrimarySelection();connectMode=false;connectSourceId=null;updateClearButtonState()}
+  function setOnlyNodeSelection(id){selectedNodeIds.clear();selectedEdgeIds.clear();selectionAnchorNodeId=id||null;if(id)selectedNodeIds.add(id);syncPrimarySelection()}
+  function setOnlyEdgeSelection(id){selectedNodeIds.clear();selectedEdgeIds.clear();selectionAnchorNodeId=null;if(id)selectedEdgeIds.add(id);syncPrimarySelection()}
+  function toggleNodeSelection(id){
+    if(selectedNodeIds.has(id)){selectedNodeIds.delete(id);if(selectionAnchorNodeId===id)selectionAnchorNodeId=null}
+    else{selectedNodeIds.add(id);if(!selectionAnchorNodeId)selectionAnchorNodeId=id}
+    selectedEdgeIds.delete(id);
+    normalizeSelectionAnchor();
+    syncPrimarySelection();
+  }
+  function toggleEdgeSelection(id){if(selectedEdgeIds.has(id))selectedEdgeIds.delete(id);else selectedEdgeIds.add(id);syncPrimarySelection()}
+  function selectedSummary(){const c=selectionCounts();if(!c.total)return 'No selection';if(c.nodes&&c.edges)return `Selected: nodes ${c.nodes}, edges ${c.edges}`;if(c.nodes)return `Selected: nodes ${c.nodes}`;return `Selected: edges ${c.edges}`}
+  function restoreGraph(state){suppressHistory=true;if(state&&state.graph){graph=cloneGraph(state.graph);manualMeta=sanitizeManualMeta(state.manualMeta||{})}else{graph=cloneGraph(state)}cleanupLayout(graph);cleanupManualMeta();ensureLayout(graph);editor.value=jsonToText(graph);clearSelectionState();render();suppressHistory=false}
+  function sanitizeManualMeta(meta){
+    const out=(meta&&typeof meta==='object'&&!Array.isArray(meta))?cloneGraph(meta):{};
+    for(const id of Object.keys(out)){
+      const m=out[id];
+      if(id==='__canvas'){
+        if(!m||typeof m!=='object'||Array.isArray(m)){delete out[id];continue;}
+        if('background' in m){const c=safeCssColor(m.background,'');if(c)m.background=c;else delete m.background;}
+        if(!Object.keys(m).length)delete out[id];
+        continue;
+      }
+      if(id==='__edges'){
+        if(!m||typeof m!=='object'||Array.isArray(m)){delete out[id];continue;}
+        for(const eid of Object.keys(m)){
+          const em=m[eid];
+          if(!em||typeof em!=='object'||Array.isArray(em)){delete m[eid];continue;}
+          if('color' in em){const c=safeCssColor(em.color,'');if(c)em.color=c;else delete em.color;}
+          if(!Object.keys(em).length)delete m[eid];
+        }
+        if(!Object.keys(m).length)delete out[id];
+        continue;
+      }
+      if(!m||typeof m!=='object'||Array.isArray(m)){delete out[id];continue;}
+      if('color' in m){const c=safeCssColor(m.color,'');if(c)m.color=c;else delete m.color;}
+      if('shape' in m){const sh=String(m.shape||'');if(ALLOWED_MANUAL_SHAPES.has(sh))m.shape=sh;else delete m.shape;}
+      if('size' in m){const sz=String(m.size||'');if(ALLOWED_MANUAL_SIZES.has(sz))m.size=sz;else delete m.size;}
+      if(!Object.keys(m).length)delete out[id];
+    }
+    return out;
+  }
+  function readManualMeta(){
+    try{return sanitizeManualMeta(JSON.parse((manualMetaEl&&manualMetaEl.textContent)||'{}')||{})}
+    catch(e){return {}}
+  }
+  function cleanupManualMeta(){
+    manualMeta=sanitizeManualMeta(manualMeta);
+    const nodeIds=new Set(graph.nodes.map(n=>n.id));
+    const edgeIds=new Set(graph.edges.map(e=>e.id));
+    for(const id of Object.keys(manualMeta||{})){
+      if(id==='__canvas')continue;
+      if(id==='__edges'){
+        for(const eid of Object.keys(manualMeta.__edges||{})){if(!edgeIds.has(eid))delete manualMeta.__edges[eid]}
+        if(!Object.keys(manualMeta.__edges||{}).length)delete manualMeta.__edges;
+        continue;
+      }
+      if(!nodeIds.has(id))delete manualMeta[id];
+    }
+  }
+  function nodeMeta(id){manualMeta[id]=manualMeta[id]||{};return manualMeta[id]}
+  function selectedNodeMetaValues(key){const vals=Array.from(selectedNodeIds).map(id=>(nodeVisualMeta(id)||{})[key]||'');return vals.length&&vals.every(v=>v===vals[0])?vals[0]:null}
+  function selectedEdgeKindValue(){const ids=Array.from(selectedEdgeIds);if(!ids.length)return null;const vals=ids.map(id=>{const e=graph.edges.find(x=>x.id===id);return e?normalizeEdgeKind(e.kind):''});return vals.every(v=>v===vals[0])?vals[0]:null}
+  function edgeMeta(id){manualMeta.__edges=manualMeta.__edges||{};manualMeta.__edges[id]=manualMeta.__edges[id]||{};return manualMeta.__edges[id]}
+  function getEdgeMeta(id){return (manualMeta&&manualMeta.__edges&&manualMeta.__edges[id])||{}}
+  function edgeStyleAliases(e){
+    if(!e)return [];
+    const conn=kindToConnector(e.kind).replace(/\s+/g,'');
+    return [e.id, `${e.from}->${e.to}`, `${e.from}${conn}${e.to}`];
+  }
+  function edgePlainStyle(e){
+    const styles=(graph&&graph.meta&&graph.meta.edgeStyles)||{};
+    for(const k of edgeStyleAliases(e)){if(styles[k])return styles[k]}
+    return {};
+  }
+  function edgeVisualMeta(e){return {...getEdgeMeta(e&&e.id), ...edgePlainStyle(e)}}
+  function edgeEffectiveColor(e){return safeCssColor((edgeVisualMeta(e)||{}).color,'')}
+  function canvasMeta(){manualMeta.__canvas=manualMeta.__canvas||{};return manualMeta.__canvas}
+  function canvasPlainStyle(){return (graph&&graph.meta&&graph.meta.canvasStyle)||{}}
+  function getCanvasBackground(){return safeCssColor(canvasPlainStyle().background,'')||safeCssColor(manualMeta&&manualMeta.__canvas&&manualMeta.__canvas.background,'#f8fafc')}
+  function applyCanvasBackground(){if(right)right.style.backgroundColor=getCanvasBackground()}
+  function nodeShapeClass(n){const m=nodeVisualMeta(n.id);let sh=m.shape||n.shape||'process'; if(sh==='wavy')sh='double'; if(sh==='cloud')sh='parallelogram'; let cls=''; if(sh==='diamond')cls='manual-diamond'; else if(['rect','round','circle','ellipse','parallelogram','hexagon','trapezoid','document','star','heart','double'].includes(sh))cls='manual-'+sh; else cls=sh; if(m.size==='m')cls+=' manual-size-m'; if(m.size==='l')cls+=' manual-size-l'; return cls}
+  function readData(){
+    let layout={};
+    try{layout=JSON.parse(layoutEl.textContent||'{}')}catch(e){status.textContent='Layout JSON parse error: '+e.message;layout={}}
+    const source=getSourceScriptText();
+    try{return normalize(parseText(source,{meta:{title:'FlowLite',direction:'Flow'},layout}))}
+    catch(e){status.textContent='Source parse error: '+e.message;return {meta:{title:'Error',direction:'Flow'},nodes:[],edges:[],layout:{}}}
+  }
+  function normalize(g){g=g||{};g.meta=g.meta||{title:'FlowLite',direction:'Flow',styles:{}};g.meta.styles=g.meta.styles||{};g.meta.nodeStyles=g.meta.nodeStyles||{};g.meta.edgeStyles=g.meta.edgeStyles||{};g.meta.canvasStyle=g.meta.canvasStyle||{};g.nodes=Array.isArray(g.nodes)?g.nodes:[];g.edges=Array.isArray(g.edges)?g.edges:[];g.layout=g.layout||{};g.nodes=g.nodes.map(n=>({id:safeId(n.id),label:String(n.label??n.id??''),shape:n.shape||'process',tags:Array.isArray(n.tags)?n.tags.slice(0,3).map(String):[]}));g.edges=g.edges.map((e,i)=>({id:e.id||`e_${safeId(e.from)}_${safeId(e.to)}_${i}`,from:safeId(e.from),to:safeId(e.to),label:String(e.label??''),kind:normalizeEdgeKind(e.kind||e.connector||'directed')}));return g}
+  function syncSourceData(){setSourceScriptText(editor.value||'')}
+  function syncLayoutData(){setJsonScriptText(layoutEl,graph.layout||{})}
+  function syncManualMetaData(){manualMeta=sanitizeManualMeta(manualMeta||{});setJsonScriptText(manualMetaEl,manualMeta)}
+  function syncLayoutDataOnly(){syncLayoutData()}
+  function syncData(){
+    syncSourceData();
+    syncLayoutData();
+    syncManualMetaData();
+  }
+  function setStatus(msg){status.textContent=msg}
+
+
+  function normalizeEdgeKind(kind){
+    const k=String(kind||'directed').toLowerCase();
+    if(['belongs','membership','contains','partof','part-of','type','category'].includes(k))return 'belongs';
+    if(['identity','equal','equals','same','alias','equivalent'].includes(k))return 'identity';
+    if(['association','relation','related','undirected'].includes(k))return 'association';
+    if(['mutual','bidirectional','reciprocal','both'].includes(k))return 'mutual';
+    if(['block','negative','not','conflict','deny','reject'].includes(k))return 'block';
+    return 'directed';
+  }
+  function kindToConnector(kind){
+    const k=normalizeEdgeKind(kind);
+    if(k==='belongs')return '=>';
+    if(k==='identity')return '==';
+    if(k==='association')return '--';
+    if(k==='mutual')return '<->';
+    if(k==='block')return '-x->';
+    return '->';
+  }
+  function connectorToKind(conn){
+    if(conn==='=>')return 'belongs';
+    if(conn==='==')return 'identity';
+    if(conn==='--')return 'association';
+    if(conn==='<->')return 'mutual';
+    if(conn==='-x->')return 'block';
+    return 'directed';
+  }
+  function parseEdgeLine(line){
+    // Backward compatibility: A -- label -> B
+    let m=line.match(/^([^\s\[\]\{\}\(\):]+)\s+--\s+([\s\S]+?)\s*->\s*([^\s\[\]\{\}\(\):]+)$/);
+    if(m)return {from:m[1].trim(),to:m[3].trim(),label:m[2].trim(),kind:'directed'};
+    // Preferred syntax: A -> B : label / A => B : label / A == B : label / A -- B : label / A <-> B : label / A -x-> B : label
+    m=line.match(/^([^\s\[\]\{\}\(\):]+)\s*(<->|-x->|=>|==|->|--)\s*([^\s\[\]\{\}\(\):]+)(?:\s*:\s*([\s\S]*))?$/);
+    if(!m)return null;
+    return {from:m[1].trim(),to:m[3].trim(),label:(m[4]||'').trim(),kind:connectorToKind(m[2])};
+  }
+  function edgeStrokeBase(kind){
+    const k=normalizeEdgeKind(kind);
+    if(k==='belongs')return '#475569';
+    if(k==='identity')return '#7c3aed';
+    if(k==='association')return '#64748b';
+    if(k==='mutual')return '#0891b2';
+    if(k==='block')return '#dc2626';
+    return '#94a3b8';
+  }
+  function selectionEdgeFadeColor(distance){
+    if(distance===1)return '#f59e0b';
+    if(distance===2)return '#fdba74';
+    if(distance===3)return '#fed7aa';
+    return '';
+  }
+  function edgeSvgAttrs(e,isSelected,isEmphasis,selectionDistance=null){
+    const k=normalizeEdgeKind(e.kind);
+    const manual=edgeEffectiveColor(e);
+    const base=manual||edgeStrokeBase(k);
+    const fadeColor=!isSelected?selectionEdgeFadeColor(selectionDistance):'';
+    const stroke=isSelected?'#2563eb':(fadeColor||base);
+    let width=isSelected?'4':selectionDistance===1?'3.5':selectionDistance===2?'3.0':selectionDistance===3?'2.2':'2';
+    let dash='';
+    let doubleLine=false;
+    if(k==='belongs'){width=isSelected?'3.2':selectionDistance===1?'2.8':selectionDistance===2?'2.5':selectionDistance===3?'2.2':'2.2';dash='';}
+    if(k==='association'){width=isSelected?'3.4':selectionDistance===1?'3':selectionDistance===2?'2.7':selectionDistance===3?'2.2':'2';dash='7 6';}
+    if(k==='identity'){width=isSelected?'3.2':selectionDistance===1?'2.8':selectionDistance===2?'2.5':selectionDistance===3?'2.2':'2.2';doubleLine=true;}
+    if(k==='mutual')width=isSelected?'4':selectionDistance===1?'3.4':selectionDistance===2?'3.0':selectionDistance===3?'2.4':'2.4';
+    if(k==='block')width=isSelected?'4':selectionDistance===1?'3.4':selectionDistance===2?'3.0':selectionDistance===3?'2.6':'2.8';
+    return {k,stroke,width,dash,manual,doubleLine};
+  }
+  function markerSafeColor(color){return String(color||'#94a3b8').replace(/[^a-zA-Z0-9_-]/g,'_')}
+  function ensureColorMarker(color,type){
+    const c=String(color||'#94a3b8');
+    const t=type||'arrow';
+    const id='marker_'+t+'_'+markerSafeColor(c);
+    const existing=document.getElementById(id);
+    if(existing)return `url(#${id})`;
+    let defs=edgeLayer.querySelector('defs');
+    if(!defs){defs=document.createElementNS('http://www.w3.org/2000/svg','defs');edgeLayer.insertBefore(defs,edgeLayer.firstChild)}
+    const marker=document.createElementNS('http://www.w3.org/2000/svg','marker');
+    marker.setAttribute('id',id);
+    if(t==='block'){
+      marker.setAttribute('viewBox','0 0 12 12');
+      marker.setAttribute('refX','10');
+      marker.setAttribute('refY','6');
+      marker.setAttribute('markerWidth','9');
+      marker.setAttribute('markerHeight','9');
+      marker.setAttribute('orient','auto');
+      const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+      path.setAttribute('d','M 1 1 L 11 11 M 11 1 L 1 11');
+      path.setAttribute('stroke',c);
+      path.setAttribute('stroke-width','2');
+      path.setAttribute('fill','none');
+      marker.appendChild(path);
+    }else if(t==='hollow'){
+      marker.setAttribute('viewBox','0 0 12 12');
+      marker.setAttribute('refX','11');
+      marker.setAttribute('refY','6');
+      marker.setAttribute('markerWidth','10');
+      marker.setAttribute('markerHeight','10');
+      marker.setAttribute('orient','auto-start-reverse');
+      const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+      path.setAttribute('d','M 1.5 1.5 L 10.5 6 L 1.5 10.5 Z');
+      path.setAttribute('stroke',c);
+      path.setAttribute('stroke-width','1.8');
+      path.setAttribute('fill','#fff');
+      marker.appendChild(path);
+    }else{
+      marker.setAttribute('viewBox','0 0 10 10');
+      marker.setAttribute('refX','9');
+      marker.setAttribute('refY','5');
+      marker.setAttribute('markerWidth','8');
+      marker.setAttribute('markerHeight','8');
+      marker.setAttribute('orient','auto-start-reverse');
+      const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+      path.setAttribute('d','M 0 0 L 10 5 L 0 10 z');
+      path.setAttribute('fill',c);
+      marker.appendChild(path);
+    }
+    defs.appendChild(marker);
+    return `url(#${id})`;
+  }
+  function cleanupDynamicMarkers(){
+    const defs=edgeLayer&&edgeLayer.querySelector('defs');
+    if(!defs)return;
+    defs.querySelectorAll('marker[id^="marker_"]').forEach(m=>m.remove());
+  }
+  function edgeMarkers(kind,isSelected,isEmphasis,stroke){
+    const k=normalizeEdgeKind(kind);
+    const markerColor=stroke||(isSelected?'#2563eb':isEmphasis?'#f59e0b':edgeStrokeBase(k));
+    const arrow=ensureColorMarker(markerColor,'arrow');
+    const block=ensureColorMarker(markerColor,'block');
+    if(k==='association'||k==='identity')return {start:'',end:''};
+    if(k==='mutual')return {start:arrow,end:arrow};
+    if(k==='block')return {start:'',end:arrow};
+    if(k==='belongs')return {start:'',end:ensureColorMarker(markerColor,'hollow')};
+    return {start:'',end:arrow};
+  }
+
+  function jsonToText(g){
+    const lines=[];lines.push(`title: ${g.meta?.title||''}`);lines.push(`direction: ${g.meta?.direction||'Flow'}`);lines.push('');lines.push('#nodes');
+    for(const n of g.nodes){
+      const tagText=formatTags(n.tags);
+      let line;
+      if(n.shape==='decision')line=`${n.id}{${n.label}}`;
+      else if(n.shape==='terminal')line=`${n.id}((${n.label}))`;
+      else if(n.shape==='data')line=`${n.id}[(${n.label})]`;
+      else if(n.shape==='note')line=`${n.id}>${n.label}]`;
+      else line=`${n.id}[${n.label}]`;
+      if(tagText)line+=' '+tagText;
+      lines.push(line);
+    }
+    const styles=g.meta?.styles||{};
+    const nodeStyles=g.meta?.nodeStyles||{};
+    const edgeStyles=g.meta?.edgeStyles||{};
+    const canvasStyle=g.meta?.canvasStyle||{};
+    const styleKeys=Object.keys(styles).filter(k=>styles[k]&&styles[k].color);
+    const nodeStyleKeys=Object.keys(nodeStyles).filter(k=>hasStyleProps(nodeStyles[k]));
+    const edgeStyleKeys=Object.keys(edgeStyles).filter(k=>hasStyleProps(edgeStyles[k]));
+    const hasCanvas=hasStyleProps(canvasStyle);
+    if(styleKeys.length||nodeStyleKeys.length||edgeStyleKeys.length||hasCanvas){
+      lines.push('');lines.push('#styles');
+      for(const k of styleKeys){lines.push(`+${k} color:${styles[k].color}`)}
+      if(hasCanvas){const t=stylePropsToText(canvasStyle,['background']); if(t)lines.push(`@canvas ${t}`)}
+      const nodeOrder=(g.nodes||[]).map(n=>n.id);
+      const orderedNodeKeys=[...nodeOrder.filter(id=>nodeStyles[id]), ...nodeStyleKeys.filter(id=>!nodeOrder.includes(id)).sort()];
+      for(const id of orderedNodeKeys){
+        const t=stylePropsToText(nodeStyles[id],['color','shape','size','x','y']);
+        if(t)lines.push(`@${id} ${t}`);
+      }
+      for(const k of edgeStyleKeys.sort()){
+        const t=stylePropsToText(edgeStyles[k],['color']);
+        if(t)lines.push(`@edge:${k} ${t}`);
+      }
+    }
+    lines.push('');lines.push('#edges');
+    for(const e of g.edges){const conn=kindToConnector(e.kind);lines.push(e.label?`${e.from} ${conn} ${e.to} : ${e.label}`:`${e.from} ${conn} ${e.to}`)}
+    return lines.join('\n')
+  }
+
+  const NODE_LINE_ID_RE_SRC='[^\\s\\[\\]\\{\\}\\(\\):]+';
+  const NODE_TAG_TAIL_RE_SRC='(?:\\s+\\+[^\\s\\[\\]\\{\\}\\(\\):#,+]+)*\\s*$';
+  const RE_NODE_LINE_START=new RegExp('^'+NODE_LINE_ID_RE_SRC+'(?:\\[|\\{|\\(\\(|>)');
+  const RE_NODE_DATA_START=new RegExp('^'+NODE_LINE_ID_RE_SRC+'\\[\\(');
+  const RE_NODE_DATA_END=new RegExp('\\)\\]'+NODE_TAG_TAIL_RE_SRC,'u');
+  const RE_NODE_NORMAL_START=new RegExp('^'+NODE_LINE_ID_RE_SRC+'\\[');
+  const RE_NODE_NORMAL_END=new RegExp('\\]'+NODE_TAG_TAIL_RE_SRC,'u');
+  const RE_NODE_DECISION_START=new RegExp('^'+NODE_LINE_ID_RE_SRC+'\\{');
+  const RE_NODE_DECISION_END=new RegExp('\\}'+NODE_TAG_TAIL_RE_SRC,'u');
+  const RE_NODE_TERMINAL_START=new RegExp('^'+NODE_LINE_ID_RE_SRC+'\\(\\(');
+  const RE_NODE_TERMINAL_END=new RegExp('\\)\\)'+NODE_TAG_TAIL_RE_SRC,'u');
+  const RE_NODE_NOTE_START=new RegExp('^'+NODE_LINE_ID_RE_SRC+'>');
+  const RE_NODE_NOTE_END=new RegExp('\\]'+NODE_TAG_TAIL_RE_SRC,'u');
+
+  function nodeLineBalanced(str){
+    if(RE_NODE_DATA_START.test(str))return RE_NODE_DATA_END.test(str);
+    if(RE_NODE_NORMAL_START.test(str))return RE_NODE_NORMAL_END.test(str);
+    if(RE_NODE_DECISION_START.test(str))return RE_NODE_DECISION_END.test(str);
+    if(RE_NODE_TERMINAL_START.test(str))return RE_NODE_TERMINAL_END.test(str);
+    if(RE_NODE_NOTE_START.test(str))return RE_NODE_NOTE_END.test(str);
+    return true;
+  }
+
+  function normalizeSourceLines(text){
+    const rawLines=String(text||'').split(/\r?\n/);
+    const logical=[];
+    for(let i=0;i<rawLines.length;i++){
+      let raw=rawLines[i];
+      let line=raw.trim();
+      const startLine=i+1;
+      if(!line){logical.push({text:'',line:startLine});continue;}
+      const startsNode=RE_NODE_LINE_START.test(line);
+      if(startsNode){
+        let combined=raw.trim();
+        while(!nodeLineBalanced(combined) && i+1<rawLines.length){
+          i++;
+          combined += '\n' + rawLines[i].trim();
+        }
+        logical.push({text:combined,line:startLine});
+      }else{
+        logical.push({text:line,line:startLine});
+      }
+    }
+    return logical;
+  }
+
+  function normalizeLabelText(s){
+    let out=String(s??'').trim();
+    const quoted=out.match(/^(['"])([\s\S]*)\1$/);
+    if(quoted)out=quoted[2];
+    out=out
+      .replace(/\\\\n/g,'\n')
+      .replace(/\\n/g,'\n')
+      .replace(/\\\\t/g,'  ')
+      .replace(/\\t/g,'  ')
+      .replace(/\\"/g,'"')
+      .replace(/\\'/g,"'")
+      .replace(/\\\]/g,']');
+    return out.trim();
+  }
+  function parseNodeTail(line){
+    const tags=[];
+    const re=/\s\+([^\s\[\]\{\}\(\):#,+]+)\s*$/u;
+    let body=String(line||'').trim();
+    while(true){
+      const m=body.match(re);
+      if(!m)break;
+      tags.unshift(m[1]);
+      body=body.slice(0,m.index).trimEnd();
+    }
+    if(tags.length>3)parseWarnings.push(`Tag limit exceeded: only first 3 tags are recognized in "${line.slice(0,80)}"`);
+    return {body,tags:tags.slice(0,3)};
+  }
+  function cleanNumber(n){
+    const v=Number(n);
+    if(!Number.isFinite(v))return null;
+    return Math.round(v*10)/10;
+  }
+  function formatNumber(n){
+    const v=cleanNumber(n);
+    return v===null?'':String(v).replace(/\.0$/,'');
+  }
+  function parseStyleProps(rest){
+    const props={};
+    const tokens=String(rest||'').trim().split(/\s+/).filter(Boolean);
+    for(const tok of tokens){
+      const m=tok.match(/^([A-Za-z][A-Za-z0-9_-]*)\s*:\s*(.+)$/);
+      if(!m)continue;
+      const key=m[1].toLowerCase();
+      const val=m[2].trim();
+      if(key==='color'){
+        const c=safeCssColor(val,'');
+        if(c)props.color=c;
+      }else if(key==='background'){
+        const c=safeCssColor(val,'');
+        if(c)props.background=c;
+      }else if(key==='shape'){
+        let sh=val.toLowerCase();
+        if(sh==='wavy')sh='double';
+        if(sh==='cloud')sh='parallelogram';
+        if(ALLOWED_MANUAL_SHAPES.has(sh))props.shape=sh;
+      }else if(key==='size'){
+        const s=val.toLowerCase();
+        if(s==='m'||s==='medium')props.size='m';
+        else if(s==='l'||s==='large')props.size='l';
+      }else if(key==='x'||key==='y'){
+        const v=cleanNumber(val);
+        if(v!==null)props[key]=v;
+      }
+    }
+    return props;
+  }
+  function hasStyleProps(obj){return !!obj&&Object.keys(obj).length>0}
+  function stylePropsToText(obj,keys){
+    const parts=[];
+    for(const key of keys){
+      if(key==='color'&&safeCssColor(obj.color,''))parts.push(`color:${obj.color}`);
+      else if(key==='background'&&safeCssColor(obj.background,''))parts.push(`background:${obj.background}`);
+      else if(key==='shape'&&obj.shape)parts.push(`shape:${obj.shape}`);
+      else if(key==='size'&&obj.size)parts.push(`size:${obj.size}`);
+      else if((key==='x'||key==='y')&&obj[key]!==undefined&&obj[key]!==null){const v=formatNumber(obj[key]);if(v)parts.push(`${key}:${v}`)}
+    }
+    return parts.join(' ');
+  }
+  function parseStyleLine(line){
+    const s=String(line||'').trim();
+    const tag=s.match(/^\+([^\s\[\]\{\}\(\):#,+]+)\s+color\s*:\s*(#[0-9a-fA-F]{6})\s*$/u);
+    if(tag)return {kind:'tag',tag:tag[1],color:tag[2]};
+    const m=s.match(/^(\S+)\s+(.+)$/u);
+    if(!m)return null;
+    const target=m[1], props=parseStyleProps(m[2]);
+    if(!hasStyleProps(props))return null;
+    if(target==='@canvas')return {kind:'canvas',props};
+    if(target.startsWith('@edge:'))return {kind:'edge',target:target.slice(6),props};
+    if(target.startsWith('@'))return {kind:'node',id:safeId(target.slice(1)),props};
+    return null;
+  }
+  function tagStyleColor(tags,styles){
+    const t=Array.isArray(tags)?tags:[];
+    const s=styles||{};
+    for(const tag of t){const c=s[tag]&&s[tag].color?safeCssColor(s[tag].color,''):'';if(c)return c}
+    return '';
+  }
+  function nodeEffectiveColor(n){
+    const meta=nodeVisualMeta(n.id);
+    const manualColor=safeCssColor(meta.color,'');
+    if(manualColor)return manualColor;
+    return tagStyleColor(n.tags, graph?.meta?.styles)||'';
+  }
+  function formatTags(tags){
+    return (Array.isArray(tags)?tags.slice(0,3):[]).filter(Boolean).map(t=>'+'+t).join(' ');
+  }
+  function nodeHasTagId(id,tag){
+    const n=(graph.nodes||[]).find(x=>x.id===id);
+    return !!(n&&Array.isArray(n.tags)&&n.tags.includes(tag));
+  }
+  function edgeHasTag(e,tag){return nodeHasTagId(e.from,tag)||nodeHasTagId(e.to,tag)}
+  function collectTagStats(){
+    const map={};
+    for(const n of (graph.nodes||[])){
+      for(const tag of (Array.isArray(n.tags)?n.tags.slice(0,3):[])){
+        if(!map[tag])map[tag]={tag,count:0,styled:false,color:''};
+        map[tag].count++;
+      }
+    }
+    const styles=(graph.meta&&graph.meta.styles)||{};
+    for(const tag of Object.keys(styles)){
+      if(!map[tag])map[tag]={tag,count:0,styled:true,color:styles[tag]&&styles[tag].color?styles[tag].color:''};
+      map[tag].styled=true;
+      map[tag].color=styles[tag]&&styles[tag].color?styles[tag].color:map[tag].color;
+    }
+    return Object.values(map).sort((a,b)=>(b.styled?1:0)-(a.styled?1:0)||b.count-a.count||a.tag.localeCompare(b.tag));
+  }
+  function tagColor(tag){
+    const styles=(graph.meta&&graph.meta.styles)||{};
+    return styles[tag]&&styles[tag].color?safeCssColor(styles[tag].color,'#ffffff'):'#ffffff';
+  }
+  function applyActiveTagColor(color){
+    color=safeCssColor(color,'');
+    if(!activeTag)return false;
+    pushHistory();
+    graph.meta=graph.meta||{};
+    graph.meta.styles=graph.meta.styles||{};
+    if(color){
+      graph.meta.styles[activeTag]=graph.meta.styles[activeTag]||{};
+      graph.meta.styles[activeTag].color=color;
+    }else{
+      if(graph.meta.styles[activeTag])delete graph.meta.styles[activeTag].color;
+      if(graph.meta.styles[activeTag]&&!Object.keys(graph.meta.styles[activeTag]).length)delete graph.meta.styles[activeTag];
+    }
+    updateEditorFromGraph();
+    render();
+    closeToolMenus();
+    setStatus(color?`+${activeTag} tag color changed`:`+${activeTag} tag color cleared`);
+    return true;
+  }
+  function clearActiveTag(){
+    activeTag=null;
+    render();
+    setStatus('Tag highlight cleared');
+  }
+  function clearTagAndViewSelection(){
+    const had=hasViewSelectionState();
+    activeTag=null;
+    clearSelectionState();
+    analysisMode=null;
+    analysisRanks={};
+    analysisScores={};
+    localDistances={};
+    communityLabels={};
+    render();
+    validate();
+    setStatus(had?'Cleared tag highlight, selection, and temporary analysis view':'Nothing to clear');
+  }
+  function selectNodesByTag(tag){
+    selectedNodeIds.clear();selectedEdgeIds.clear();selectionAnchorNodeId=null;
+    for(const n of (graph.nodes||[])){if(Array.isArray(n.tags)&&n.tags.includes(tag)){selectedNodeIds.add(n.id);if(!selectionAnchorNodeId)selectionAnchorNodeId=n.id}}
+    syncPrimarySelection();
+    activeTag=tag;
+    render();
+    setStatus(`Selected ${selectedNodeIds.size} node(s) with tag +${tag}`);
+  }
+  function focusTag(tag){
+    activeTag=(activeTag===tag)?null:tag;
+    render();
+    setStatus(activeTag?`+${tag} is highlighted`:'Tag highlight cleared');
+  }
+  function renderTagPanel(){
+    const panel=document.getElementById('tagPanel');
+    if(!panel)return;
+    const stats=collectTagStats();
+    if(activeTag && !stats.some(x=>x.tag===activeTag))activeTag=null;
+    panel.replaceChildren();
+
+    const head=document.createElement('div');
+    head.className='tag-panel-head';
+    const headText=document.createElement('span');
+    headText.textContent='Tag List';
+    head.appendChild(headText);
+    panel.appendChild(head);
+
+    const hint=document.createElement('div');
+    hint.className='tag-hint';
+    hint.textContent='Click to highlight. You can change the selected tag color.';
+    panel.appendChild(hint);
+
+    const list=document.createElement('div');
+    list.className='tag-list';
+    if(stats.length){
+      stats.forEach(x=>{
+        const row=document.createElement('div');
+        row.className='tag-row'+(x.tag===activeTag?' active':'');
+        row.dataset.tag=String(x.tag);
+        row.title='Click: highlight / Ctrl-Cmd click: select matching nodes';
+
+        const dot=document.createElement('span');
+        dot.className='tag-dot';
+        const color=safeCssColor(x.color||tagColor(x.tag),'');
+        if(color&&color!=='#ffffff')dot.style.background=color;
+
+        const name=document.createElement('span');
+        name.className='tag-name';
+        name.textContent='+'+String(x.tag);
+
+        const count=document.createElement('span');
+        count.className='tag-count';
+        count.textContent=String(Number(x.count)||0);
+
+        row.append(dot,name,count);
+        row.addEventListener('click',ev=>{
+          const tag=row.dataset.tag;
+          if(ev.ctrlKey||ev.metaKey){selectNodesByTag(tag)}
+          else{focusTag(tag)}
+        });
+        list.appendChild(row);
+      });
+    }else{
+      const empty=document.createElement('div');
+      empty.className='tag-hint';
+      empty.textContent='No tags';
+      list.appendChild(empty);
+    }
+    panel.appendChild(list);
+
+    const flyout=document.getElementById('tagFlyout');
+    if(flyout&&!flyout.dataset.wheelBound){
+      flyout.dataset.wheelBound='1';
+      flyout.addEventListener('wheel',ev=>{
+        ev.stopPropagation();
+      },{passive:true});
+    }
+  }
+
+  function parseText(text,base){
+    const baseGraph=base||graph||{};
+    const nodes=new Map(), edges=[];
+    const styles={}, nodeStyles={}, edgeStyles={}, canvasStyle={};
+    const lines=normalizeSourceLines(text);
+    let title=baseGraph.meta?.title||'FlowLite', direction=baseGraph.meta?.direction||'Flow';
+    let section='';
+    const edgeCount={};
+    parseWarnings=[];
+    function ensureAutoNode(id){
+      if(!nodes.has(id))nodes.set(id,{id,label:id,shape:'process',tags:[],auto:true});
+    }
+    for(const item of lines){
+      let line=String(item.text||'').trim();
+      line=line.replace(/^#\s+(nodes|edges|styles)\s*$/i,'#$1');
+      if(!line)continue;
+      let sec=line.match(/^#(nodes|edges|styles)\s*$/i);
+      if(sec){section=sec[1].toLowerCase();continue}
+      if(line.startsWith('#'))continue;
+      let m;
+      if((m=line.match(/^title\s*:\s*([\s\S]*)$/i))){title=m[1].trim();continue}
+      if((m=line.match(/^direction\s*:\s*([A-Za-z][A-Za-z\s_-]*)\s*$/i))){direction=layoutModeForText(m[1]);continue}
+
+      if(section==='styles'){
+        const st=parseStyleLine(line);
+        if(st){
+          if(st.kind==='tag')styles[st.tag]={color:st.color};
+          else if(st.kind==='node')nodeStyles[st.id]={...(nodeStyles[st.id]||{}),...st.props};
+          else if(st.kind==='edge')edgeStyles[st.target]={...(edgeStyles[st.target]||{}),...st.props};
+          else if(st.kind==='canvas')Object.assign(canvasStyle,st.props);
+          continue;
+        }
+        parseWarnings.push(`Line ${item.line}: invalid #styles syntax: ${line.slice(0,80)} / examples: +Theory color:#dbeafe, @Alice shape:star size:l color:#fde68a, @edge:e_A_B color:#ef4444, @canvas background:#f8fafc`);
+        continue;
+      }
+
+      const nodeTail=parseNodeTail(line);
+      const nodeLine=nodeTail.body;
+      const tags=nodeTail.tags;
+      if((m=nodeLine.match(/^([^\s\[\]\{\}\(\):]+)\[\(([\s\S]*?)\)\]$/))){nodes.set(m[1],{id:m[1],label:normalizeLabelText(m[2]),shape:'data',tags});continue}
+      if((m=nodeLine.match(/^([^\s\[\]\{\}\(\):]+)\(\(([\s\S]*?)\)\)$/))){nodes.set(m[1],{id:m[1],label:normalizeLabelText(m[2]),shape:'terminal',tags});continue}
+      if((m=nodeLine.match(/^([^\s\[\]\{\}\(\):]+)\{([\s\S]*?)\}$/))){nodes.set(m[1],{id:m[1],label:normalizeLabelText(m[2]),shape:'decision',tags});continue}
+      if((m=nodeLine.match(/^([^\s\[\]\{\}\(\):]+)>([\s\S]*?)\]$/))){nodes.set(m[1],{id:m[1],label:normalizeLabelText(m[2]),shape:'note',tags});continue}
+      if((m=nodeLine.match(/^([^\s\[\]\{\}\(\):]+)\[([\s\S]*?)\]$/))){nodes.set(m[1],{id:m[1],label:normalizeLabelText(m[2]),shape:'process',tags});continue}
+
+      const edgeParsed=parseEdgeLine(line);
+      if(edgeParsed){
+        const from=safeId(edgeParsed.from), to=safeId(edgeParsed.to), label=normalizeLabelText(edgeParsed.label||''), kind=normalizeEdgeKind(edgeParsed.kind);
+        ensureAutoNode(from);
+        ensureAutoNode(to);
+        const base=`e_${from}_${to}`;
+        edgeCount[base]=(edgeCount[base]||0)+1;
+        edges.push({id:edgeCount[base]>1?`${base}_${edgeCount[base]}`:base,from,to,label,kind});
+        continue;
+      }
+      parseWarnings.push(`Line ${item.line}: invalid syntax: ${line.slice(0,80)}`);
+    }
+    const autoNodeIds=[...nodes.values()].filter(n=>n.auto).map(n=>n.id);
+    if(autoNodeIds.length){
+      const shown=autoNodeIds.slice(0,12).join(', ');
+      const more=autoNodeIds.length>12?` plus ${autoNodeIds.length-12} more`:'';
+      parseWarnings.push(`Auto-generated nodes: ${shown}${more} / IDs not defined in #nodes are used in #edges. Check malformed or missing node definitions.`);
+    }
+    const prevDirection=normalizeLayoutMode(baseGraph.meta?.direction||'Flow');
+    const next={meta:{...(baseGraph.meta||{}),title,direction:normalizeLayoutMode(direction),styles,nodeStyles,edgeStyles,canvasStyle},nodes:[...nodes.values()],edges,layout:{...(baseGraph.layout||{})}};
+    cleanupLayout(next);
+    let hasPlainLayout=false;
+    const nodeIds=new Set(next.nodes.map(n=>n.id));
+    for(const [id,st] of Object.entries(nodeStyles||{})){
+      if(nodeIds.has(id)&&Number.isFinite(Number(st.x))&&Number.isFinite(Number(st.y))){
+        next.layout[id]={x:Number(st.x),y:Number(st.y)};
+        hasPlainLayout=true;
+      }
+    }
+    if(hasPlainLayout){ensureLayout(next);}
+    else if(normalizeLayoutMode(direction)!==prevDirection || Object.keys(next.layout||{}).length===0){applyLayoutModeToGraph(next,direction);}else{ensureLayout(next);}
+    return next;
+  }
+
+  function cleanupLayout(g){const ids=new Set(g.nodes.map(n=>n.id));for(const id of Object.keys(g.layout||{})){if(!ids.has(id))delete g.layout[id]}}
+  function normalizeLayoutMode(mode){
+    const k=String(mode||'Flow').trim().toLowerCase().replace(/[\s_-]+/g,'');
+    const modes={
+      horizontal:'Horizontal',vertical:'Vertical',circle:'Circle',grid:'Grid',
+      focus:'Focus',top:'Top',flow:'Flow',
+      compact:'Compact',compactflow:'Compact',flowcompact:'Compact',
+      lane:'Lane',lanes:'Lane',
+      cluster:'Cluster',tag:'Cluster',tags:'Cluster',tagcluster:'Cluster'
+    };
+    return modes[k] || 'Flow';
+  }
+  function layoutModeForText(mode){return normalizeLayoutMode(mode);}
+  function updateEditorFromGraph(){editor.value=jsonToText(graph)}
+  function degreeScoreForGraph(g){
+    const score={}; (g.nodes||[]).forEach(n=>score[n.id]=0);
+    (g.edges||[]).forEach(e=>{if(score[e.from]!==undefined)score[e.from]++; if(score[e.to]!==undefined)score[e.to]++;});
+    return score;
+  }
+  function firstTagOfNode(n){return (Array.isArray(n.tags)&&n.tags[0])?String(n.tags[0]):'Other'}
+  function tagGroupsForGraph(g){
+    const groups={};
+    for(const n of (g.nodes||[])){
+      const tag=firstTagOfNode(n);
+      if(!groups[tag])groups[tag]=[];
+      groups[tag].push(n);
+    }
+    return groups;
+  }
+  function tagGroupOrder(g){
+    const groups=tagGroupsForGraph(g);
+    const deg=degreeScoreForGraph(g);
+    return Object.keys(groups).sort((a,b)=>{
+      const da=groups[a].reduce((s,n)=>s+(deg[n.id]||0),0);
+      const db=groups[b].reduce((s,n)=>s+(deg[n.id]||0),0);
+      return db-da || groups[b].length-groups[a].length || a.localeCompare(b);
+    });
+  }
+  function directedDepthRank(g){
+    const ids=new Set((g.nodes||[]).map(n=>n.id));
+    const directed=(g.edges||[]).filter(e=>normalizeEdgeKind(e.kind)==='directed'&&ids.has(e.from)&&ids.has(e.to));
+    const incoming={}, outgoing={}, rank={};
+    ids.forEach(id=>{incoming[id]=0;outgoing[id]=[];rank[id]=0});
+    directed.forEach(e=>{incoming[e.to]++;outgoing[e.from].push(e.to)});
+    const q=[...ids].filter(id=>incoming[id]===0).sort();
+    const seen=new Set(q);
+    while(q.length){
+      const id=q.shift();
+      for(const to of outgoing[id]||[]){
+        rank[to]=Math.max(rank[to]||0,(rank[id]||0)+1);
+        incoming[to]--;
+        if(incoming[to]===0&&!seen.has(to)){seen.add(to);q.push(to);q.sort()}
+      }
+    }
+    return rank;
+  }
+  function tagStyleFill(tag){
+    const styles=(graph&&graph.meta&&graph.meta.styles)||{};
+    const color=styles[tag]&&styles[tag].color?safeCssColor(styles[tag].color,'#e2e8f0'):'#e2e8f0';
+    return color;
+  }
+  function hexToRgba(hex,a){
+    const m=String(hex||'').match(/^#([0-9a-fA-F]{6})$/);
+    if(!m)return `rgba(226,232,240,${a})`;
+    const n=parseInt(m[1],16);
+    const r=(n>>16)&255,g=(n>>8)&255,b=n&255;
+    return `rgba(${r},${g},${b},${a})`;
+  }
+  function applyLaneLayoutToGraph(g){
+    const groups=tagGroupsForGraph(g);
+    const order=tagGroupOrder(g);
+    const deg=degreeScoreForGraph(g);
+    const rank=directedDepthRank(g);
+    g.layout={};
+    const startX=150,startY=130,gapX=215,gapY=165;
+    order.forEach((tag,li)=>{
+      const nodes=[...groups[tag]].sort((a,b)=>{
+        const dr=(rank[a.id]||0)-(rank[b.id]||0);
+        if(dr!==0)return dr;
+        const dd=(deg[b.id]||0)-(deg[a.id]||0);
+        return dd!==0?dd:String(a.id).localeCompare(String(b.id));
+      });
+      nodes.forEach((n,i)=>{g.layout[n.id]={x:startX+i*gapX,y:startY+li*gapY}});
+    });
+  }
+  function applyClusterLayoutToGraph(g){
+    const groups=tagGroupsForGraph(g);
+    const order=tagGroupOrder(g);
+    const deg=degreeScoreForGraph(g);
+    g.layout={};
+    const cols=Math.ceil(Math.sqrt(order.length||1));
+    const cellW=520,cellH=390,startX=310,startY=250;
+    order.forEach((tag,gi)=>{
+      const cx=startX+(gi%cols)*cellW;
+      const cy=startY+Math.floor(gi/cols)*cellH;
+      const nodes=[...groups[tag]].sort((a,b)=>(deg[b.id]||0)-(deg[a.id]||0)||String(a.id).localeCompare(String(b.id)));
+      if(!nodes.length)return;
+      g.layout[nodes[0].id]={x:cx,y:cy};
+      const rest=nodes.slice(1);
+      const rings=[];
+      rest.forEach((n,i)=>{
+        const ring=Math.floor(i/8);
+        if(!rings[ring])rings[ring]=[];
+        rings[ring].push(n);
+      });
+      rings.forEach((ringNodes,ri)=>{
+        const radius=125+ri*95;
+        ringNodes.forEach((n,j)=>{
+          const a=(-Math.PI/2)+(Math.PI*2*j/ringNodes.length)+(ri%2?0:Math.PI/(ringNodes.length||1));
+          g.layout[n.id]={x:Math.round(cx+Math.cos(a)*radius),y:Math.round(cy+Math.sin(a)*radius)};
+        });
+      });
+    });
+  }
+  function applyCompactLayoutToGraph(g){
+    const nodeIds=g.nodes.map(n=>n.id);
+    const nodeMap={}; g.nodes.forEach(n=>nodeMap[n.id]=n);
+    const directed=(g.edges||[]).filter(e=>normalizeEdgeKind(e.kind)==='directed'&&nodeMap[e.from]&&nodeMap[e.to]);
+    const outgoing={}, incoming={}, degree={};
+    nodeIds.forEach(id=>{outgoing[id]=[];incoming[id]=[];degree[id]=0});
+    directed.forEach(e=>{outgoing[e.from].push(e);incoming[e.to].push(e)});
+    (g.edges||[]).forEach(e=>{if(degree[e.from]!==undefined)degree[e.from]++; if(degree[e.to]!==undefined)degree[e.to]++;});
+    function depth(id,seen=new Set()){
+      if(seen.has(id))return 0;seen.add(id);
+      let best=0;for(const e of outgoing[id]||[]){best=Math.max(best,1+depth(e.to,new Set(seen)))}
+      return best;
+    }
+    const roots=nodeIds.filter(id=>(incoming[id]||[]).length===0);
+    let cur=(roots.sort((a,b)=>(depth(b)-depth(a))||(degree[b]-degree[a])||a.localeCompare(b))[0])||nodeIds[0];
+    const main=[],seen=new Set();
+    while(cur&&!seen.has(cur)){
+      main.push(cur);seen.add(cur);
+      const cand=(outgoing[cur]||[]).filter(e=>!seen.has(e.to));
+      if(!cand.length)break;
+      cand.sort((a,b)=>depth(b.to,new Set(seen))-depth(a.to,new Set(seen))||(degree[b.to]||0)-(degree[a.to]||0)||a.to.localeCompare(b.to));
+      cur=cand[0].to;
+    }
+    g.layout={};
+    const placed=new Set();
+    const centerX=560,startY=140,gapY=140,sideX=285,nearX=210;
+    function place(id,x,y){if(placed.has(id))return;g.layout[id]={x:Math.round(x),y:Math.round(y)};placed.add(id)}
+    main.forEach((id,i)=>place(id,centerX,startY+i*gapY));
+    const sideCount={};
+    function sideSlot(baseId,preferred){
+      sideCount[baseId]=sideCount[baseId]||{l:0,r:0};
+      const base=g.layout[baseId]||{x:centerX,y:startY};
+      const side=preferred==='left'?'l':(preferred==='right'?'r':(sideCount[baseId].r<=sideCount[baseId].l?'r':'l'));
+      const idx=sideCount[baseId][side]++;
+      const dir=side==='r'?1:-1;
+      return {x:base.x+dir*(sideX+(idx%2)*nearX),y:base.y+(Math.floor(idx/2)-0.5)*72};
+    }
+    for(const id of main){
+      const branches=(outgoing[id]||[]).filter(e=>!placed.has(e.to));
+      branches.forEach((e,j)=>{
+        const p=sideSlot(id,j%2===0?'right':'left');
+        place(e.to,p.x,p.y);
+      });
+    }
+    for(const e of g.edges||[]){
+      const k=normalizeEdgeKind(e.kind);
+      const a=placed.has(e.from),b=placed.has(e.to);
+      const baseId=a?e.from:(b?e.to:null);
+      if(!baseId)continue;
+      const other=a?e.to:e.from;
+      if(placed.has(other))continue;
+      const preferred=k==='block'?'left':(k==='belongs'||k==='association'||k==='identity'?'right':null);
+      const p=sideSlot(baseId,preferred);
+      place(other,p.x,p.y);
+    }
+    let rest=0;
+    for(const id of nodeIds){
+      if(placed.has(id))continue;
+      place(id,centerX+(rest%4-1.5)*210,startY+(main.length+1)*gapY+Math.floor(rest/4)*120);
+      rest++;
+    }
+  }
+
+  function applyLayoutModeToGraph(g,mode){
+    if(!g||!Array.isArray(g.nodes)||!g.nodes.length)return;
+    const m=normalizeLayoutMode(mode);
+    const count=g.nodes.length;
+    const gapX=190,gapY=115,startX=120,startY=120;
+    g.layout={};
+    if(m==='Horizontal'){
+      g.nodes.forEach((n,i)=>{g.layout[n.id]={x:startX+i*gapX,y:startY}});
+    }else if(m==='Vertical'){
+      g.nodes.forEach((n,i)=>{g.layout[n.id]={x:startX,y:startY+i*gapY}});
+    }else if(m==='Circle'){
+      const radius=Math.max(180,Math.ceil(count*34));
+      const cx=radius+180, cy=radius+150;
+      g.nodes.forEach((n,i)=>{const a=(-Math.PI/2)+(Math.PI*2*i/count);g.layout[n.id]={x:Math.round(cx+Math.cos(a)*radius),y:Math.round(cy+Math.sin(a)*radius)}});
+    }else if(m==='Grid'){
+      const cols=Math.ceil(Math.sqrt(count));
+      g.nodes.forEach((n,i)=>{g.layout[n.id]={x:startX+(i%cols)*gapX,y:startY+Math.floor(i/cols)*gapY}});
+    }else if(m==='Focus'){
+      const score=degreeScoreForGraph(g);
+      const sorted=[...g.nodes].sort((a,b)=>{const d=(score[b.id]||0)-(score[a.id]||0);return d!==0?d:String(a.id).localeCompare(String(b.id));});
+      const cx=520, cy=420;
+      if(sorted[0])g.layout[sorted[0].id]={x:cx,y:cy};
+      let idx=1, ring=1;
+      while(idx<sorted.length){
+        const capacity=Math.min(sorted.length-idx,6+ring*6);
+        const radius=150+ring*130;
+        for(let j=0;j<capacity;j++){
+          const a=(-Math.PI/2)+(Math.PI*2*j/capacity)+(ring%2?0:Math.PI/capacity);
+          const n=sorted[idx++];
+          g.layout[n.id]={x:Math.round(cx+Math.cos(a)*radius),y:Math.round(cy+Math.sin(a)*radius)};
+        }
+        ring++;
+      }
+    }else if(m==='Top'){
+      const score=degreeScoreForGraph(g);
+      const sorted=[...g.nodes].sort((a,b)=>{const d=(score[b.id]||0)-(score[a.id]||0);return d!==0?d:String(a.id).localeCompare(String(b.id));});
+      const cx=520, gapY2=135, gapX2=210;
+      let idx=0,row=0;
+      while(idx<sorted.length){
+        const capacity=Math.min(sorted.length-idx,row===0?1:Math.min(8,row+2));
+        const rowWidth=(capacity-1)*gapX2;
+        for(let j=0;j<capacity;j++){
+          const n=sorted[idx++];
+          g.layout[n.id]={x:Math.round(cx-rowWidth/2+j*gapX2),y:110+row*gapY2};
+        }
+        row++;
+      }
+    }else if(m==='Flow'){
+      applyFlowLayoutToGraph(g);
+    }else if(m==='Compact'){
+      applyCompactLayoutToGraph(g);
+    }else if(m==='Lane'){
+      applyLaneLayoutToGraph(g);
+    }else if(m==='Cluster'){
+      applyClusterLayoutToGraph(g);
+    }
+    g.meta={...(g.meta||{}),direction:m};
+  }
+  function applyFlowLayoutToGraph(g){
+    const nodeIds=g.nodes.map(n=>n.id);
+    const nodeMap={}; g.nodes.forEach(n=>nodeMap[n.id]=n);
+    const directed=(g.edges||[]).filter(e=>normalizeEdgeKind(e.kind)==='directed' && nodeMap[e.from] && nodeMap[e.to]);
+    const outgoing={}, incoming={}, allDegree={};
+    nodeIds.forEach(id=>{outgoing[id]=[];incoming[id]=[];allDegree[id]=0;});
+    directed.forEach(e=>{outgoing[e.from].push(e);incoming[e.to].push(e);});
+    (g.edges||[]).forEach(e=>{if(allDegree[e.from]!==undefined)allDegree[e.from]++; if(allDegree[e.to]!==undefined)allDegree[e.to]++;});
+    function isStartLike(id){
+      const label=String((nodeMap[id]&&nodeMap[id].label)||id).toLowerCase();
+      return /(^|[^a-z])(start|begin|init|entry)([^a-z]|$)/.test(label) || /^(start|begin|init|entry)$/i.test(id);
+    }
+    function downstreamDepth(id,seen=new Set()){
+      if(seen.has(id))return 0;
+      seen.add(id);
+      let best=0;
+      for(const e of outgoing[id]||[]){
+        if(!seen.has(e.to))best=Math.max(best,1+downstreamDepth(e.to,new Set(seen)));
+      }
+      return best;
+    }
+    const roots=nodeIds.filter(id=>(incoming[id]||[]).length===0);
+    let start=(roots.find(isStartLike)||nodeIds.find(isStartLike)||roots[0]);
+    if(!start)start=[...nodeIds].sort((a,b)=>(allDegree[b]||0)-(allDegree[a]||0)||a.localeCompare(b))[0];
+
+    const main=[],visited=new Set();
+    let cur=start;
+    while(cur&&!visited.has(cur)){
+      main.push(cur);visited.add(cur);
+      const candidates=(outgoing[cur]||[]).filter(e=>!visited.has(e.to));
+      if(!candidates.length)break;
+      candidates.sort((a,b)=>{
+        const da=downstreamDepth(a.to,new Set(visited));
+        const db=downstreamDepth(b.to,new Set(visited));
+        return db-da || (outgoing[b.to]||[]).length-(outgoing[a.to]||[]).length || a.to.localeCompare(b.to);
+      });
+      cur=candidates[0].to;
+    }
+
+    g.layout={};
+    const placed=new Set(), mainIndex={};
+    main.forEach((id,i)=>mainIndex[id]=i);
+    const centerX=560,startY=120,gapY=150,blockX=250,branchX=850,supportX=1140,farX=1410;
+    const laneCounts={};
+    function key(x,y){return `${Math.round(x/20)}_${Math.round(y/20)}`}
+    function avoid(x,y){
+      let k=key(x,y), step=0;
+      while(laneCounts[k]){
+        step++;
+        y += (step%2?1:-1)*Math.ceil(step/2)*38;
+        k=key(x,y);
+      }
+      laneCounts[k]=1;
+      return {x,y};
+    }
+    function placeNear(id,x,y){
+      if(placed.has(id))return;
+      const p=avoid(x,y);
+      g.layout[id]={x:Math.round(p.x),y:Math.round(p.y)};
+      placed.add(id);
+    }
+
+    main.forEach((id,i)=>placeNear(id,centerX,startY+i*gapY));
+
+    main.forEach((id,i)=>{
+      const branches=(outgoing[id]||[]).filter(e=>!placed.has(e.to));
+      const baseY=startY+i*gapY;
+      const spread=branches.length>1?70:0;
+      branches.forEach((e,j)=>{
+        const y=baseY+(j-(branches.length-1)/2)*spread;
+        placeNear(e.to,branchX,y);
+      });
+    });
+
+    const relationOrder=['block','belongs','identity','association','mutual'];
+    const relationCounts={};
+    for(const kind of relationOrder){
+      for(const e of g.edges||[]){
+        const k=normalizeEdgeKind(e.kind);
+        if(k!==kind)continue;
+        const fromPlaced=placed.has(e.from),toPlaced=placed.has(e.to);
+        const baseId=fromPlaced?e.from:(toPlaced?e.to:null);
+        if(!baseId)continue;
+        const other=fromPlaced?e.to:e.from;
+        if(placed.has(other))continue;
+        const base=g.layout[baseId]||{x:centerX,y:startY};
+        const idx=relationCounts[baseId+'_'+k]||0;
+        relationCounts[baseId+'_'+k]=idx+1;
+        let x=supportX,y=base.y+(idx-(relationCounts[baseId+'_'+k]-1)/2)*64;
+        if(k==='block')x=blockX;
+        else if(k==='association'||k==='mutual')x=farX;
+        placeNear(other,x,y);
+      }
+    }
+
+    let rest=0;
+    for(const id of nodeIds){
+      if(placed.has(id))continue;
+      placeNear(id,farX+Math.floor(rest/10)*230,startY+(rest%10)*gapY);
+      rest++;
+    }
+  }
+
+  const DEFAULT_CENTER_THRESHOLD=12;
+  function ensureLayout(g){
+    g.layout=g.layout||{};
+    if(!g.nodes.length)return;
+    const positioned=g.nodes.filter(n=>g.layout[n.id]&&Number.isFinite(g.layout[n.id].x)&&Number.isFinite(g.layout[n.id].y)).length;
+    if(positioned===0){applyDefaultLayout(g);return;}
+    const mode=normalizeLayoutMode(g.meta?.direction || (g.nodes.length<=DEFAULT_CENTER_THRESHOLD?'Vertical':'Focus'));
+    g.nodes.forEach((n,i)=>{if(!g.layout[n.id])g.layout[n.id]=autoPos(i,mode,g.nodes.length)});
+  }
+  function applyDefaultLayout(g){
+    if(!g.nodes.length)return;
+    if(g.nodes.length<=DEFAULT_CENTER_THRESHOLD){
+      applyLayoutModeToGraph(g,g.meta?.direction||'Vertical');
+    }else{
+      applyLayoutModeToGraph(g,g.meta?.direction||'Focus');
+    }
+  }
+  function autoPos(i,mode,count=1){const gapX=200,gapY=120,baseX=120,baseY=120;const m=normalizeLayoutMode(mode);if(m==='Vertical'||m==='Flow'||m==='Focus'||m==='Top')return{x:baseX,y:baseY+i*gapY};return{x:baseX+i*gapX,y:baseY}}
+  function hasNode(id){return graph.nodes.some(n=>n.id===id)}
+  function makeEdgeId(from,to){let base=`e_${from}_${to}`, id=base, i=2; const ids=new Set(graph.edges.map(e=>e.id)); while(ids.has(id)){id=`${base}_${i++}`} return id}
+  function connectedInfo(){
+    const related=new Set(), edgeIds=new Set(), nodeDistances=new Map(), edgeDistances=new Map();
+    const edges=graph.edges||[];
+    const adjacency=new Map();
+    for(const n of (graph.nodes||[]))adjacency.set(n.id,[]);
+    for(const e of edges){
+      if(adjacency.has(e.from))adjacency.get(e.from).push({to:e.to,edgeId:e.id});
+      if(adjacency.has(e.to))adjacency.get(e.to).push({to:e.from,edgeId:e.id});
+    }
+
+    // Route-based expansion:
+    // - The first selected node is distance 0.
+    // - Only nodes that the user has selected are allowed to expand the route.
+    // - Unselected neighbors are shown as the next distance, but they do not expand further.
+    // This keeps the first selection to distance 1 only, then reveals distance 2/3 as the user
+    // explicitly follows the route with Ctrl/Cmd multi-selection.
+    function setMinDistance(map,id,d){
+      const prev=map.get(id);
+      if(prev===undefined||d<prev){map.set(id,d);return true;}
+      return false;
+    }
+    function setEdgeDistance(edgeId,d){
+      const prev=edgeDistances.get(edgeId);
+      if(prev===undefined||d<prev)edgeDistances.set(edgeId,d);
+    }
+    function expandSelectedRoute(seed,seedDistance=0){
+      if(!seed||!adjacency.has(seed))return;
+      const queue=[];
+      if(setMinDistance(nodeDistances,seed,seedDistance))queue.push(seed);
+      else if(selectedNodeIds.has(seed))queue.push(seed);
+      const queued=new Set(queue);
+      for(let qi=0;qi<queue.length;qi++){
+        const cur=queue[qi];
+        const d=nodeDistances.get(cur)||0;
+        if(d>=3)continue;
+        for(const next of adjacency.get(cur)||[]){
+          const nd=d+1;
+          if(nd>3)continue;
+          setMinDistance(nodeDistances,next.to,nd);
+          setEdgeDistance(next.edgeId,nd);
+          if(selectedNodeIds.has(next.to)&&!queued.has(next.to)){
+            queue.push(next.to);
+            queued.add(next.to);
+          }
+        }
+      }
+    }
+
+    if(selectedNodeIds.size){
+      const anchor=normalizeSelectionAnchor();
+      if(anchor)expandSelectedRoute(anchor,0);
+
+      // If users select a disconnected node as a separate focus, keep that selected node visible
+      // and show only its direct neighbors. This avoids hidden selected nodes while preserving
+      // the route-expansion rule for connected selections.
+      for(const sid of selectedNodeIds){
+        if(!nodeDistances.has(sid))expandSelectedRoute(sid,0);
+      }
+    }
+
+    for(const [id,d] of nodeDistances){if(d>0&&d<=3)related.add(id)}
+    for(const [id,d] of edgeDistances){if(d>0&&d<=3)edgeIds.add(id)}
+    for(const eid of selectedEdgeIds){
+      const e=edges.find(x=>x.id===eid);
+      if(e){
+        edgeIds.add(e.id);
+        edgeDistances.set(e.id,0);
+        related.add(e.from);
+        related.add(e.to);
+        if(!nodeDistances.has(e.from))nodeDistances.set(e.from,1);
+        if(!nodeDistances.has(e.to))nodeDistances.set(e.to,1);
+      }
+    }
+    return{related,edgeIds,nodeDistances,edgeDistances}
+  }
+
+  function nodeMatchesActiveTag(n){return !!activeTag&&!!n&&Array.isArray(n.tags)&&n.tags.includes(activeTag)}
+  function applyCombinedNodeFocusClasses(el,isSelected,selectionDistance,tagMatch){
+    const hasSelectionFocus=hasSelection();
+    const d=Number.isFinite(selectionDistance)?selectionDistance:null;
+    const isRelationFocus=isSelected||d===1;
+    const isChain2=!isSelected&&d===2;
+    const isChain3=!isSelected&&d===3;
+    const isAnySelectionContext=isRelationFocus||isChain2||isChain3;
+    el.classList.toggle('selection-focus',hasSelectionFocus&&isRelationFocus);
+    el.classList.toggle('selection-chain-2',hasSelectionFocus&&isChain2);
+    el.classList.toggle('selection-chain-3',hasSelectionFocus&&isChain3);
+    el.classList.toggle('selection-context',hasSelectionFocus&&!isAnySelectionContext&&!!activeTag&&tagMatch);
+    el.classList.toggle('selection-dim',hasSelectionFocus&&!isAnySelectionContext&&(!activeTag||!tagMatch));
+    el.classList.toggle('tag-focus',!!activeTag&&tagMatch);
+    el.classList.toggle('tag-dim',!!activeTag&&!tagMatch&&!hasSelectionFocus);
+  }
+  function applyCombinedEdgeFocusClasses(el,item){
+    const hasSelectionFocus=!!item.hasSelectionFocus;
+    const d=Number.isFinite(item.selectionDistance)?item.selectionDistance:null;
+    const isRelationFocus=!!item.selectionFocus;
+    const isChain2=!isRelationFocus&&d===2;
+    const isChain3=!isRelationFocus&&d===3;
+    const isAnySelectionContext=isRelationFocus||isChain2||isChain3;
+    const isTagEdge=!!item.tagEdge;
+    el.classList.toggle('selection-focus',hasSelectionFocus&&isRelationFocus);
+    el.classList.toggle('selection-chain-2',hasSelectionFocus&&isChain2);
+    el.classList.toggle('selection-chain-3',hasSelectionFocus&&isChain3);
+    el.classList.toggle('selection-context',hasSelectionFocus&&!isAnySelectionContext&&!!activeTag&&isTagEdge);
+    el.classList.toggle('selection-dim',hasSelectionFocus&&!isAnySelectionContext&&(!activeTag||!isTagEdge));
+    el.classList.toggle('tag-focus',!!activeTag&&isTagEdge);
+    el.classList.toggle('tag-dim',!!activeTag&&!isTagEdge&&!hasSelectionFocus);
+  }
+  function computeDegreeScores(){
+    const score={}; graph.nodes.forEach(n=>score[n.id]=0);
+    graph.edges.forEach(e=>{if(score[e.from]!==undefined)score[e.from]++; if(score[e.to]!==undefined)score[e.to]++;});
+    return score;
+  }
+  function computePageRankScores(iterations=25,damping=.85){
+    const ids=graph.nodes.map(n=>n.id); const n=ids.length||1;
+    const rank={}, out={}, adj={}; ids.forEach(id=>{rank[id]=1/n; out[id]=0; adj[id]=[];});
+    graph.edges.forEach(e=>{
+      if(adj[e.from]&&adj[e.to]){adj[e.from].push(e.to); adj[e.to].push(e.from); out[e.from]++; out[e.to]++;}
+    });
+    for(let k=0;k<iterations;k++){
+      const next={}; ids.forEach(id=>next[id]=(1-damping)/n);
+      ids.forEach(id=>{
+        const targets=adj[id]||[];
+        if(!targets.length){ids.forEach(t=>next[t]+=damping*rank[id]/n);}
+        else {targets.forEach(t=>next[t]+=damping*rank[id]/targets.length);}
+      });
+      ids.forEach(id=>rank[id]=next[id]);
+    }
+    return rank;
+  }
+  function buildAdj(){
+    const adj={}; graph.nodes.forEach(n=>adj[n.id]=[]);
+    graph.edges.forEach(e=>{if(adj[e.from]&&adj[e.to]){adj[e.from].push(e.to);adj[e.to].push(e.from);}});
+    return adj;
+  }
+  function computeBridgeScores(){
+    // Betweenness centrality: nodes that bridge clusters score higher.
+    const ids=graph.nodes.map(n=>n.id);
+    const adj=buildAdj();
+    const cb={}; ids.forEach(id=>cb[id]=0);
+    for(const s of ids){
+      const stack=[], pred={}, sigma={}, dist={}, q=[];
+      ids.forEach(v=>{pred[v]=[];sigma[v]=0;dist[v]=-1;});
+      sigma[s]=1; dist[s]=0; q.push(s);
+      for(let qi=0;qi<q.length;qi++){
+        const v=q[qi]; stack.push(v);
+        for(const w of adj[v]||[]){
+          if(dist[w]<0){dist[w]=dist[v]+1;q.push(w);}
+          if(dist[w]===dist[v]+1){sigma[w]+=sigma[v];pred[w].push(v);}
+        }
+      }
+      const delta={}; ids.forEach(v=>delta[v]=0);
+      while(stack.length){
+        const w=stack.pop();
+        for(const v of pred[w]){
+          if(sigma[w]!==0) delta[v]+=(sigma[v]/sigma[w])*(1+delta[w]);
+        }
+        if(w!==s) cb[w]+=delta[w];
+      }
+    }
+    // Divide by 2 because the graph is treated as undirected. Degree is used as a small tie-breaker.
+    const degree=computeDegreeScores();
+    ids.forEach(id=>cb[id]=cb[id]/2 + (degree[id]||0)*1e-6);
+    return cb;
+  }
+  function computeClosenessScores(){
+    // Closeness centrality: nodes that can reach the whole graph by short paths score higher.
+    const ids=graph.nodes.map(n=>n.id);
+    const adj=buildAdj();
+    const score={};
+    for(const s of ids){
+      const dist={}, q=[s]; dist[s]=0;
+      for(let qi=0;qi<q.length;qi++){
+        const v=q[qi];
+        for(const w of adj[v]||[]){if(dist[w]===undefined){dist[w]=dist[v]+1;q.push(w);}}
+      }
+      let sum=0, reach=0;
+      for(const id of ids){if(id!==s && dist[id]!==undefined){sum+=dist[id];reach++;}}
+      score[s]=sum>0 ? (reach/sum)*(reach/Math.max(1,ids.length-1)) : 0;
+    }
+    return score;
+  }
+  function computeCommunityLabels(iterations=30){
+    // Lightweight label propagation. Closely connected node groups share the same community color.
+    const ids=graph.nodes.map(n=>n.id);
+    const adj=buildAdj();
+    const degree=computeDegreeScores();
+    let labels={}; ids.forEach(id=>labels[id]=id);
+    for(let k=0;k<iterations;k++){
+      let changed=false;
+      const order=[...ids].sort((a,b)=>(degree[b]||0)-(degree[a]||0)||a.localeCompare(b));
+      for(const id of order){
+        const counts={};
+        for(const nb of adj[id]||[]){const lab=labels[nb];counts[lab]=(counts[lab]||0)+1;}
+        const best=Object.keys(counts).sort((a,b)=>counts[b]-counts[a]||a.localeCompare(b))[0];
+        if(best && best!==labels[id]){labels[id]=best;changed=true;}
+      }
+      if(!changed)break;
+    }
+    const rawSizes={}; ids.forEach(id=>{rawSizes[labels[id]]=(rawSizes[labels[id]]||0)+1;});
+    const rawOrder=Object.keys(rawSizes).sort((a,b)=>rawSizes[b]-rawSizes[a]||a.localeCompare(b));
+    const map={}; rawOrder.forEach((lab,i)=>map[lab]='c'+(i+1));
+    const compact={}; ids.forEach(id=>compact[id]=map[labels[id]]||'c1');
+    return compact;
+  }
+  function computeCommunityScores(labels){
+    const sizes={}; Object.values(labels||{}).forEach(c=>sizes[c]=(sizes[c]||0)+1);
+    const score={}; graph.nodes.forEach(n=>{const c=labels[n.id]||'c99'; const num=parseInt(String(c).replace(/\D/g,''),10)||99; score[n.id]=(sizes[c]||1)*1000 - num;});
+    return score;
+  }
+  function scoresToRanks(score){
+    const sorted=Object.keys(score).sort((a,b)=>{const d=(score[b]||0)-(score[a]||0);return d!==0?d:a.localeCompare(b);});
+    const ranks={}; sorted.forEach((id,i)=>ranks[id]=i+1); return ranks;
+  }
+  function computeLocalDistances(root){
+    const dist={}; if(!root||!hasNode(root))return dist;
+    const adj={}; graph.nodes.forEach(n=>adj[n.id]=[]);
+    graph.edges.forEach(e=>{if(adj[e.from]&&adj[e.to]){adj[e.from].push(e.to);adj[e.to].push(e.from);}});
+    const q=[root]; dist[root]=0;
+    for(let qi=0;qi<q.length;qi++){
+      const cur=q[qi];
+      for(const nx of adj[cur]||[]){if(dist[nx]===undefined){dist[nx]=dist[cur]+1;q.push(nx);}}
+    }
+    return dist;
+  }
+  function computeLocalScores(root){
+    // Always rank the selected node first, and score nearby nodes higher.
+    // At the same distance, nodes with more connections get a slight boost.
+    localDistances=computeLocalDistances(root);
+    const degree=computeDegreeScores();
+    const score={};
+    graph.nodes.forEach(n=>{
+      const d=localDistances[n.id];
+      if(d===undefined){score[n.id]=0; return;}
+      score[n.id]=(1000000 - d*10000) + (degree[n.id]||0);
+    });
+    if(root&&score[root]!==undefined)score[root]=2000000 + (degree[root]||0);
+    return score;
+  }
+  function applyAnalysis(mode){
+    analysisMode=mode; analysisRanks={}; analysisScores={}; localDistances={}; communityLabels={}; analysisCacheKey='';
+    if(mode==='degree'){analysisScores=computeDegreeScores(); analysisRanks=scoresToRanks(analysisScores); setStatus('Showing Degree Rank: nodes with more connections are ranked higher');}
+    else if(mode==='bridge'){analysisScores=computeBridgeScores(); analysisRanks=scoresToRanks(analysisScores); setStatus('Showing Bridge Rank: nodes bridging clusters are ranked higher');}
+    else if(mode==='closeness'){analysisScores=computeClosenessScores(); analysisRanks=scoresToRanks(analysisScores); setStatus('Showing Closeness: nodes closer to the whole graph are ranked higher');}
+    else if(mode==='community'){communityLabels=computeCommunityLabels(); analysisScores=computeCommunityScores(communityLabels); analysisRanks=scoresToRanks(analysisScores); setStatus('Showing Community: closely connected node groups are color-coded');}
+    else if(mode==='selected'){
+      const sid=getSingleSelectedNodeId();
+      if(!sid){analysisMode=null; analysisCacheKey=''; setStatus('Selected view requires one center node'); return;}
+      analysisScores=computeLocalScores(sid);
+      analysisRanks=scoresToRanks(analysisScores);
+      setStatus(`Showing Selected: center ${sid} is ranked first and nearby nodes are highlighted`);
+    }
+    analysisCacheKey=analysisRefreshKey();
+    renderNodes(); drawEdges(); updateClearButtonState();
+  }
+  function analysisClass(id){
+    if(!analysisMode)return '';
+    if(analysisMode==='selected'){
+      const d=localDistances[id];
+      if(d===1)return ' local-d1'; if(d===2)return ' local-d2'; if(d===3)return ' local-d3';
+      return '';
+    }
+    if(analysisMode==='community'){return ' community-'+(communityLabels[id]||'c8');}
+    const r=analysisRanks[id]||9999;
+    if(r<=5)return ' rank-high'; if(r<=12)return ' rank-mid'; return ' rank-low';
+  }
+  function rankBadgeElement(id){
+    if(!analysisMode)return null;
+    const r=analysisRanks[id]; if(!r||r>20)return null;
+    const badge=document.createElement('span');
+    if(analysisMode==='community'){
+      badge.className='rank-badge community';
+      badge.textContent=String(communityLabels[id]||'c?').toUpperCase();
+      return badge;
+    }
+    const cls=analysisMode==='degree'?'degree':analysisMode==='bridge'?'bridge':analysisMode==='closeness'?'closeness':'local';
+    badge.className='rank-badge '+cls;
+    if(analysisMode==='selected'){
+      const d=localDistances[id];
+      badge.textContent='#'+r+(d!==undefined?'/d'+d:'');
+    }else{
+      badge.textContent='#'+r;
+    }
+    return badge;
+  }
+
+  function graphStructureKey(){
+    const nodeKey=graph.nodes.map(n=>n.id).sort().join('|');
+    const edgeKey=graph.edges.map(e=>`${e.from}>${e.to}:${normalizeEdgeKind(e.kind)}`).sort().join('|');
+    return nodeKey+'::'+edgeKey;
+  }
+  function analysisRefreshKey(){
+    if(!analysisMode)return '';
+    const selectedKey=analysisMode==='selected' ? (getSingleSelectedNodeId()||'') : '';
+    return analysisMode+'::'+selectedKey+'::'+graphStructureKey();
+  }
+  function refreshAnalysis(){
+    if(!analysisMode){analysisCacheKey='';return;}
+    const key=analysisRefreshKey();
+    if(key && key===analysisCacheKey)return;
+    if(analysisMode==='degree'){analysisScores=computeDegreeScores();analysisRanks=scoresToRanks(analysisScores);}
+    else if(analysisMode==='bridge'){analysisScores=computeBridgeScores();analysisRanks=scoresToRanks(analysisScores);}
+    else if(analysisMode==='closeness'){analysisScores=computeClosenessScores();analysisRanks=scoresToRanks(analysisScores);}
+    else if(analysisMode==='community'){communityLabels=computeCommunityLabels();analysisScores=computeCommunityScores(communityLabels);analysisRanks=scoresToRanks(analysisScores);}
+    else if(analysisMode==='selected'&&getSingleSelectedNodeId()){analysisScores=computeLocalScores(getSingleSelectedNodeId());analysisRanks=scoresToRanks(analysisScores);}
+    analysisCacheKey=key;
+  }
+  function drawClusterBackgrounds(target=edgeLayer){
+    if(normalizeLayoutMode(graph?.meta?.direction)!=='Cluster')return;
+    const groups=tagGroupsForGraph(graph);
+    const order=tagGroupOrder(graph);
+    for(const tag of order){
+      const nodes=(groups[tag]||[]).filter(n=>graph.layout&&graph.layout[n.id]);
+      if(!nodes.length)continue;
+      let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+      nodes.forEach(n=>{
+        const p=graph.layout[n.id];
+        minX=Math.min(minX,p.x-95);maxX=Math.max(maxX,p.x+95);
+        minY=Math.min(minY,p.y-65);maxY=Math.max(maxY,p.y+65);
+      });
+      const cx=(minX+maxX)/2,cy=(minY+maxY)/2,rx=Math.max(150,(maxX-minX)/2+36),ry=Math.max(105,(maxY-minY)/2+34);
+      const color=tagStyleFill(tag);
+      const ell=document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+      ell.classList.add('cluster-bg');
+      ell.setAttribute('cx',cx);ell.setAttribute('cy',cy);ell.setAttribute('rx',rx);ell.setAttribute('ry',ry);
+      ell.setAttribute('fill',hexToRgba(color,.18));
+      ell.setAttribute('stroke',color);
+      ell.setAttribute('stroke-width','1.6');
+      ell.setAttribute('stroke-dasharray','8 6');
+      ell.setAttribute('pointer-events','none');
+      target.appendChild(ell);
+      const label=document.createElementNS('http://www.w3.org/2000/svg','text');
+      label.classList.add('cluster-label');
+      label.setAttribute('x',minX+10);label.setAttribute('y',minY+18);
+      label.setAttribute('fill','#475569');label.setAttribute('font-size','13');label.setAttribute('font-family','sans-serif');
+      label.setAttribute('font-weight','700');label.setAttribute('pointer-events','none');
+      label.textContent=tag==='Other'?'Other':'+'+tag;
+      target.appendChild(label);
+    }
+  }
+
+  function pruneSelectionToGraph(){
+    const nodeIds=new Set(graph.nodes.map(n=>n.id));
+    const edgeIds=new Set(graph.edges.map(e=>e.id));
+    for(const id of Array.from(selectedNodeIds)){if(!nodeIds.has(id))selectedNodeIds.delete(id)}
+    for(const id of Array.from(selectedEdgeIds)){if(!edgeIds.has(id))selectedEdgeIds.delete(id)}
+  }
+  function renderGraphLayers(){
+    refreshAnalysis();
+    renderNodes();
+    drawEdges();
+  }
+  function renderUiState(){
+    validate();
+    updateConnectButton();
+    renderTagPanel();
+    updateClearButtonState();
+  }
+  function render(){
+    ensureLayout(graph);
+    pruneSelectionToGraph();
+    syncPrimarySelection();
+    renderGraphLayers();
+    syncData();
+    renderUiState();
+  }
+  function renderNodes(){
+    viewport.querySelectorAll('.node').forEach(n=>n.remove());
+    const info=connectedInfo();
+    for(const n of graph.nodes){
+      const p=graph.layout[n.id]||{x:0,y:0};
+      const el=document.createElement('div');
+      const fill=nodeEffectiveColor(n)||'#fff';
+      el.className='node '+nodeShapeClass(n)+analysisClass(n.id);
+      el.style.setProperty('--manual-fill', fill);
+      if(fill&&fill!=='#fff')el.style.background=fill;
+      const isSelected=selectedNodeIds.has(n.id);
+      const selectionDistance=info.nodeDistances.has(n.id)?info.nodeDistances.get(n.id):null;
+      const isRelated=selectionDistance===1;
+      const tagMatch=nodeMatchesActiveTag(n);
+      if(isSelected)el.classList.add('selected');
+      if(isRelated)el.classList.add('related');
+      applyCombinedNodeFocusClasses(el,isSelected,selectionDistance,tagMatch);
+      if(connectMode&&n.id===connectSourceId)el.classList.add('connect-source');
+      el.dataset.id=n.id;
+      el.title=formatTags(n.tags);
+      el.style.left=p.x+'px';
+      el.style.top=p.y+'px';
+
+      const inner=document.createElement('div');
+      inner.className='inner';
+      inner.textContent=String(n.label??'');
+      el.appendChild(inner);
+      const badge=rankBadgeElement(n.id);
+      if(badge)el.appendChild(badge);
+
+      viewport.appendChild(el);
+      el.addEventListener('pointerdown',startNodePointer);
+    }
+    applyTransform();
+  }
+  function refreshSelectionClasses(){
+    const info=connectedInfo();
+    const nodeMap=new Map((graph.nodes||[]).map(n=>[n.id,n]));
+    viewport.querySelectorAll('.node').forEach(el=>{
+      const id=el.dataset.id;
+      const n=nodeMap.get(id);
+      const isSelected=selectedNodeIds.has(id);
+      const selectionDistance=info.nodeDistances.has(id)?info.nodeDistances.get(id):null;
+      const isRelated=selectionDistance===1;
+      const tagMatch=nodeMatchesActiveTag(n);
+      el.classList.toggle('selected',isSelected);
+      el.classList.toggle('related',isRelated);
+      applyCombinedNodeFocusClasses(el,isSelected,selectionDistance,tagMatch);
+      el.classList.toggle('connect-source',connectMode&&id===connectSourceId);
+    });
+    updateConnectButton();
+    updateClearButtonState();
+  }
+  function scheduleDragRender(){
+    if(dragRenderFrame!==null)return;
+    dragRenderFrame=requestAnimationFrame(()=>{
+      dragRenderFrame=null;
+      drawEdges();
+      syncLayoutDataOnly();
+    });
+  }
+  function flushDragRender(){
+    if(dragRenderFrame===null)return;
+    cancelAnimationFrame(dragRenderFrame);
+    dragRenderFrame=null;
+    drawEdges();
+    syncLayoutDataOnly();
+  }
+  function ensureEdgeDefs(){
+    let defs=edgeLayer.querySelector('defs');
+    if(!defs){
+      defs=document.createElementNS('http://www.w3.org/2000/svg','defs');
+    }
+    return defs;
+  }
+  function clearEdgeLayerForRedraw(){
+    const defs=ensureEdgeDefs();
+    edgeLayer.replaceChildren(defs);
+    cleanupDynamicMarkers();
+    return defs;
+  }
+  function appendHitEdge(item,target){
+    const hit=document.createElementNS('http://www.w3.org/2000/svg','path');
+    hit.classList.add('edge-hit');
+    hit.setAttribute('data-edge-id', item.e.id);
+    hit.setAttribute('d', item.d);
+    hit.setAttribute('stroke', 'transparent');
+    hit.setAttribute('stroke-width', '22');
+    hit.setAttribute('fill', 'none');
+    hit.setAttribute('pointer-events', 'stroke');
+    hit.addEventListener('pointerdown', startEdgePointer);
+    hit.addEventListener('dblclick', startEdgeLabelEdit);
+    target.appendChild(hit);
+  }
+
+  function appendVisibleEdgePath(item,pathD,withMarkers=false,target){
+    const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.classList.add('edge');
+    if(item.selectionFocus)path.classList.add('connected-edge');
+    if(item.isLocalEdge)path.classList.add('local-edge');
+    if(item.isSelected)path.classList.add('selected-edge');
+    applyCombinedEdgeFocusClasses(path,item);
+    path.setAttribute('data-edge-id', item.e.id);
+    path.setAttribute('d',pathD);
+    path.setAttribute('stroke',item.style.stroke);
+    path.setAttribute('stroke-width',item.style.width);
+    if(item.style.dash)path.setAttribute('stroke-dasharray',item.style.dash);
+    path.setAttribute('fill','none');
+    if(withMarkers&&item.markers.start)path.setAttribute('marker-start',item.markers.start);
+    if(withMarkers&&item.markers.end)path.setAttribute('marker-end',item.markers.end);
+    path.addEventListener('pointerdown', startEdgePointer);
+    path.addEventListener('dblclick', startEdgeLabelEdit);
+    target.appendChild(path);
+  }
+
+  function appendBlockXPath(item,xd,target){
+    const xp=document.createElementNS('http://www.w3.org/2000/svg','path');
+    xp.classList.add('edge','edge-block-x');
+    if(item.isSelected)xp.classList.add('selected-edge');
+    applyCombinedEdgeFocusClasses(xp,item);
+    xp.setAttribute('data-edge-id', item.e.id);
+    xp.setAttribute('d',xd);
+    xp.setAttribute('stroke',item.style.stroke);
+    xp.setAttribute('stroke-width',item.isSelected?'3.2':'2.4');
+    xp.setAttribute('stroke-linecap','round');
+    xp.setAttribute('fill','none');
+    xp.addEventListener('pointerdown', startEdgePointer);
+    xp.addEventListener('dblclick', startEdgeLabelEdit);
+    target.appendChild(xp);
+  }
+
+  function appendVisibleEdge(item,target){
+    if(item.style.doubleLine){
+      const ox=-item.dy/item.len*4, oy=item.dx/item.len*4;
+      appendVisibleEdgePath(item,`M ${item.x1+ox} ${item.y1+oy} L ${item.x2+ox} ${item.y2+oy}`, false, target);
+      appendVisibleEdgePath(item,`M ${item.x1-ox} ${item.y1-oy} L ${item.x2-ox} ${item.y2-oy}`, false, target);
+    }else{
+      appendVisibleEdgePath(item,item.d, true, target);
+    }
+    if(item.style.k==='block'){
+      const bx=item.x2-item.dx/item.len*46, by=item.y2-item.dy/item.len*46;
+      const ux=item.dx/item.len, uy=item.dy/item.len, px=-uy, py=ux, s=7;
+      const xPath1=`M ${bx+(ux+px)*s} ${by+(uy+py)*s} L ${bx-(ux+px)*s} ${by-(uy+py)*s}`;
+      const xPath2=`M ${bx+(ux-px)*s} ${by+(uy-py)*s} L ${bx-(ux-px)*s} ${by-(uy-py)*s}`;
+      appendBlockXPath(item,xPath1,target);
+      appendBlockXPath(item,xPath2,target);
+    }
+  }
+
+  function appendEdgeLabel(item,target){
+    if(!item.e.label)return;
+    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.classList.add('edge-label');
+    if(item.selectionFocus)t.classList.add('connected-edge-label');
+    if(item.isSelected)t.classList.add('selected-edge-label');
+    applyCombinedEdgeFocusClasses(t,item);
+    t.setAttribute('data-edge-id', item.e.id);
+    t.setAttribute('x',(item.x1+item.x2)/2);
+    t.setAttribute('y',(item.y1+item.y2)/2-8);
+    t.setAttribute('text-anchor','middle');
+    t.textContent=item.e.label;
+    t.addEventListener('pointerdown', startEdgePointer);
+    t.addEventListener('dblclick', startEdgeLabelEdit);
+    target.appendChild(t);
+  }
+
+  function drawEdges(){
+    const info=connectedInfo();
+    const hasSelectionFocus=hasSelection();
+    clearEdgeLayerForRedraw();
+    const frag=document.createDocumentFragment();
+    drawClusterBackgrounds(frag);
+    edgeLayer.setAttribute('width', Math.max(3000, contentBounds().maxX+300));
+    edgeLayer.setAttribute('height', Math.max(2000, contentBounds().maxY+300));
+
+    const prepared=[];
+    const normal=[];
+    const selected=[];
+    for(const e of (graph.edges||[])){
+      const a=graph.layout[e.from],b=graph.layout[e.to];
+      if(!a||!b)continue;
+      const isSelected=selectedEdgeIds.has(e.id);
+      const selectionDistance=isSelected?0:(info.edgeDistances.has(e.id)?info.edgeDistances.get(e.id):null);
+      const isConnected=Number.isFinite(selectionDistance)&&selectionDistance>=1&&selectionDistance<=3;
+      const isLocalEdge=analysisMode==='selected' && localDistances[e.from]!==undefined && localDistances[e.to]!==undefined && Math.max(localDistances[e.from],localDistances[e.to])<=2;
+      const selectionFocus=isSelected||selectionDistance===1;
+      const emphasis=selectionFocus||isLocalEdge;
+      const tagEdge=!activeTag||edgeHasTag(e,activeTag);
+      const ep=edgeEndpointPoints(e,'dom');
+      if(!ep)continue;
+      const {dx,dy,len,x1,y1,x2,y2}=ep;
+      const d=`M ${x1} ${y1} L ${x2} ${y2}`;
+      const style=edgeSvgAttrs(e,isSelected,emphasis,selectionDistance);
+      const markers=edgeMarkers(e.kind,isSelected,emphasis,style.stroke);
+      const item={e,isSelected,isConnected,isLocalEdge,tagEdge,hasSelectionFocus,selectionFocus,selectionDistance,dx,dy,len,x1,y1,x2,y2,d,style,markers};
+      prepared.push(item);
+      (isSelected?selected:normal).push(item);
+    }
+
+    // Split draw order: invisible hit-test edges first, then visible selected edges and labels.
+    for(const item of prepared)appendHitEdge(item,frag);
+    for(const item of normal)appendVisibleEdge(item,frag);
+    for(const item of selected)appendVisibleEdge(item,frag);
+    for(const item of normal)appendEdgeLabel(item,frag);
+    for(const item of selected)appendEdgeLabel(item,frag);
+    edgeLayer.appendChild(frag);
+  }
+  function contentBounds(){let minX=0,minY=0,maxX=800,maxY=500;for(const p of Object.values(graph.layout||{})){minX=Math.min(minX,p.x);minY=Math.min(minY,p.y);maxX=Math.max(maxX,p.x);maxY=Math.max(maxY,p.y)}return{minX,minY,maxX,maxY}}
+  function applyTransform(){viewport.style.transform=`translate(${panX}px,${panY}px) scale(${scale})`}
+  function screenToWorld(clientX,clientY){const r=right.getBoundingClientRect();return{x:(clientX-r.left-panX)/scale,y:(clientY-r.top-panY)/scale}}
+  function selectNode(id, additive=false){
+    if(additive){toggleNodeSelection(id)}else{setOnlyNodeSelection(id)}
+    if(analysisMode==='selected'&&getSingleSelectedNodeId()){analysisScores=computeLocalScores(getSingleSelectedNodeId());analysisRanks=scoresToRanks(analysisScores);analysisCacheKey=analysisRefreshKey();renderNodes();drawEdges();}
+    else{refreshSelectionClasses();drawEdges();}
+    validate()
+  }
+  function selectEdge(id, additive=false){
+    connectMode=false;connectSourceId=null;
+    if(additive){toggleEdgeSelection(id)}else{setOnlyEdgeSelection(id)}
+    refreshSelectionClasses();drawEdges();validate()
+  }
+  function clearSelection(){clearSelectionState();refreshSelectionClasses();drawEdges();validate()}
+  function startEdgePointer(ev){
+    ev.preventDefault();
+    ev.stopPropagation();
+    const id=ev.currentTarget.getAttribute('data-edge-id');
+    if(!id)return;
+    if(ev.ctrlKey||ev.metaKey){selectEdge(id,true);return;}
+
+    // SVG elements are recreated on selection redraw, so the native dblclick event can be unreliable.
+    // If the same edge is clicked twice quickly, treat it as a manual double-click.
+    const now=Date.now();
+    const isDouble=(lastEdgeClickId===id && (now-lastEdgeClickAt)<420);
+    lastEdgeClickId=id;
+    lastEdgeClickAt=now;
+
+    if(isDouble){
+      editEdgeLabelById(id);
+    }else{
+      selectEdge(id);
+    }
+  }
+  function startEdgeLabelEdit(ev){
+    ev.preventDefault();
+    ev.stopPropagation();
+    const id=ev.currentTarget.getAttribute('data-edge-id');
+    if(id)editEdgeLabelById(id);
+  }
+  function editEdgeLabelById(id){
+    if(!id)return;
+    const edge=graph.edges.find(e=>e.id===id);
+    if(!edge)return;
+    selectEdge(id);
+    const next=prompt('Edit the edge label. Leave blank for no label.', edge.label||'');
+    if(next===null)return;
+    pushHistory();
+    edge.label=String(next).trim();
+    editor.value=jsonToText(graph);
+    render();
+    setStatus(edge.label?`Edge label updated: ${edge.label}`:'Edge label cleared');
+  }
+  function editNodeLabelById(id){
+    if(!id)return;
+    const node=graph.nodes.find(n=>n.id===id);
+    if(!node)return;
+    selectNode(id);
+    const next=prompt('Edit the node text. The ID will not change.', node.label||'');
+    if(next===null)return;
+    pushHistory();
+    const label=String(next).trim();
+    node.label=label || node.id;
+    editor.value=jsonToText(graph);
+    render();
+    setStatus(`Node text updated: ${node.id} = ${node.label}`);
+  }
+  function startNodePointer(ev){
+    ev.preventDefault();
+    ev.stopPropagation();
+    const id=ev.currentTarget.dataset.id;
+    if(ev.ctrlKey||ev.metaKey){selectNode(id,true);return;}
+    if(connectMode&&connectSourceId){
+      if(id!==connectSourceId){pushHistory();graph.edges.push({id:makeEdgeId(connectSourceId,id),from:connectSourceId,to:id,label:'',kind:'directed'});editor.value=jsonToText(graph);connectMode=false;connectSourceId=null;setOnlyNodeSelection(id);render();setStatus(`Connected: ${graph.edges[graph.edges.length-1].from} -> ${id}`);return}
+      selectNode(id);return;
+    }
+    const now=Date.now();
+    const isDouble=(lastNodeClickId===id && (now-lastNodeClickAt)<420);
+    lastNodeClickId=id;
+    lastNodeClickAt=now;
+    if(isDouble){editNodeLabelById(id);return;}
+
+    let ids;
+    if(selectedNodeIds.has(id)&&selectedNodeIds.size>1){
+      ids=Array.from(selectedNodeIds);
+      refreshSelectionClasses();
+      drawEdges();
+    }else{
+      selectNode(id);
+      ids=[id];
+    }
+    const w=screenToWorld(ev.clientX,ev.clientY);
+    const startPositions={};
+    for(const nid of ids){
+      const p=graph.layout[nid]||{x:0,y:0};
+      startPositions[nid]={x:p.x,y:p.y};
+    }
+    dragNode={ids,startWorld:w,startPositions,moved:false,historyPushed:false};
+    ev.currentTarget.setPointerCapture(ev.pointerId);
+  }
+  document.addEventListener('pointermove',ev=>{
+    if(dragNode){
+      const w=screenToWorld(ev.clientX,ev.clientY);
+      const dx=w.x-dragNode.startWorld.x;
+      const dy=w.y-dragNode.startWorld.y;
+      let changed=false;
+      for(const id of dragNode.ids){
+        const start=dragNode.startPositions[id]||{x:0,y:0};
+        const nx=Math.round(start.x+dx);
+        const ny=Math.round(start.y+dy);
+        const current=graph.layout[id]||{x:0,y:0};
+        if(current.x===nx&&current.y===ny)continue;
+        if(!dragNode.historyPushed){pushHistory();dragNode.historyPushed=true}
+        graph.layout[id]={x:nx,y:ny};
+        const el=viewport.querySelector(`.node[data-id="${CSS.escape(id)}"]`);
+        if(el){el.style.left=nx+'px';el.style.top=ny+'px'}
+        changed=true;
+      }
+      if(changed){dragNode.moved=true;scheduleDragRender()}
+    }else if(panStart){
+      panX=panStart.panX+(ev.clientX-panStart.x);
+      panY=panStart.panY+(ev.clientY-panStart.y);
+      applyTransform();
+    }
+  });
+  document.addEventListener('pointerup',()=>{
+    if(dragNode&&dragNode.moved){flushDragRender();setStatus(`${dragNode.ids.length} node(s) moved`)}
+    dragNode=null;
+    panStart=null;
+  });
+  right.addEventListener('pointerdown',ev=>{if(ev.target===right||ev.target===viewport||ev.target===edgeLayer){
+    closeToolMenus();
+    if(connectMode){clearSelection();setStatus('Connection mode canceled');return}
+    clearSelection();
+    panStart={x:ev.clientX,y:ev.clientY,panX,panY}
+  }});
+  right.addEventListener('wheel',ev=>{if(ev.target&&ev.target.closest&&ev.target.closest('#tagFlyout'))return;ev.preventDefault();const before=screenToWorld(ev.clientX,ev.clientY);const f=ev.deltaY<0?1.12:.88;scale=Math.min(3,Math.max(.2,scale*f));const r=right.getBoundingClientRect();panX=ev.clientX-r.left-before.x*scale;panY=ev.clientY-r.top-before.y*scale;applyTransform()},{passive:false});
+  splitter.addEventListener('pointerdown',ev=>{ev.preventDefault();resizingSplit=true;resizeStartX=ev.clientX;resizeStartWidth=document.getElementById('left').getBoundingClientRect().width;splitter.setPointerCapture(ev.pointerId)});
+  document.addEventListener('pointermove',ev=>{if(!resizingSplit)return;const left=document.getElementById('left');const max=Math.max(320,window.innerWidth-360);const next=Math.min(max,Math.max(260,resizeStartWidth+(ev.clientX-resizeStartX)));left.style.width=next+'px'});
+  document.addEventListener('pointerup',()=>{if(resizingSplit){resizingSplit=false;drawEdges();applyTransform()}});
+  document.addEventListener('keydown',ev=>{
+    const key=ev.key||'';
+    if((ev.ctrlKey||ev.metaKey)&&key.toLowerCase()==='s'&&!isTypingTarget(ev.target)){
+      ev.preventDefault();
+      ev.stopPropagation();
+      window.saveHtml();
+      return;
+    }
+    if((key==='Enter'||key==='F2'||ev.keyCode===13||ev.keyCode===113)&&hasSelection()&&!isTypingTarget(ev.target)){
+      const nid=getSingleSelectedNodeId();
+      if(nid){ev.preventDefault();ev.stopPropagation();editNodeLabelById(nid);return;}
+      if(selectedEdgeIds.size===1&&selectedNodeIds.size===0){ev.preventDefault();ev.stopPropagation();editEdgeLabelById(Array.from(selectedEdgeIds)[0]);return;}
+    }
+    const isDeleteKey=(key==='Delete'||key==='Backspace'||ev.keyCode===46||ev.keyCode===8);
+    if(isDeleteKey&&hasSelection()&&!isTypingTarget(ev.target)){
+      ev.preventDefault();
+      ev.stopPropagation();
+      window.deleteSelection();
+      return;
+    }
+    if((ev.ctrlKey||ev.metaKey)&&key.toLowerCase()==='z'&&!ev.shiftKey&&!isTypingTarget(ev.target)){
+      ev.preventDefault();
+      ev.stopPropagation();
+      window.undo();
+      return;
+    }
+    if((ev.ctrlKey||ev.metaKey)&&((key.toLowerCase()==='y')||(ev.shiftKey&&key.toLowerCase()==='z'))&&!isTypingTarget(ev.target)){
+      ev.preventDefault();
+      ev.stopPropagation();
+      window.redo();
+      return;
+    }
+  }, true);
+  function isTypingTarget(t){return t&&(['TEXTAREA','INPUT'].includes(t.tagName)||t.isContentEditable)}
+  window.zoomBy=function(f){scale=Math.min(3,Math.max(.2,scale*f));applyTransform()};
+  window.resetView=function(){scale=1;panX=30;panY=30;applyTransform()};
+  window.fitToContent=function(){const b=contentBounds();const rw=right.clientWidth-80,rh=right.clientHeight-80,w=Math.max(240,b.maxX-b.minX+220),h=Math.max(160,b.maxY-b.minY+180);scale=Math.min(2,Math.max(.2,Math.min(rw/w,rh/h)));panX=40-b.minX*scale+70*scale;panY=40-b.minY*scale+50*scale;applyTransform()};
+
+  function validate(){const ids=new Set(graph.nodes.map(n=>n.id));const errs=[];for(const e of graph.edges){if(!ids.has(e.from)||!ids.has(e.to))errs.push(`Undefined node reference: ${e.from} -> ${e.to}`)}if(parseWarnings&&parseWarnings.length)errs.push(...parseWarnings.slice(0,6));const more=(parseWarnings&&parseWarnings.length>6)?`\n...and ${parseWarnings.length-6} more syntax warnings`:'';const mode=connectMode?` | Connect source: ${connectSourceId}`:(hasSelection()?` | ${selectedSummary()}`:'');setStatus(errs.length?errs.join('\n')+more:`nodes ${graph.nodes.length}, edges ${graph.edges.length}, zoom ${Math.round(scale*100)}%${mode}`)}
+  editor.addEventListener('input',()=>{clearTimeout(debounce);debounce=setTimeout(()=>{pushHistory();graph=parseText(editor.value);clearSelectionState();render()},180)});
+
+
+  window.createNewNode=function(){
+    pushHistory();
+    let base='Node', idx=graph.nodes.length+1, id=base+idx;
+    const ids=new Set(graph.nodes.map(n=>n.id));
+    while(ids.has(id)){idx++;id=base+idx}
+    const label=prompt('Enter the new node text.', 'New Node');
+    if(label===null){undoStack.pop();return}
+    const w=screenToWorld(right.getBoundingClientRect().left+right.clientWidth/2,right.getBoundingClientRect().top+right.clientHeight/2);
+    graph.nodes.push({id,label:String(label||id),shape:'process'});
+    graph.layout[id]={x:Math.round(w.x),y:Math.round(w.y)};
+    setOnlyNodeSelection(id);connectMode=false;connectSourceId=null;
+    editor.value=jsonToText(graph);
+    render();
+    setStatus(`${id} added`);
+  };
+  window.startConnectMode=function(){const id=getSingleSelectedNodeId();if(!id){setStatus('Connect requires exactly one selected node');return}connectMode=true;connectSourceId=id;refreshSelectionClasses();updateClearButtonState();setStatus(`Connect mode: ${connectSourceId}. Click the target node. Click the background to cancel.`)};
+  function updateConnectButton(){connectBtn.classList.toggle('active',connectMode)}
+  window.deleteSelection=function(){
+    if(!hasSelection()){setStatus('Select nodes or edges to delete');return}
+    const nodeIds=Array.from(selectedNodeIds);
+    const edgeIds=Array.from(selectedEdgeIds);
+    if(!confirm(`Delete selected nodes: ${nodeIds.length}, edges ${edgeIds.length}?
+Edges connected to selected nodes will also be deleted.`))return;
+    pushHistory();
+    const removeNodes=new Set(nodeIds);
+    const removeEdges=new Set(edgeIds);
+    for(const e of graph.edges){if(removeNodes.has(e.from)||removeNodes.has(e.to))removeEdges.add(e.id)}
+    graph.nodes=graph.nodes.filter(n=>!removeNodes.has(n.id));
+    graph.edges=graph.edges.filter(e=>!removeEdges.has(e.id));
+    for(const id of removeNodes){delete graph.layout[id];delete manualMeta[id];}
+    if(manualMeta.__edges){for(const eid of removeEdges)delete manualMeta.__edges[eid]; if(!Object.keys(manualMeta.__edges).length)delete manualMeta.__edges;}
+    clearSelectionState();
+    editor.value=jsonToText(graph);render();setStatus(`nodes ${removeNodes.size}, edges ${removeEdges.size} deleted`);
+  };
+  window.deleteSelectedNode=window.deleteSelection;
+  window.undo=function(){if(!undoStack.length){setStatus('No undo history');return}redoStack.push(cloneState());if(redoStack.length>10)redoStack.shift();restoreGraph(undoStack.pop());setStatus('Undo complete')};
+  window.redo=function(){if(!redoStack.length){setStatus('No redo history');return}undoStack.push(cloneState());if(undoStack.length>10)undoStack.shift();restoreGraph(redoStack.pop());setStatus('Redo complete')};
+
+  function applyRankedRadialByScores(score, message){
+    if(!graph.nodes.length){setStatus('No nodes to layout');return}
+    pushHistory();
+    const sorted=[...graph.nodes].sort((a,b)=>{
+      const d=(score[b.id]||0)-(score[a.id]||0);
+      return d!==0?d:a.id.localeCompare(b.id);
+    });
+    const cx=520, cy=420;
+    const first=sorted[0];
+    if(first)graph.layout[first.id]={x:cx,y:cy};
+    let idx=1, ring=1;
+    while(idx<sorted.length){
+      const capacity=Math.min(sorted.length-idx, 6+ring*6);
+      const radius=150+ring*130;
+      for(let j=0;j<capacity;j++){
+        const a=(-Math.PI/2)+(Math.PI*2*j/capacity)+(ring%2?0:Math.PI/capacity);
+        const n=sorted[idx++];
+        graph.layout[n.id]={x:Math.round(cx+Math.cos(a)*radius),y:Math.round(cy+Math.sin(a)*radius)};
+      }
+      ring++;
+    }
+    editor.value=jsonToText(graph);
+    render();
+    fitToContent();
+    setStatus(message||'Rank layout applied');
+  }
+
+  function currentRankScoreForLayout(){
+    if(analysisMode==='selected') return Object.keys(analysisScores||{}).length ? analysisScores : (getSingleSelectedNodeId() ? computeLocalScores(getSingleSelectedNodeId()) : computeDegreeScores());
+    if(analysisMode==='bridge') return computeBridgeScores();
+    if(analysisMode==='closeness') return computeClosenessScores();
+    if(analysisMode==='community') return computeCommunityScores(Object.keys(communityLabels||{}).length?communityLabels:computeCommunityLabels());
+    if(analysisMode==='degree') return computeDegreeScores();
+    return computeDegreeScores();
+  }
+
+  function applyRankedTopByScores(score, message){
+    if(!graph.nodes.length){setStatus('No nodes to layout');return}
+    pushHistory();
+    const sorted=[...graph.nodes].sort((a,b)=>{
+      const d=(score[b.id]||0)-(score[a.id]||0);
+      return d!==0?d:a.id.localeCompare(b.id);
+    });
+    const cx=520, startY=110, gapY=135, gapX=210;
+    let idx=0, row=0;
+    while(idx<sorted.length){
+      const capacity=Math.min(sorted.length-idx, row===0?1:Math.min(8, row+2));
+      const rowWidth=(capacity-1)*gapX;
+      for(let j=0;j<capacity;j++){
+        const n=sorted[idx++];
+        graph.layout[n.id]={x:Math.round(cx-rowWidth/2+j*gapX), y:startY+row*gapY};
+      }
+      row++;
+    }
+    editor.value=jsonToText(graph);
+    render();
+    fitToContent();
+    setStatus(message||'Higher-ranked nodes placed toward the top');
+  }
+
+  function layoutPathPositions(){
+    if(!graph.nodes.length){setStatus('No nodes to layout');return}
+    pushHistory();
+    applyLayoutModeToGraph(graph,'Flow');
+    updateEditorFromGraph();
+    render();
+    fitToContent();
+    setStatus('Flow layout applied: the main -> path is centered; branches, notes, and blocks are placed to the sides');
+  }
+
+
+  function applyLayoutPositions(kind){
+    if(!graph.nodes.length){setStatus('No nodes to layout');return}
+    const mode=normalizeLayoutMode(kind);
+    pushHistory();
+
+    if(mode==='Focus' && analysisMode){
+      let score, message;
+      if(analysisMode==='selected'){
+        score=Object.keys(analysisScores||{}).length ? analysisScores : (getSingleSelectedNodeId() ? computeLocalScores(getSingleSelectedNodeId()) : computeDegreeScores());
+        message=getSingleSelectedNodeId() ? `Focus layout applied: ${getSingleSelectedNodeId()} ranked first and arranged by Selected order` : 'Focus layout applied: current Selected view preserved';
+      }else if(analysisMode==='bridge'){score=computeBridgeScores();message='Focus layout applied: arranged by high Bridge Rank';}
+      else if(analysisMode==='closeness'){score=computeClosenessScores();message='Focus layout applied: arranged by high Closeness Rank';}
+      else if(analysisMode==='community'){communityLabels=Object.keys(communityLabels||{}).length?communityLabels:computeCommunityLabels();score=computeCommunityScores(communityLabels);message='Focus layout applied: arranged by community size';}
+      else {score=computeDegreeScores();message='Focus layout applied: arranged by high Degree Rank';}
+      suppressHistory=true;
+      applyRankedRadialByScores(score,message);
+      suppressHistory=false;
+      graph.meta.direction='Focus';
+      updateEditorFromGraph();
+      return;
+    }
+
+    if(mode==='Top' && analysisMode){
+      let score=currentRankScoreForLayout();
+      let message='Top layout applied: nodes with more connections placed higher';
+      if(analysisMode==='selected' && getSingleSelectedNodeId()) message=`Top layout applied: ${getSingleSelectedNodeId()} ranked first and arranged top-down by Selected order`;
+      else if(analysisMode==='bridge') message='Top layout applied: arranged top-down by high Bridge Rank';
+      else if(analysisMode==='closeness') message='Top layout applied: arranged top-down by high Closeness Rank';
+      else if(analysisMode==='community') message='Top layout applied: arranged top-down by community size';
+      else if(analysisMode==='degree') message='Top layout applied: arranged top-down by high Degree Rank';
+      suppressHistory=true;
+      applyRankedTopByScores(score,message);
+      suppressHistory=false;
+      graph.meta.direction='Top';
+      updateEditorFromGraph();
+      return;
+    }
+
+    applyLayoutModeToGraph(graph,mode);
+    updateEditorFromGraph();
+    render();
+    fitToContent();
+    setStatus(`${mode} layout applied`);
+  }
+
+  window.layoutHorizontal=function(){applyLayoutPositions('Horizontal');closeToolMenus()};
+  window.layoutVertical=function(){applyLayoutPositions('Vertical');closeToolMenus()};
+  window.layoutCircle=function(){applyLayoutPositions('Circle');closeToolMenus()};
+  window.layoutGrid=function(){applyLayoutPositions('Grid');closeToolMenus()};
+  window.layoutFocus=function(){applyLayoutPositions('Focus');closeToolMenus()};
+  window.layoutTop=function(){applyLayoutPositions('Top');closeToolMenus()};
+  window.layoutFlow=function(){layoutPathPositions();closeToolMenus()};
+  window.layoutCompact=function(){applyLayoutPositions('Compact');closeToolMenus()};
+  window.layoutLane=function(){applyLayoutPositions('Lane');closeToolMenus()};
+  window.layoutCluster=function(){applyLayoutPositions('Cluster');closeToolMenus()};
+  window.layoutRankedRadial=function(){applyLayoutPositions('Focus');closeToolMenus()};
+  window.layoutRankedTop=function(){applyLayoutPositions('Top');closeToolMenus()};
+  window.layoutPath=function(){layoutPathPositions();closeToolMenus()};
+  function closeToolMenus(){
+    document.getElementById('functionTools').classList.remove('open');
+    document.getElementById('layoutTools').classList.remove('open');
+    document.getElementById('analysisTools').classList.remove('open');
+    const tg=document.getElementById('tagTools'); if(tg)tg.classList.remove('open');
+    const c=document.getElementById('colorTools'); if(c)c.classList.remove('open');
+    const sh=document.getElementById('shapeTools'); if(sh)sh.classList.remove('open');
+    const lk=document.getElementById('lineKindTools'); if(lk)lk.classList.remove('open');
+    const sz=document.getElementById('sizeTools'); if(sz)sz.classList.remove('open');
+  }
+  function extractCallArg(btn,fn){const m=String(btn.getAttribute('onclick')||'').match(new RegExp(fn+"\('([^']*)'\)"));return m?m[1]:''}
+  function updateMenuHighlights(){
+    document.querySelectorAll('#colorFlyout .color-swatch').forEach(btn=>{const col=btn.dataset.color??extractCallArg(btn,'applyNodeColor');btn.dataset.color=col;btn.classList.remove('current')});
+    document.querySelectorAll('#shapeFlyout .shape-btn').forEach(btn=>{const sh=btn.dataset.shape??extractCallArg(btn,'applyNodeShape');btn.dataset.shape=sh;btn.classList.remove('current')});
+    document.querySelectorAll('#sizeFlyout .size-btn').forEach(btn=>{const sz=btn.dataset.size??extractCallArg(btn,'applyNodeSize');btn.dataset.size=sz;btn.classList.remove('current')});
+    document.querySelectorAll('#lineKindFlyout .line-kind-btn').forEach(btn=>{const k=btn.dataset.kind??extractCallArg(btn,'applyEdgeKind');btn.dataset.kind=k;btn.classList.toggle('current', selectedEdgeKindValue()===normalizeEdgeKind(k))});
+    // The color palette does not mark the current selection with a blue ring. Colors are shown as plain choices.
+  }
+  function toggleToolMenu(id){
+    const el=document.getElementById(id);
+    const willOpen=!el.classList.contains('open');
+    closeToolMenus();
+    if(willOpen)el.classList.add('open');
+  }
+  window.toggleFunctionMenu=function(){toggleToolMenu('functionTools')};
+  window.toggleLayoutMenu=function(){toggleToolMenu('layoutTools')};
+  window.toggleAnalysisMenu=function(){toggleToolMenu('analysisTools')};
+  window.toggleTagMenu=function(){toggleToolMenu('tagTools');renderTagPanel()};
+  window.clearActiveTag=clearActiveTag;
+  window.clearTagAndViewSelection=clearTagAndViewSelection;
+  
+  function ensureGraphMetaStyles(){
+    graph.meta=graph.meta||{};
+    graph.meta.styles=graph.meta.styles||{};
+    graph.meta.nodeStyles=graph.meta.nodeStyles||{};
+    graph.meta.edgeStyles=graph.meta.edgeStyles||{};
+    graph.meta.canvasStyle=graph.meta.canvasStyle||{};
+  }
+  function cleanPlainNodeStyle(id){
+    ensureGraphMetaStyles();
+    const st=graph.meta.nodeStyles[id];
+    if(!st)return;
+    if(!safeCssColor(st.color,''))delete st.color;
+    if(!st.shape)delete st.shape;
+    if(!st.size)delete st.size;
+    if(st.x===undefined||st.x===null||!Number.isFinite(Number(st.x)))delete st.x;
+    if(st.y===undefined||st.y===null||!Number.isFinite(Number(st.y)))delete st.y;
+    if(!Object.keys(st).length)delete graph.meta.nodeStyles[id];
+  }
+  function setPlainNodeStyleProp(id,key,value){
+    ensureGraphMetaStyles();
+    const st=graph.meta.nodeStyles[id]||{};
+    if(value===undefined||value===null||value==='')delete st[key];
+    else st[key]=value;
+    graph.meta.nodeStyles[id]=st;
+    cleanPlainNodeStyle(id);
+  }
+  function setPlainEdgeStyleProp(id,key,value){
+    ensureGraphMetaStyles();
+    const st=graph.meta.edgeStyles[id]||{};
+    if(value===undefined||value===null||value==='')delete st[key];
+    else st[key]=value;
+    graph.meta.edgeStyles[id]=st;
+    if(!Object.keys(st).length)delete graph.meta.edgeStyles[id];
+  }
+  function setPlainCanvasStyleProp(key,value){
+    ensureGraphMetaStyles();
+    if(value===undefined||value===null||value==='')delete graph.meta.canvasStyle[key];
+    else graph.meta.canvasStyle[key]=value;
+  }
+  function mergeManualMetaIntoPlainStyles(includeLayout=false){
+    ensureGraphMetaStyles();
+    for(const n of (graph.nodes||[])){
+      const id=n.id;
+      const m=(manualMeta&&manualMeta[id])||{};
+      if(safeCssColor(m.color,''))setPlainNodeStyleProp(id,'color',m.color);
+      if(m.shape)setPlainNodeStyleProp(id,'shape',m.shape);
+      if(m.size)setPlainNodeStyleProp(id,'size',m.size);
+      if(includeLayout&&graph.layout&&graph.layout[id]){
+        setPlainNodeStyleProp(id,'x',cleanNumber(graph.layout[id].x));
+        setPlainNodeStyleProp(id,'y',cleanNumber(graph.layout[id].y));
+      }
+    }
+    if(manualMeta&&manualMeta.__edges){
+      for(const [eid,m] of Object.entries(manualMeta.__edges)){
+        if(safeCssColor(m.color,''))setPlainEdgeStyleProp(eid,'color',m.color);
+      }
+    }
+    if(manualMeta&&manualMeta.__canvas&&safeCssColor(manualMeta.__canvas.background,''))setPlainCanvasStyleProp('background',manualMeta.__canvas.background);
+  }
+  function writeGraphToEditorFromPlainStyles(){
+    editor.value=jsonToText(graph);
+    syncData();
+  }
+  function currentColorTargetLabel(){
+    if(activeTag)return `Color target: tag +${activeTag}`;
+    const c=selectionCounts();
+    if(c.nodes&&c.edges)return `Color target: nodes ${c.nodes}, edges ${c.edges}`;
+    if(c.edges)return `Color target: edges ${c.edges}`;
+    if(c.nodes)return `Color target: nodes ${c.nodes}`;
+    return 'Color target: background';
+  }
+  window.toggleColorMenu=function(){const el=document.getElementById('colorTools');const willOpen=el&&!el.classList.contains('open');closeToolMenus();if(willOpen){el.classList.add('open');updateMenuHighlights();setStatus('Color target: '+currentColorTargetLabel())}};
+  window.toggleShapeMenu=function(){const el=document.getElementById('shapeTools');const willOpen=el&&!el.classList.contains('open');closeToolMenus();if(willOpen){el.classList.add('open');updateMenuHighlights();const c=selectionCounts();setStatus(c.nodes?`Shape target: nodes ${c.nodes}`:'Shape target: select a node')}};
+  window.toggleLineKindMenu=function(){const el=document.getElementById('lineKindTools');const willOpen=el&&!el.classList.contains('open');closeToolMenus();if(willOpen){el.classList.add('open');updateMenuHighlights();setStatus(selectedEdgeIds.size?`Edge-kind target: edges ${selectedEdgeIds.size}`:'Edge-kind target: select an edge')}};
+  window.toggleSizeMenu=function(){const el=document.getElementById('sizeTools');const willOpen=el&&!el.classList.contains('open');closeToolMenus();if(willOpen){el.classList.add('open');updateMenuHighlights();const c=selectionCounts();setStatus(c.nodes?`Size target: nodes ${c.nodes}`:'Size target: select a node')}};
+  window.applyNodeColor=function(color){
+    color=safeCssColor(color,'');
+    if(activeTag){applyActiveTagColor(color);return}
+    pushHistory();
+    if(hasSelection()){
+      for(const eid of selectedEdgeIds){const m=edgeMeta(eid);if(color)m.color=color;else delete m.color;if(Object.keys(m).length===0){delete manualMeta.__edges[eid];}setPlainEdgeStyleProp(eid,'color',color);}
+      if(manualMeta.__edges&&!Object.keys(manualMeta.__edges).length)delete manualMeta.__edges;
+      for(const nid of selectedNodeIds){const m=nodeMeta(nid);if(color)m.color=color;else delete m.color;if(!m.color&&!m.shape&&!m.size)delete manualMeta[nid];setPlainNodeStyleProp(nid,'color',color);}
+      const c=selectionCounts();writeGraphToEditorFromPlainStyles();render();closeToolMenus();setStatus(color?`Color changed: nodes ${c.nodes}, edges ${c.edges}`:`Color reset to default: nodes ${c.nodes}, edges ${c.edges}`);return;
+    }
+    const m=canvasMeta();
+    if(color)m.background=color;else delete m.background;
+    if(Object.keys(m).length===0)delete manualMeta.__canvas;
+    setPlainCanvasStyleProp('background',color);
+    writeGraphToEditorFromPlainStyles();
+    applyCanvasBackground();closeToolMenus();setStatus(color?'Background color changed':'Background color reset to default');
+  };
+  window.applyNodeShape=function(shape){
+    shape=ALLOWED_MANUAL_SHAPES.has(String(shape||''))?String(shape||''):'';
+    if(!selectedNodeIds.size){setStatus('Select nodes to change shape');return}
+    pushHistory();
+    for(const nid of selectedNodeIds){const m=nodeMeta(nid);if(shape)m.shape=shape;else delete m.shape;if(!m.color&&!m.shape&&!m.size)delete manualMeta[nid];setPlainNodeStyleProp(nid,'shape',shape);}
+    writeGraphToEditorFromPlainStyles();
+    render();closeToolMenus();setStatus(`nodes ${selectedNodeIds.size} shape changed`)
+  };
+  window.applyNodeSize=function(size){
+    size=ALLOWED_MANUAL_SIZES.has(String(size||''))?String(size||''):'';
+    if(!selectedNodeIds.size){setStatus('Select nodes to change size');return}
+    pushHistory();
+    for(const nid of selectedNodeIds){const m=nodeMeta(nid);if(size)m.size=size;else delete m.size;if(!m.color&&!m.shape&&!m.size)delete manualMeta[nid];setPlainNodeStyleProp(nid,'size',size);}
+    writeGraphToEditorFromPlainStyles();
+    render();closeToolMenus();setStatus(size?`nodes ${selectedNodeIds.size} set to ${size==='l'?'Large':'Medium'} size`:`nodes ${selectedNodeIds.size} set to Small size`)
+  };
+  window.applyEdgeKind=function(kind){
+    if(!selectedEdgeIds.size){setStatus('Select edges to change edge kind');return}
+    pushHistory();
+    for(const eid of selectedEdgeIds){const e=graph.edges.find(x=>x.id===eid);if(e)e.kind=normalizeEdgeKind(kind);}
+    editor.value=jsonToText(graph);
+    render();closeToolMenus();setStatus(`${selectedEdgeIds.size} edge kind(s) changed`)
+  };
+  window.showDegreeRank=function(){applyAnalysis('degree'); applyRankedRadialByScores(computeDegreeScores(), 'Degree Rank shown; nodes arranged by connection count near the center')};
+  window.showBridgeRank=function(){const score=computeBridgeScores(); applyAnalysis('bridge'); applyRankedRadialByScores(score, 'Bridge Rank shown; nodes connecting groups arranged near the center')};
+  window.showClosenessRank=function(){const score=computeClosenessScores(); applyAnalysis('closeness'); applyRankedRadialByScores(score, 'Closeness Rank shown; globally close nodes arranged near the center')};
+  window.showCommunity=function(){communityLabels=computeCommunityLabels(); analysisMode='community'; analysisScores=computeCommunityScores(communityLabels); analysisRanks=scoresToRanks(analysisScores); analysisCacheKey=analysisRefreshKey(); renderNodes(); drawEdges(); updateClearButtonState(); setStatus('Showing Community: closely connected node groups are color-coded')};
+  window.showLocalRank=function(){
+    const sid=getSingleSelectedNodeId();
+    if(!sid){applyAnalysis('selected'); return;}
+    applyAnalysis('selected');
+    applyRankedRadialByScores(analysisScores, `Selected view shown; ${sid} placed at the center`);
+  };
+  window.clearAnalysis=function(){analysisMode=null;analysisRanks={};analysisScores={};localDistances={};communityLabels={};analysisCacheKey='';renderNodes();drawEdges();validate();updateClearButtonState();setStatus('Analysis view cleared')};
+  function showToast(message){
+    const toast=document.getElementById('toast');
+    if(!toast)return;
+    toast.textContent=message||'Copied';
+    toast.classList.add('show');
+    clearTimeout(showToast._timer);
+    showToast._timer=setTimeout(()=>toast.classList.remove('show'),1500);
+  }
+  function readSaveSlots(){
+    try{
+      const v=JSON.parse(savesEl.textContent||'[]');
+      return Array.from({length:10},(_,i)=>v[i]||null);
+    }catch(e){return Array.from({length:10},()=>null)}
+  }
+  function writeSaveSlots(slots){
+    const fixed=Array.from({length:10},(_,i)=>slots[i]||null);
+    setJsonScriptText(savesEl,fixed);
+    refreshDataSlots();
+  }
+  function snapshotTitle(source){
+    const m=String(source||'').match(/^title\s*:\s*(.+)$/m);
+    return m?m[1].trim():'Untitled';
+  }
+  function currentSnapshot(){
+    graph=parseText(editor.value,{meta:graph.meta,layout:graph.layout});
+    cleanupLayout(graph);
+    ensureLayout(graph);
+    mergeManualMetaIntoPlainStyles(true);
+    editor.value=jsonToText(graph);
+    syncData();
+    return {
+      title:snapshotTitle(editor.value),
+      savedAt:new Date().toLocaleString('ja-JP'),
+      source:(editor.value||'').trim(),
+      layout:cloneGraph({layout:graph.layout}).layout,
+      manualMeta:cloneGraph(manualMeta||{})
+    };
+  }
+  function applySnapshot(source,layout,message,nextManualMeta){
+    pushHistory();
+    setSourceScriptText(source||'');
+    setJsonScriptText(layoutEl,layout||{});
+    manualMeta=sanitizeManualMeta(nextManualMeta||{});
+    syncManualMetaData();
+    graph=readData();
+    clearSelectionState();
+    editor.value=getSourceScriptText()||jsonToText(graph);
+    render();
+    fitToContent();
+    closeTopMenus();
+    if(message)showToast(message);
+  }
+  function refreshDataSlots(){
+    const holder=document.getElementById('dataSlots');
+    if(!holder)return;
+    const slots=readSaveSlots();
+    holder.replaceChildren();
+    slots.forEach((slot,i)=>{
+      const btn=document.createElement('button');
+      const no=i+1;
+      if(slot){
+        btn.append(document.createTextNode('Data'+no),document.createElement('br'));
+        const meta=document.createElement('span');
+        meta.className='slot-meta';
+        meta.textContent=String(slot.name||slot.title||'Untitled');
+        btn.appendChild(meta);
+        btn.onclick=()=>loadTextSlot(no);
+      }else{
+        btn.textContent=`Data${no} (empty)`;
+        btn.className='slot-empty';
+        btn.onclick=()=>setStatus(`Data${no} is empty`);
+      }
+      holder.appendChild(btn);
+    });
+  }
+  window.toggleTopMenu=function(id){
+    const target=document.getElementById(id);
+    const willOpen=target&&!target.classList.contains('open');
+    closeTopMenus();
+    if(willOpen)target.classList.add('open');
+  };
+  function closeTopMenus(){
+    document.querySelectorAll('.toolbar-menu.open').forEach(el=>el.classList.remove('open'));
+  }
+  window.loadTextSlot=function(no){
+    const idx=Number(no)-1;
+    const slots=readSaveSlots();
+    const slot=slots[idx];
+    if(!slot){setStatus(`Data${no} is empty`);return}
+    if(!confirm(`Load Data ${no} "${slot.name||slot.title||'Untitled'}"?\nThe current content will be replaced.`))return;
+    applySnapshot(slot.source,slot.layout,`Data${no} loaded`,slot.manualMeta||{});
+  };
+  window.saveTextSlot=function(){
+    const slots=readSaveSlots();
+    let idx=slots.findIndex(s=>!s);
+    if(idx<0){
+      const ans=prompt('All save slots are full. Enter a slot number from 1 to 10 to overwrite.','1');
+      if(ans===null)return;
+      idx=Number(ans)-1;
+      if(idx<0||idx>9||!Number.isInteger(idx)){alert('Enter a number from 1 to 10');return}
+      if(!confirm(`Data${idx+1} overwrite?`))return;
+    }
+    const snap=currentSnapshot();
+    const nm=prompt('Enter a save name.', snap.name||snap.title||`Data${idx+1}`);
+    if(nm===null)return;
+    snap.name=String(nm).trim()||snap.title||`Data${idx+1}`;
+    slots[idx]=snap;
+    writeSaveSlots(slots);
+    closeTopMenus();
+    showToast(`Data ${idx+1} "${snap.name}" saved`);
+    setStatus(`Data ${idx+1} "${snap.name}" text saved`);
+  };
+  window.deleteTextSlot=function(){
+    const ans=prompt('Enter the data slot number to delete, from 1 to 10.','1');
+    if(ans===null)return;
+    const idx=Number(ans)-1;
+    const slots=readSaveSlots();
+    if(idx<0||idx>9||!Number.isInteger(idx)){alert('Enter a number from 1 to 10');return}
+    if(!slots[idx]){setStatus(`Data${idx+1} is empty`);return}
+    if(!confirm(`Delete Data ${idx+1} "${slots[idx].name||slots[idx].title||'Untitled'}"?`))return;
+    slots[idx]=null;
+    writeSaveSlots(slots);
+    closeTopMenus();
+    showToast(`Data${idx+1} deleted`);
+    setStatus(`Data${idx+1} deleted`);
+  };
+  window.resetData=function(){if(!confirm(`Load New?\nThe current content will be replaced.`))return;applySnapshot(NEW_SOURCE_TEXT,{},'New loaded',{})};
+  window.resetLayout=function(){if(!confirm('Reset layout?'))return;pushHistory();graph.layout={};ensureLayout(graph);render();fitToContent()};
+  function safeFileName(name){
+    const base=String(name||'flowlite').trim().replace(/[\\/:*?"<>|]/g,'_').replace(/\s+/g,'_').slice(0,80);
+    return base||'flowlite';
+  }
+  window.saveHtml=function(){graph=parseText(editor.value,{meta:graph.meta,layout:graph.layout});cleanupLayout(graph);ensureLayout(graph);mergeManualMetaIntoPlainStyles(true);editor.value=jsonToText(graph);syncData();const html='<!DOCTYPE html>\n'+document.documentElement.outerHTML;const name=safeFileName(graph.meta&&graph.meta.title);download(`${name}_${Date.now()}.html`,html,'text/html;charset=utf-8');closeTopMenus();setStatus('HTML saved with plain-text styles');showToast('HTML saved')};
+  function polygonPointsForShape(shape,x,y,w,h){
+    if(shape==='parallelogram'||shape==='cloud')return `${x+w*0.16},${y} ${x+w},${y} ${x+w*0.84},${y+h} ${x},${y+h}`;
+    if(shape==='hexagon')return `${x+w*0.18},${y} ${x+w*0.82},${y} ${x+w},${y+h/2} ${x+w*0.82},${y+h} ${x+w*0.18},${y+h} ${x},${y+h/2}`;
+    if(shape==='trapezoid')return `${x+w/2},${y+h} ${x},${y} ${x+w},${y}`;
+    if(shape==='document')return `${x},${y} ${x+w*0.78},${y} ${x+w},${y+h*0.22} ${x+w},${y+h} ${x},${y+h}`;
+    if(shape==='star'){
+      const pts=[]; const cx=x+w/2, cy=y+h/2, outer=Math.min(w,h)*0.5, inner=outer*0.45;
+      for(let i=0;i<10;i++){
+        const ang=-Math.PI/2 + i*Math.PI/5;
+        const r=i%2===0?outer:inner;
+        pts.push(`${cx+Math.cos(ang)*r},${cy+Math.sin(ang)*r}`);
+      }
+      return pts.join(' ');
+    }
+    return '';
+  }
+  function heartPathForShape(x,y,w,h){
+    return `M ${x+w*0.5} ${y+h*0.92} C ${x+w*0.16} ${y+h*0.72}, ${x+w*0.02} ${y+h*0.46}, ${x+w*0.20} ${y+h*0.24} C ${x+w*0.33} ${y+h*0.07}, ${x+w*0.47} ${y+h*0.16}, ${x+w*0.5} ${y+h*0.30} C ${x+w*0.53} ${y+h*0.16}, ${x+w*0.67} ${y+h*0.07}, ${x+w*0.80} ${y+h*0.24} C ${x+w*0.98} ${y+h*0.46}, ${x+w*0.84} ${y+h*0.72}, ${x+w*0.5} ${y+h*0.92} Z`;
+  }
+
+  window.saveSvg=function(){
+    drawEdges();
+    const b=contentBounds();
+    const pad=90;
+    const minX=b.minX-pad,minY=b.minY-pad,w=b.maxX-b.minX+pad*2,h=b.maxY-b.minY+pad*2;
+    let markerDefs='';
+    const markerSet=new Set();
+    function svgMarkerSafeColor(color){return String(color||'#94a3b8').replace(/[^a-zA-Z0-9_-]/g,'_')}
+    function svgMarkerUrl(color,type){
+      const c=safeCssColor(color,'#94a3b8');
+      const t=type||'arrow';
+      const id='svg_'+t+'_'+svgMarkerSafeColor(c);
+      if(!markerSet.has(id)){
+        markerSet.add(id);
+        if(t==='block'){
+          markerDefs+=`<marker id="${id}" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M 1 1 L 11 11 M 11 1 L 1 11" stroke="${c}" stroke-width="2" fill="none"/></marker>`;
+        }else if(t==='hollow'){
+          markerDefs+=`<marker id="${id}" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M 1.5 1.5 L 10.5 6 L 1.5 10.5 Z" stroke="${c}" stroke-width="1.8" fill="#fff"/></marker>`;
+        }else{
+          markerDefs+=`<marker id="${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="${c}"/></marker>`;
+        }
+      }
+      return `url(#${id})`;
+    }
+    function svgEdgeMarkers(kind,stroke){
+      const k=normalizeEdgeKind(kind);
+      if(k==='association'||k==='identity')return {start:'',end:''};
+      if(k==='mutual')return {start:svgMarkerUrl(stroke,'arrow'),end:svgMarkerUrl(stroke,'arrow')};
+      if(k==='block')return {start:'',end:svgMarkerUrl(stroke,'arrow')};
+      if(k==='belongs')return {start:'',end:svgMarkerUrl(stroke,'hollow')};
+      return {start:'',end:svgMarkerUrl(stroke,'arrow')};
+    }
+    let edgeSvg='';
+    let nodeSvg='';
+    for(const e of graph.edges){
+      const a=graph.layout[e.from],bb=graph.layout[e.to];if(!a||!bb)continue;
+      const ep=edgeEndpointPoints(e,'svg');
+      if(!ep)continue;
+      const {dx,dy,len,x1,y1,x2,y2}=ep;
+      const style=edgeSvgAttrs(e,false,false);
+      style.stroke=safeCssColor(style.stroke,edgeStrokeBase(style.k));
+      const markers=svgEdgeMarkers(e.kind,style.stroke);
+      const dash=style.dash?` stroke-dasharray="${style.dash}"`:'';
+      const markerStart=markers.start?` marker-start="${markers.start}"`:'';
+      const markerEnd=markers.end?` marker-end="${markers.end}"`:'';
+      if(style.doubleLine){
+        const ox=-dy/len*4, oy=dx/len*4;
+        edgeSvg+=`<path d="M ${x1+ox} ${y1+oy} L ${x2+ox} ${y2+oy}" stroke="${style.stroke}" stroke-width="${style.width}" fill="none"${dash}/>`;
+        edgeSvg+=`<path d="M ${x1-ox} ${y1-oy} L ${x2-ox} ${y2-oy}" stroke="${style.stroke}" stroke-width="${style.width}" fill="none"${dash}/>`;
+      }else{
+        edgeSvg+=`<path d="M ${x1} ${y1} L ${x2} ${y2}" stroke="${style.stroke}" stroke-width="${style.width}" fill="none"${dash}${markerStart}${markerEnd}/>`;
+      }
+      if(style.k==='block'){
+        const bx=x2-dx/len*46, by=y2-dy/len*46;
+        const ux=dx/len, uy=dy/len, px=-uy, py=ux, s=7;
+        edgeSvg+=`<path d="M ${bx+(ux+px)*s} ${by+(uy+py)*s} L ${bx-(ux+px)*s} ${by-(uy+py)*s}" stroke="${style.stroke}" stroke-width="2.4" stroke-linecap="round" fill="none"/>`;
+        edgeSvg+=`<path d="M ${bx+(ux-px)*s} ${by+(uy-py)*s} L ${bx-(ux-px)*s} ${by-(uy-py)*s}" stroke="${style.stroke}" stroke-width="2.4" stroke-linecap="round" fill="none"/>`;
+      }
+      if(e.label){
+        const lines=splitLabelLines(e.label,18);
+        const lineH=14;
+        const startY=(y1+y2)/2-8-((lines.length-1)*lineH/2);
+        edgeSvg+=`<text x="${(x1+x2)/2}" y="${startY}" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#475569" stroke="#f8fafc" stroke-width="4" paint-order="stroke">`;
+        lines.forEach((line,i)=>{edgeSvg+=`<tspan x="${(x1+x2)/2}" dy="${i===0?0:lineH}">${escapeHtml(line)}</tspan>`});
+        edgeSvg+='</text>';
+      }
+    }
+    for(const n of graph.nodes){
+      const p=graph.layout[n.id];if(!p)continue;
+      const box=svgNodeMetrics(n.id);
+      const lines=box.lines||splitLabelLines(n.label,14);
+      const lineH=box.lineH||16;
+      let nodeW2=box.w, nodeH2=box.h;
+      const x=p.x-nodeW2/2,y=p.y-nodeH2/2;
+      const fill=safeCssColor(nodeEffectiveColor(n),'#ffffff');
+      const sh=box.shape||'process';
+      if(sh==='circle'){
+        const r=Math.max(nodeW2,nodeH2)/2; nodeSvg+=`<ellipse cx="${p.x}" cy="${p.y}" rx="${r}" ry="${r}" fill="${fill}" stroke="#0f172a" stroke-width="1.5"/>`;
+      }else if(sh==='ellipse'){
+        nodeSvg+=`<ellipse cx="${p.x}" cy="${p.y}" rx="${nodeW2/2}" ry="${nodeH2/2}" fill="${fill}" stroke="#0f172a" stroke-width="1.5"/>`;
+      }else if(sh==='diamond'){
+        nodeSvg+=`<polygon points="${p.x},${y} ${x+nodeW2},${p.y} ${p.x},${y+nodeH2} ${x},${p.y}" fill="${fill}" stroke="#0f172a" stroke-width="1.5"/>`;
+      }else if(['parallelogram','hexagon','trapezoid','cloud','document','star'].includes(sh)){
+        const pts=polygonPointsForShape(sh,x,y,nodeW2,nodeH2);
+        nodeSvg+=`<polygon points="${pts}" fill="${fill}" stroke="#0f172a" stroke-width="1.8"/>`;
+        if(sh==='document')nodeSvg+=`<path d="M ${x+nodeW2*0.78} ${y} L ${x+nodeW2*0.78} ${y+nodeH2*0.22} L ${x+nodeW2} ${y+nodeH2*0.22}" fill="none" stroke="#0f172a" stroke-width="1.2"/>`;
+      }else if(sh==='heart'){
+        nodeSvg+=`<path d="${heartPathForShape(x,y,nodeW2,nodeH2)}" fill="${fill}" stroke="#0f172a" stroke-width="1.8"/>`;
+      }else if(sh==='double'||sh==='wavy'){
+        nodeSvg+=`<rect x="${x}" y="${y}" width="${nodeW2}" height="${nodeH2}" rx="12" fill="${fill}" stroke="#0f172a" stroke-width="1.5"/>`;
+        nodeSvg+=`<rect x="${x+5}" y="${y+5}" width="${Math.max(10,nodeW2-10)}" height="${Math.max(10,nodeH2-10)}" rx="9" fill="none" stroke="#0f172a" stroke-width="1.2"/>`;
+      }else{
+        const rx=sh==='rect'?2:12; nodeSvg+=`<rect x="${x}" y="${y}" width="${nodeW2}" height="${nodeH2}" rx="${rx}" fill="${fill}" stroke="#0f172a" stroke-width="1.5"/>`;
+      }
+      const startY=p.y-((lines.length-1)*lineH/2)+4;
+      nodeSvg+=`<text x="${p.x}" y="${startY}" text-anchor="middle" font-size="13" font-family="sans-serif" fill="#0f172a">`;
+      lines.forEach((line,i)=>{nodeSvg+=`<tspan x="${p.x}" dy="${i===0?0:lineH}">${escapeHtml(line)}</tspan>`});
+      nodeSvg+='</text>';
+    }
+    const bg=getCanvasBackground();
+    const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="${minX} ${minY} ${w} ${h}"><defs>${markerDefs}</defs><rect x="${minX}" y="${minY}" width="${w}" height="${h}" fill="${bg}"/>${edgeSvg}${nodeSvg}</svg>`;
+    download(`${safeFileName(graph.meta&&graph.meta.title)}_${Date.now()}.svg`,svg,'image/svg+xml;charset=utf-8')
+  };
+  window.copySpecText=async function(){
+    const currentText=editor.value.trim()||jsonToText(graph);
+    const promptText=[
+      '# FlowLite Plain-Text Editing Request',
+      '',
+      '## Request',
+      '',
+      '',
+      '## Role',
+      'You are an editor for structural diagrams written in FlowLite notation.',
+      '',
+      '## Instructions',
+      'Return only FlowLite plain text that reflects the user request and follows the specification below.',
+      'Do not return coordinates, HTML, JSON, Markdown code fences, or explanatory prose.',
+      'Use #styles for tag colors and optional plain-text visual styles such as @NodeID shape:star size:l color:#RRGGBB x:100 y:200, @edge:EdgeID color:#RRGGBB, and @canvas background:#RRGGBB.',
+      '',
+      '## Important Rules',
+      '- Return FlowLite plain text only.',
+      '- Preserve existing node IDs as much as possible.',
+      '- Connect nodes by node ID, not by display label.',
+      '- If you delete a node, also delete edges connected to it.',
+      '- Use #nodes / #styles / #edges as headings. Do not write # edges with a space.',
+      '- direction must be one of Horizontal / Vertical / Circle / Grid / Focus / Top / Flow / Compact / Lane / Cluster. Use Flow by default.',
+      '- Labels can include line breaks, for example A[Line 1\\nLine 2].',
+      '- When a relationship is ambiguous, do not force a strong edge kind. Use A -- B : supplemental label.',
+      '- Use A -x-> B only for strong blocking, prohibition, or refutation. Do not overuse it.',
+      '- Tags are optional. When needed, write them as Node[Label] +Tag1 +Tag2 +Tag3.',
+      '- Use at most 3 tags per node. The engine ignores fourth and later tags, so do not output them.',
+      '- Tags are metadata for layers, attributes, states, or classifications. They are not substitutes for semantic relationships.',
+      '- Express membership, causality, identity, blocking, and interaction as edges, not tags.',
+      '- When color-coding, use tags from the same dimension. Do not mix era, role, country, field, and other dimensions in one color layer.',
+      '- Define #styles for tag colors and optional node/edge/canvas visual properties. Do not add decorative styles without purpose.',
+      '- Do not add tags when the meaning is already clear without them.',
+      '- Do not create #styles when there is no color-coding purpose.',
+      '- To keep the graph minimal, represent cross-cutting classifications as tags and only turn them into nodes when you need semantic relationships.',
+      '',
+      '## FlowLite Notation',
+      'title: Diagram Title',
+      'direction: Flow',
+      '',
+      '#nodes',
+      'A[Normal process]',
+      'B{Decision}',
+      'C((Start or End))',
+      'D[(Data)]',
+      'N>Note]',
+      'TaggedNode[Tagged node] +Class +State +Important',
+      '',
+      '#styles',
+      '+Class color:#dbeafe',
+      '+State color:#dcfce7',
+      '',
+      '#edges',
+      'A -> B : action, flow, causality, reference',
+      'A => B : membership, containment, classification, composition, inheritance',
+      'A == B : identity, equivalence, alias, correspondence',
+      'A -- B : association, unclassified, supplemental relationship',
+      'A <-> B : interaction, bidirectional relationship',
+      'A -x-> B : blocking, prohibition, constraint, refutation',
+      '',
+      '## Core Principles',
+      '- Nodes are objects.',
+      '- Edges are relationships between objects.',
+      '- Tags are metadata layers, attributes, states, or classifications attached to objects.',
+      '- Tags are optional.',
+      '- Diagram semantics should be represented by edges. Do not use tags as substitutes for relationships.',
+      '',
+      '## Edge Semantics',
+      '- A -> B : A acts on, moves to, calls, uses, affects, or refers to B.',
+      '- A => B : A is an element, subset, subtype, component, implementation, or inheriting object of B.',
+      '- A == B : A and B are logically the same entity, concept, alias, or clear correspondence.',
+      '- A -- B : A and B are related, but not clearly directional, membership, identity, interaction, or blocking.',
+      '- A <-> B : A and B affect each other, synchronize, exchange, or act bidirectionally.',
+      '- A -x-> B : A clearly stops, prohibits, denies, refutes, or prevents B.',
+      '',
+      '## Tag Rules',
+      '- Add tags at the end of a node line, for example NodeID[Label] +Tag1 +Tag2 +Tag3.',
+      '- Tags are metadata layers, attributes, states, or classifications attached to nodes.',
+      '- Tags are not nodes and not edges.',
+      '- Tags do not directly represent semantic relationships.',
+      '- Use at most 3 tags. The engine ignores fourth and later tags.',
+      '- Good tag content: classification, state, importance, work target, review target, display group, responsibility, layer, type, use case.',
+      '',
+      '## Tags and Styles',
+      '- #styles can define tag colors using +Tag color:#RRGGBB.',
+      '- The initial #styles specification supports only color.',
+      '- If multiple tags exist, FlowLite searches #styles from left to right and applies the first matching color.',
+      '- GUI per-node colors have the highest priority.',
+      '',
+      '## Color-Coding Guidelines',
+      '- Use tags from the same dimension for color coding.',
+      '- For country use +Wei / +Shu / +Wu; for role use +Theory / +Experiment / +Synthesis; for state use +TODO / +Done / +Blocked.',
+      '- Mixing era, role, country, and field in one color layer tends to produce meaningless decoration.',
+      '- Define #styles only for the layer you want to focus on.',
+      '- Use second and third tags as optional supplemental metadata. They do not need colors.',
+      '- Use nodes and edges for semantic relationships; use tags when classification support is enough.',
+      '- Do not add tags when the meaning is clear without them.',
+      '- Do not create #styles when there is no color-coding purpose.',
+      '- Define #styles only for tags from the same dimension. Do not make the diagram colorful without meaning.',
+      '- Layout examples: use direction: Cluster for tag-based clusters, Flow for process flows, Compact for readability in a small area, and Lane for comparing first-tag lanes.',
+      '',
+      '## Current Relationship Text',
+      currentText
+    ].join('\\n');
+    try{await navigator.clipboard.writeText(promptText);setStatus('AI prompt copied');showToast('AI prompt copied')}catch(e){prompt('Could not copy. Copy manually.',promptText);showToast('Copy manually')}
+  };
+  function download(name,content,type){const blob=new Blob([content],{type});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+
+  refreshDataSlots(); editor.value=getSourceScriptText()||jsonToText(graph); graph=parseText(editor.value,{meta:graph.meta,layout:graph.layout}); render(); setTimeout(()=>fitToContent(),30);
+})();
+</script>
+</body>
+</html>
