@@ -100,186 +100,106 @@
 <body>
 <!-- FLOWLITE_SOURCE_EDITABLE_START: USER AND AI MAY EDIT THIS PLAINTEXT -->
 <script type="text/plain" id="flowlite-source">
-title: Core Papers and Concepts in Modern Physics (Role Layer Example)
-direction: Cluster
+title: Alice in Wonderland Shape Demo
+direction: Focus
 
 #nodes
-Physics((Modern Physics)) +Core
-Newton1687[Newton 1687
-Principia] +Theory +Classical
-Maxwell1865[Maxwell 1865
-Field Equations] +Theory +Electromagnetism
-Boltzmann1877[Boltzmann 1877
-Statistical Mechanics] +Theory +Statistics
-MichelsonMorley1887[Michelson-Morley 1887
-Ether Problem] +Experiment +Relativity
-Planck1900[Planck 1900
-Blackbody Radiation] +Theory +Quantum
-Einstein1905Photo[Einstein 1905
-Light Quantum] +Theory +Quantum
-Einstein1905SR[Einstein 1905
-Special Relativity] +Theory +Relativity +Core
-Einstein1905Mass[Einstein 1905
-Mass-Energy] +Theory +Relativity
-Einstein1905Brownian[Einstein 1905
-Brownian Motion] +Theory +Statistics
-Minkowski1908[Minkowski 1908
-Spacetime] +Synthesis +Relativity
-Einstein1915GR[Einstein 1915
-General Relativity] +Theory +Relativity
-Friedmann1922[Friedmann 1922
-Expanding-Universe Solutions] +Theory +Cosmology
-Hubble1929[Hubble 1929
-Galactic Recession] +Experiment +Cosmology
-Rutherford1911[Rutherford 1911
-Nuclear Model] +Experiment +Quantum
-Bohr1913[Bohr 1913
-Atomic Model] +Theory +Quantum
-DeBroglie1924[de Broglie 1924
-Matter Waves] +Theory +Quantum
-Heisenberg1925[Heisenberg 1925
-Matrix Mechanics] +Theory +Quantum
-Schrodinger1926[Schrodinger 1926
-Wave Mechanics] +Theory +Quantum
-Born1926[Born 1926
-Probabilistic Interpretation] +Interpretation +Quantum
-Dirac1928[Dirac 1928
-Relativistic Electron] +Synthesis +Quantum +Relativity
-EPR1935[EPR 1935
-Quantum Nonlocality Problem] +Problem +Quantum
-Bell1964[Bell 1964
-Bell Inequality] +Problem +Quantum
-Aspect1982[Aspect 1982
-Bell Test Experiment] +Experiment +Quantum
-Feynman1948[Feynman 1948
-Path Integral] +Synthesis +Quantum
-YangMills1954[Yang-Mills 1954
-Gauge Theory] +Synthesis +FieldTheory
-BCS1957[BCS 1957
-Superconductivity] +Theory +CondensedMatter
-GellMann1964[Gell-Mann 1964
-Quark Model] +Theory +Particle
-Higgs1964[Higgs 1964
-Mass-Generation Mechanism] +Theory +Particle
-Weinberg1967[Weinberg 1967
-Electroweak Unification] +Synthesis +Particle
-Wilson1971[Wilson 1971
-Renormalization Group] +Synthesis +FieldTheory
-Hawking1974[Hawking 1974
-Black Hole Radiation] +Synthesis +Gravity +Quantum
-Classical[(Classical Physics)] +Field +Classical
-Electromagnetism[(Electromagnetism)] +Field +Electromagnetism
-Statistical[(Statistical Physics)] +Field +Statistics
-Quantum[(Quantum Theory)] +Field +Quantum
-Relativity[(Relativity)] +Field +Relativity
-Cosmology[(Cosmology)] +Field +Cosmology
-QFT[(Quantum Field Theory)] +Field +FieldTheory
-Particle[(Particle Physics)] +Field +Particle
-Condensed[(Condensed Matter Physics)] +Field +CondensedMatter
-Notice>Colors represent epistemic roles, not fields. The first tag determines color; later tags provide detail.] +Note
+Alice((Alice)) +Hero +ShapeDemo
+Wonderland((Wonderland)) +Place +Core
+WhiteRabbit[White Rabbit
+always in a hurry] +Guide +Creature
+RabbitHole[(Rabbit Hole)] +Place +Portal
+Door[Small Door] +Object +Portal
+GoldenKey[Golden Key] +Object +Key
+DrinkMeBottle[(Drink Me Bottle)] +Object +Transform
+EatMeCake[(Eat Me Cake)] +Object +Transform
+CheshireCat[Cheshire Cat
+appears and disappears] +Guide +Creature
+MadHatter[Mad Hatter] +TeaParty +Character
+MarchHare[March Hare] +TeaParty +Character
+Dormouse[Dormouse] +TeaParty +Character
+TeaParty((Mad Tea Party)) +Event +TeaParty
+QueenOfHearts[Queen of Hearts] +Royal +Heart
+KingOfHearts[King of Hearts] +Royal +Heart
+CardSoldiers[Card Soldiers] +Royal +Heart
+Trial[Trial] +Event +Royal
+Caterpillar[Caterpillar] +Guide +Creature
+Advice[Who are you?] +Question
+GrowthChange[Size changes] +Transform
+Exit((Wake Up)) +End
 
 #styles
-+Core color:#fde68a
-+Theory color:#dbeafe
-+Experiment color:#dcfce7
-+Interpretation color:#fef9c3
-+Synthesis color:#fbcfe8
-+Problem color:#fed7aa
-+Field color:#e5e7eb
-+Note color:#f5f5f5
++Hero color:#fde68a
++Place color:#e0f2fe
++Guide color:#dcfce7
++Object color:#ede9fe
++TeaParty color:#fef9c3
++Royal color:#fecaca
++Event color:#fbcfe8
++Question color:#f5f5f5
++Transform color:#fed7aa
++End color:#e5e7eb
+
+@Alice color:#fde68a shape:star size:l
+@Wonderland color:#dcfce7 shape:circle size:l
+@WhiteRabbit color:#e0f2fe shape:ellipse size:m
+@RabbitHole color:#bfdbfe shape:circle size:m
+@Door color:#dbeafe shape:rect
+@GoldenKey color:#fcd34d shape:star
+@DrinkMeBottle color:#ddd6fe shape:document
+@EatMeCake color:#fed7aa shape:document
+@CheshireCat color:#c4b5fd shape:star size:m
+@MadHatter color:#fef9c3 shape:diamond size:m
+@MarchHare color:#ffedd5 shape:ellipse
+@Dormouse color:#f5f5f5 shape:circle
+@TeaParty color:#fef3c7 shape:double size:m
+@QueenOfHearts color:#fbcfe8 shape:heart size:l
+@KingOfHearts color:#fecaca shape:heart size:m
+@CardSoldiers color:#fee2e2 shape:heart
+@Trial color:#e5e7eb shape:hexagon size:m
+@Caterpillar color:#bbf7d0 shape:ellipse
+@Advice color:#f8fafc shape:parallelogram
+@GrowthChange color:#fed7aa shape:trapezoid size:m
+@Exit color:#e5e7eb shape:circle
 
 #edges
-Physics => Classical : prehistory
-Physics => Electromagnetism : classical electromagnetism
-Physics => Statistical : probability and many particles
-Physics => Quantum : microscopic world
-Physics => Relativity : spacetime and gravity
-Physics => Cosmology : structure of the universe
-Physics => QFT : quantum theory and fields
-Physics => Particle : elementary particles
-Physics => Condensed : condensed matter
-
-Newton1687 => Classical : classical mechanics
-Maxwell1865 => Electromagnetism : electromagnetism
-Boltzmann1877 => Statistical : statistical mechanics
-Planck1900 => Quantum : quantum hypothesis
-Einstein1905SR => Relativity : special relativity
-Einstein1915GR => Relativity : general relativity
-Friedmann1922 => Cosmology : dynamic universe
-Hubble1929 => Cosmology : observational cosmology
-Heisenberg1925 => Quantum : quantum mechanics
-Schrodinger1926 => Quantum : quantum mechanics
-Born1926 => Quantum : probabilistic interpretation
-Dirac1928 => QFT : relativistic quantum theory
-YangMills1954 => QFT : gauge theory
-GellMann1964 => Particle : hadron classification
-Higgs1964 => Particle : mass generation
-Weinberg1967 => Particle : electroweak unification
-BCS1957 => Condensed : many-body quantum theory
-Wilson1971 => QFT : reconstruction of field theory
-Wilson1971 => Condensed : understanding critical phenomena
-
-Newton1687 -> Einstein1905SR : revises absolute spacetime
-Maxwell1865 -> Einstein1905SR : constant speed of light problem
-MichelsonMorley1887 -> Einstein1905SR : pressure on ether hypothesis
-Einstein1905SR -> Einstein1905Mass : mass-energy relation
-Einstein1905SR -> Minkowski1908 : geometric spacetime
-Minkowski1908 -> Einstein1915GR : geometric theory of gravity
-Einstein1915GR -> Friedmann1922 : solutions to field equations
-Friedmann1922 -> Hubble1929 : observational support for expansion
-Einstein1915GR -> Hawking1974 : basis for black-hole theory
-
-Boltzmann1877 -> Planck1900 : statistical background to blackbody radiation
-Boltzmann1877 -> Einstein1905Brownian : atomism and stochastic processes
-Einstein1905Brownian -> Statistical : supports the reality of atoms
-Boltzmann1877 -> Born1926 : basis for probabilistic worldview
-
-Planck1900 -> Einstein1905Photo : extends quantum hypothesis to light
-Einstein1905Photo -> Quantum : particle nature of light
-Rutherford1911 -> Bohr1913 : provides nuclear model
-Planck1900 -> Bohr1913 : quantum condition
-Bohr1913 -> DeBroglie1924 : from old quantum theory to matter waves
-DeBroglie1924 -> Schrodinger1926 : basis of wave mechanics
-Bohr1913 -> Heisenberg1925 : toward observable-centered formulation
-Heisenberg1925 == Schrodinger1926 : equivalent formulations
-Schrodinger1926 -> Born1926 : meaning of the wave function
-
-Einstein1905SR -> Dirac1928 : relativistic constraints
-Schrodinger1926 -> Dirac1928 : extension of quantum equations
-Dirac1928 -> QFT : antiparticles, spin, and field theory
-Schrodinger1926 == Feynman1948 : alternative formulation
-Feynman1948 -> QFT : path-integral computation
-Dirac1928 -> Feynman1948 : development of relativistic quantum theory
-Feynman1948 -> YangMills1954 : extends field-theoretic thinking
-
-Born1926 -> EPR1935 : challenge to probabilistic interpretation
-EPR1935 -> Bell1964 : makes nonlocality testable
-Bell1964 -> Aspect1982 : leads to experimental tests
-Aspect1982 -> Quantum : empirical support for quantum correlations
-
-YangMills1954 -> GellMann1964 : theoretical background for strong interaction
-YangMills1954 -> Weinberg1967 : foundation for electroweak theory
-Higgs1964 -> Weinberg1967 : symmetry breaking and mass generation
-Weinberg1967 -> Particle : path to the Standard Model
-Wilson1971 -> YangMills1954 : clarifies renormalization
-Wilson1971 -> BCS1957 : connects many-body physics and field theory
-
-Quantum <-> Relativity : unification problem
-Quantum <-> QFT : quantum theory as fields
-Relativity <-> QFT : basis of high-energy physics
-Relativity -> Cosmology : gravitational cosmology
-QFT -> Particle : language of particle physics
-QFT -> Condensed : applications to condensed matter
-Hawking1974 -> QFT : quantum fields in curved spacetime
-Hawking1974 -> Cosmology : black-hole thermodynamics
-
-Notice -- Physics : note on color policy
+Alice -> WhiteRabbit : follows
+WhiteRabbit -> RabbitHole : leads to
+RabbitHole -> Wonderland : entrance
+Wonderland -> Door : contains
+GoldenKey -> Door : opens
+Door -x-> Alice : blocks when too large
+DrinkMeBottle -> GrowthChange : makes Alice smaller
+EatMeCake -> GrowthChange : makes Alice larger
+GrowthChange -> Door : changes access
+Wonderland -> CheshireCat : contains
+CheshireCat -> Alice : gives cryptic guidance
+CheshireCat -> QueenOfHearts : points toward
+Wonderland -> Caterpillar : contains
+Caterpillar -> Advice : asks
+Advice -> Alice : challenges identity
+Wonderland -> TeaParty : contains
+MadHatter => TeaParty : host
+MarchHare => TeaParty : host
+Dormouse => TeaParty : guest
+Alice -> TeaParty : visits
+QueenOfHearts -> CardSoldiers : commands
+KingOfHearts -- QueenOfHearts : royal pair
+QueenOfHearts -x-> Alice : threatens
+CardSoldiers -> Trial : enforce order
+Alice -> Trial : attends
+Trial -> QueenOfHearts : ruled by
+Trial -> KingOfHearts : presided over
+Trial -> Exit : story resolves
+Alice -> Exit : wakes up
 </script>
 <!-- FLOWLITE_SOURCE_EDITABLE_END -->
 
 <!-- FLOWLITE_LAYOUT_START: SAVED NODE POSITIONS ONLY -->
 <script type="application/json" id="flowlite-layout">
+
 {}
+
 </script>
 <!-- FLOWLITE_LAYOUT_END -->
 
@@ -287,183 +207,26 @@ Notice -- Physics : note on color policy
 <script type="application/json" id="flowlite-saves">
 [
   {
+    "title": "Alice in Wonderland Shape Demo",
+    "name": "Alice Shape Demo",
+    "savedAt": "Initial sample",
+    "source": "title: Alice in Wonderland Shape Demo\ndirection: Focus\n\n#nodes\nAlice((Alice)) +Hero +ShapeDemo\nWonderland((Wonderland)) +Place +Core\nWhiteRabbit[White Rabbit\nalways in a hurry] +Guide +Creature\nRabbitHole[(Rabbit Hole)] +Place +Portal\nDoor[Small Door] +Object +Portal\nGoldenKey[Golden Key] +Object +Key\nDrinkMeBottle[(Drink Me Bottle)] +Object +Transform\nEatMeCake[(Eat Me Cake)] +Object +Transform\nCheshireCat[Cheshire Cat\nappears and disappears] +Guide +Creature\nMadHatter[Mad Hatter] +TeaParty +Character\nMarchHare[March Hare] +TeaParty +Character\nDormouse[Dormouse] +TeaParty +Character\nTeaParty((Mad Tea Party)) +Event +TeaParty\nQueenOfHearts[Queen of Hearts] +Royal +Heart\nKingOfHearts[King of Hearts] +Royal +Heart\nCardSoldiers[Card Soldiers] +Royal +Heart\nTrial[Trial] +Event +Royal\nCaterpillar[Caterpillar] +Guide +Creature\nAdvice[Who are you?] +Question\nGrowthChange[Size changes] +Transform\nExit((Wake Up)) +End\n\n#styles\n+Hero color:#fde68a\n+Place color:#e0f2fe\n+Guide color:#dcfce7\n+Object color:#ede9fe\n+TeaParty color:#fef9c3\n+Royal color:#fecaca\n+Event color:#fbcfe8\n+Question color:#f5f5f5\n+Transform color:#fed7aa\n+End color:#e5e7eb\n\n@Alice color:#fde68a shape:star size:l\n@Wonderland color:#dcfce7 shape:circle size:l\n@WhiteRabbit color:#e0f2fe shape:ellipse size:m\n@RabbitHole color:#bfdbfe shape:circle size:m\n@Door color:#dbeafe shape:rect\n@GoldenKey color:#fcd34d shape:star\n@DrinkMeBottle color:#ddd6fe shape:document\n@EatMeCake color:#fed7aa shape:document\n@CheshireCat color:#c4b5fd shape:star size:m\n@MadHatter color:#fef9c3 shape:diamond size:m\n@MarchHare color:#ffedd5 shape:ellipse\n@Dormouse color:#f5f5f5 shape:circle\n@TeaParty color:#fef3c7 shape:double size:m\n@QueenOfHearts color:#fbcfe8 shape:heart size:l\n@KingOfHearts color:#fecaca shape:heart size:m\n@CardSoldiers color:#fee2e2 shape:heart\n@Trial color:#e5e7eb shape:hexagon size:m\n@Caterpillar color:#bbf7d0 shape:ellipse\n@Advice color:#f8fafc shape:parallelogram\n@GrowthChange color:#fed7aa shape:trapezoid size:m\n@Exit color:#e5e7eb shape:circle\n\n#edges\nAlice -> WhiteRabbit : follows\nWhiteRabbit -> RabbitHole : leads to\nRabbitHole -> Wonderland : entrance\nWonderland -> Door : contains\nGoldenKey -> Door : opens\nDoor -x-> Alice : blocks when too large\nDrinkMeBottle -> GrowthChange : makes Alice smaller\nEatMeCake -> GrowthChange : makes Alice larger\nGrowthChange -> Door : changes access\nWonderland -> CheshireCat : contains\nCheshireCat -> Alice : gives cryptic guidance\nCheshireCat -> QueenOfHearts : points toward\nWonderland -> Caterpillar : contains\nCaterpillar -> Advice : asks\nAdvice -> Alice : challenges identity\nWonderland -> TeaParty : contains\nMadHatter => TeaParty : host\nMarchHare => TeaParty : host\nDormouse => TeaParty : guest\nAlice -> TeaParty : visits\nQueenOfHearts -> CardSoldiers : commands\nKingOfHearts -- QueenOfHearts : royal pair\nQueenOfHearts -x-> Alice : threatens\nCardSoldiers -> Trial : enforce order\nAlice -> Trial : attends\nTrial -> QueenOfHearts : ruled by\nTrial -> KingOfHearts : presided over\nTrial -> Exit : story resolves\nAlice -> Exit : wakes up",
+    "layout": {},
+    "manualMeta": {}
+  },
+  {
+    "title": "Hamburger Assembly Flow",
+    "name": "Hamburger Assembly",
+    "savedAt": "Initial sample",
+    "source": "title: Hamburger Assembly Flow\ndirection: Flow\n\n#nodes\nBurger((Hamburger)) +Core\nPrep[Prepare ingredients] +Process\nBottomBun[(Bottom bun)] +Bread\nBaseSauce[Spread sauce] +Sauce\nLettuce[Lettuce] +Vegetable\nPatty[Cook patty] +Protein\nCheese[Add cheese] +Dairy\nCheeseMelted{Cheese melted?} +Decision\nBacon[Crisp bacon] +Protein\nEgg[Fry egg] +Protein\nEggDone{Egg cooked?} +Decision\nTomato[Tomato slices] +Vegetable\nStack[Stack the burger] +Process\nTopBun[(Top bun)] +Bread\nSkewer[Hold together] +Process\nServe((Serve)) +Output\nHeat[Heat source] +Tool\nPlate[(Plate)] +Tool\nNote>Layer order is part of the recipe, not just decoration.] +Note\n\n#styles\n+Core color:#fde68a\n+Process color:#dbeafe\n+Bread color:#fed7aa\n+Sauce color:#fbcfe8\n+Vegetable color:#dcfce7\n+Protein color:#fee2e2\n+Dairy color:#fef9c3\n+Decision color:#e0f2fe\n+Tool color:#e5e7eb\n+Output color:#bbf7d0\n+Note color:#f5f5f5\n\n#edges\nBurger -> Prep : start\nPrep -> BottomBun : first layer\nBottomBun -> BaseSauce : spread on bun\nBaseSauce -> Lettuce : add crisp layer\nLettuce -> Patty : place patty\nHeat -> Patty : cooks\nPatty -> Cheese : add while hot\nCheese -> CheeseMelted : check\nCheeseMelted -> Bacon : Yes\nCheeseMelted -> Patty : No, keep heating\nBacon -> Egg : add next protein\nHeat -> Bacon : crisps\nHeat -> Egg : fries\nEgg -> EggDone : check\nEggDone -> Tomato : Yes\nEggDone -> Egg : No, cook longer\nTomato -> TopBun : final layer\nTopBun -> Stack : close burger\nStack -> Skewer : stabilize\nSkewer -> Plate : move to plate\nPlate -> Serve : ready\nCheeseMelted -x-> Bacon : if not melted yet\nEggDone -x-> Tomato : if egg is not ready\nNote -- Burger : explains layer meaning",
+    "layout": {},
+    "manualMeta": {}
+  },
+  {
     "title": "Core Papers and Concepts in Modern Physics (Role Layer Example)",
     "name": "Physics Cluster Example",
     "savedAt": "Initial sample",
-    "source": "title: Core Papers and Concepts in Modern Physics (Role Layer Example)
-direction: Cluster
-
-#nodes
-Physics((Modern Physics)) +Core
-Newton1687[Newton 1687
-Principia] +Theory +Classical
-Maxwell1865[Maxwell 1865
-Field Equations] +Theory +Electromagnetism
-Boltzmann1877[Boltzmann 1877
-Statistical Mechanics] +Theory +Statistics
-MichelsonMorley1887[Michelson-Morley 1887
-Ether Problem] +Experiment +Relativity
-Planck1900[Planck 1900
-Blackbody Radiation] +Theory +Quantum
-Einstein1905Photo[Einstein 1905
-Light Quantum] +Theory +Quantum
-Einstein1905SR[Einstein 1905
-Special Relativity] +Theory +Relativity +Core
-Einstein1905Mass[Einstein 1905
-Mass-Energy] +Theory +Relativity
-Einstein1905Brownian[Einstein 1905
-Brownian Motion] +Theory +Statistics
-Minkowski1908[Minkowski 1908
-Spacetime] +Synthesis +Relativity
-Einstein1915GR[Einstein 1915
-General Relativity] +Theory +Relativity
-Friedmann1922[Friedmann 1922
-Expanding-Universe Solutions] +Theory +Cosmology
-Hubble1929[Hubble 1929
-Galactic Recession] +Experiment +Cosmology
-Rutherford1911[Rutherford 1911
-Nuclear Model] +Experiment +Quantum
-Bohr1913[Bohr 1913
-Atomic Model] +Theory +Quantum
-DeBroglie1924[de Broglie 1924
-Matter Waves] +Theory +Quantum
-Heisenberg1925[Heisenberg 1925
-Matrix Mechanics] +Theory +Quantum
-Schrodinger1926[Schrodinger 1926
-Wave Mechanics] +Theory +Quantum
-Born1926[Born 1926
-Probabilistic Interpretation] +Interpretation +Quantum
-Dirac1928[Dirac 1928
-Relativistic Electron] +Synthesis +Quantum +Relativity
-EPR1935[EPR 1935
-Quantum Nonlocality Problem] +Problem +Quantum
-Bell1964[Bell 1964
-Bell Inequality] +Problem +Quantum
-Aspect1982[Aspect 1982
-Bell Test Experiment] +Experiment +Quantum
-Feynman1948[Feynman 1948
-Path Integral] +Synthesis +Quantum
-YangMills1954[Yang-Mills 1954
-Gauge Theory] +Synthesis +FieldTheory
-BCS1957[BCS 1957
-Superconductivity] +Theory +CondensedMatter
-GellMann1964[Gell-Mann 1964
-Quark Model] +Theory +Particle
-Higgs1964[Higgs 1964
-Mass-Generation Mechanism] +Theory +Particle
-Weinberg1967[Weinberg 1967
-Electroweak Unification] +Synthesis +Particle
-Wilson1971[Wilson 1971
-Renormalization Group] +Synthesis +FieldTheory
-Hawking1974[Hawking 1974
-Black Hole Radiation] +Synthesis +Gravity +Quantum
-Classical[(Classical Physics)] +Field +Classical
-Electromagnetism[(Electromagnetism)] +Field +Electromagnetism
-Statistical[(Statistical Physics)] +Field +Statistics
-Quantum[(Quantum Theory)] +Field +Quantum
-Relativity[(Relativity)] +Field +Relativity
-Cosmology[(Cosmology)] +Field +Cosmology
-QFT[(Quantum Field Theory)] +Field +FieldTheory
-Particle[(Particle Physics)] +Field +Particle
-Condensed[(Condensed Matter Physics)] +Field +CondensedMatter
-Notice>Colors represent epistemic roles, not fields. The first tag determines color; later tags provide detail.] +Note
-
-#styles
-+Core color:#fde68a
-+Theory color:#dbeafe
-+Experiment color:#dcfce7
-+Interpretation color:#fef9c3
-+Synthesis color:#fbcfe8
-+Problem color:#fed7aa
-+Field color:#e5e7eb
-+Note color:#f5f5f5
-
-#edges
-Physics => Classical : prehistory
-Physics => Electromagnetism : classical electromagnetism
-Physics => Statistical : probability and many particles
-Physics => Quantum : microscopic world
-Physics => Relativity : spacetime and gravity
-Physics => Cosmology : structure of the universe
-Physics => QFT : quantum theory and fields
-Physics => Particle : elementary particles
-Physics => Condensed : condensed matter
-
-Newton1687 => Classical : classical mechanics
-Maxwell1865 => Electromagnetism : electromagnetism
-Boltzmann1877 => Statistical : statistical mechanics
-Planck1900 => Quantum : quantum hypothesis
-Einstein1905SR => Relativity : special relativity
-Einstein1915GR => Relativity : general relativity
-Friedmann1922 => Cosmology : dynamic universe
-Hubble1929 => Cosmology : observational cosmology
-Heisenberg1925 => Quantum : quantum mechanics
-Schrodinger1926 => Quantum : quantum mechanics
-Born1926 => Quantum : probabilistic interpretation
-Dirac1928 => QFT : relativistic quantum theory
-YangMills1954 => QFT : gauge theory
-GellMann1964 => Particle : hadron classification
-Higgs1964 => Particle : mass generation
-Weinberg1967 => Particle : electroweak unification
-BCS1957 => Condensed : many-body quantum theory
-Wilson1971 => QFT : reconstruction of field theory
-Wilson1971 => Condensed : understanding critical phenomena
-
-Newton1687 -> Einstein1905SR : revises absolute spacetime
-Maxwell1865 -> Einstein1905SR : constant speed of light problem
-MichelsonMorley1887 -> Einstein1905SR : pressure on ether hypothesis
-Einstein1905SR -> Einstein1905Mass : mass-energy relation
-Einstein1905SR -> Minkowski1908 : geometric spacetime
-Minkowski1908 -> Einstein1915GR : geometric theory of gravity
-Einstein1915GR -> Friedmann1922 : solutions to field equations
-Friedmann1922 -> Hubble1929 : observational support for expansion
-Einstein1915GR -> Hawking1974 : basis for black-hole theory
-
-Boltzmann1877 -> Planck1900 : statistical background to blackbody radiation
-Boltzmann1877 -> Einstein1905Brownian : atomism and stochastic processes
-Einstein1905Brownian -> Statistical : supports the reality of atoms
-Boltzmann1877 -> Born1926 : basis for probabilistic worldview
-
-Planck1900 -> Einstein1905Photo : extends quantum hypothesis to light
-Einstein1905Photo -> Quantum : particle nature of light
-Rutherford1911 -> Bohr1913 : provides nuclear model
-Planck1900 -> Bohr1913 : quantum condition
-Bohr1913 -> DeBroglie1924 : from old quantum theory to matter waves
-DeBroglie1924 -> Schrodinger1926 : basis of wave mechanics
-Bohr1913 -> Heisenberg1925 : toward observable-centered formulation
-Heisenberg1925 == Schrodinger1926 : equivalent formulations
-Schrodinger1926 -> Born1926 : meaning of the wave function
-
-Einstein1905SR -> Dirac1928 : relativistic constraints
-Schrodinger1926 -> Dirac1928 : extension of quantum equations
-Dirac1928 -> QFT : antiparticles, spin, and field theory
-Schrodinger1926 == Feynman1948 : alternative formulation
-Feynman1948 -> QFT : path-integral computation
-Dirac1928 -> Feynman1948 : development of relativistic quantum theory
-Feynman1948 -> YangMills1954 : extends field-theoretic thinking
-
-Born1926 -> EPR1935 : challenge to probabilistic interpretation
-EPR1935 -> Bell1964 : makes nonlocality testable
-Bell1964 -> Aspect1982 : leads to experimental tests
-Aspect1982 -> Quantum : empirical support for quantum correlations
-
-YangMills1954 -> GellMann1964 : theoretical background for strong interaction
-YangMills1954 -> Weinberg1967 : foundation for electroweak theory
-Higgs1964 -> Weinberg1967 : symmetry breaking and mass generation
-Weinberg1967 -> Particle : path to the Standard Model
-Wilson1971 -> YangMills1954 : clarifies renormalization
-Wilson1971 -> BCS1957 : connects many-body physics and field theory
-
-Quantum <-> Relativity : unification problem
-Quantum <-> QFT : quantum theory as fields
-Relativity <-> QFT : basis of high-energy physics
-Relativity -> Cosmology : gravitational cosmology
-QFT -> Particle : language of particle physics
-QFT -> Condensed : applications to condensed matter
-Hawking1974 -> QFT : quantum fields in curved spacetime
-Hawking1974 -> Cosmology : black-hole thermodynamics
-
-Notice -- Physics : note on color policy",
+    "source": "title: Core Papers and Concepts in Modern Physics (Role Layer Example)\ndirection: Cluster\n\n#nodes\nPhysics((Modern Physics)) +Core\nNewton1687[Newton 1687\nPrincipia] +Theory +Classical\nMaxwell1865[Maxwell 1865\nField Equations] +Theory +Electromagnetism\nBoltzmann1877[Boltzmann 1877\nStatistical Mechanics] +Theory +Statistics\nMichelsonMorley1887[Michelson-Morley 1887\nEther Problem] +Experiment +Relativity\nPlanck1900[Planck 1900\nBlackbody Radiation] +Theory +Quantum\nEinstein1905Photo[Einstein 1905\nLight Quantum] +Theory +Quantum\nEinstein1905SR[Einstein 1905\nSpecial Relativity] +Theory +Relativity +Core\nEinstein1905Mass[Einstein 1905\nMass-Energy] +Theory +Relativity\nEinstein1905Brownian[Einstein 1905\nBrownian Motion] +Theory +Statistics\nMinkowski1908[Minkowski 1908\nSpacetime] +Synthesis +Relativity\nEinstein1915GR[Einstein 1915\nGeneral Relativity] +Theory +Relativity\nFriedmann1922[Friedmann 1922\nExpanding-Universe Solutions] +Theory +Cosmology\nHubble1929[Hubble 1929\nGalactic Recession] +Experiment +Cosmology\nRutherford1911[Rutherford 1911\nNuclear Model] +Experiment +Quantum\nBohr1913[Bohr 1913\nAtomic Model] +Theory +Quantum\nDeBroglie1924[de Broglie 1924\nMatter Waves] +Theory +Quantum\nHeisenberg1925[Heisenberg 1925\nMatrix Mechanics] +Theory +Quantum\nSchrodinger1926[Schrodinger 1926\nWave Mechanics] +Theory +Quantum\nBorn1926[Born 1926\nProbabilistic Interpretation] +Interpretation +Quantum\nDirac1928[Dirac 1928\nRelativistic Electron] +Synthesis +Quantum +Relativity\nEPR1935[EPR 1935\nQuantum Nonlocality Problem] +Problem +Quantum\nBell1964[Bell 1964\nBell Inequality] +Problem +Quantum\nAspect1982[Aspect 1982\nBell Test Experiment] +Experiment +Quantum\nFeynman1948[Feynman 1948\nPath Integral] +Synthesis +Quantum\nYangMills1954[Yang-Mills 1954\nGauge Theory] +Synthesis +FieldTheory\nBCS1957[BCS 1957\nSuperconductivity] +Theory +CondensedMatter\nGellMann1964[Gell-Mann 1964\nQuark Model] +Theory +Particle\nHiggs1964[Higgs 1964\nMass-Generation Mechanism] +Theory +Particle\nWeinberg1967[Weinberg 1967\nElectroweak Unification] +Synthesis +Particle\nWilson1971[Wilson 1971\nRenormalization Group] +Synthesis +FieldTheory\nHawking1974[Hawking 1974\nBlack Hole Radiation] +Synthesis +Gravity +Quantum\nClassical[(Classical Physics)] +Field +Classical\nElectromagnetism[(Electromagnetism)] +Field +Electromagnetism\nStatistical[(Statistical Physics)] +Field +Statistics\nQuantum[(Quantum Theory)] +Field +Quantum\nRelativity[(Relativity)] +Field +Relativity\nCosmology[(Cosmology)] +Field +Cosmology\nQFT[(Quantum Field Theory)] +Field +FieldTheory\nParticle[(Particle Physics)] +Field +Particle\nCondensed[(Condensed Matter Physics)] +Field +CondensedMatter\nNotice>Colors represent epistemic roles, not fields. The first tag determines color; later tags provide detail.] +Note\n\n#styles\n+Core color:#fde68a\n+Theory color:#dbeafe\n+Experiment color:#dcfce7\n+Interpretation color:#fef9c3\n+Synthesis color:#fbcfe8\n+Problem color:#fed7aa\n+Field color:#e5e7eb\n+Note color:#f5f5f5\n\n#edges\nPhysics => Classical : prehistory\nPhysics => Electromagnetism : classical electromagnetism\nPhysics => Statistical : probability and many particles\nPhysics => Quantum : microscopic world\nPhysics => Relativity : spacetime and gravity\nPhysics => Cosmology : structure of the universe\nPhysics => QFT : quantum theory and fields\nPhysics => Particle : elementary particles\nPhysics => Condensed : condensed matter\n\nNewton1687 => Classical : classical mechanics\nMaxwell1865 => Electromagnetism : electromagnetism\nBoltzmann1877 => Statistical : statistical mechanics\nPlanck1900 => Quantum : quantum hypothesis\nEinstein1905SR => Relativity : special relativity\nEinstein1915GR => Relativity : general relativity\nFriedmann1922 => Cosmology : dynamic universe\nHubble1929 => Cosmology : observational cosmology\nHeisenberg1925 => Quantum : quantum mechanics\nSchrodinger1926 => Quantum : quantum mechanics\nBorn1926 => Quantum : probabilistic interpretation\nDirac1928 => QFT : relativistic quantum theory\nYangMills1954 => QFT : gauge theory\nGellMann1964 => Particle : hadron classification\nHiggs1964 => Particle : mass generation\nWeinberg1967 => Particle : electroweak unification\nBCS1957 => Condensed : many-body quantum theory\nWilson1971 => QFT : reconstruction of field theory\nWilson1971 => Condensed : understanding critical phenomena\n\nNewton1687 -> Einstein1905SR : revises absolute spacetime\nMaxwell1865 -> Einstein1905SR : constant speed of light problem\nMichelsonMorley1887 -> Einstein1905SR : pressure on ether hypothesis\nEinstein1905SR -> Einstein1905Mass : mass-energy relation\nEinstein1905SR -> Minkowski1908 : geometric spacetime\nMinkowski1908 -> Einstein1915GR : geometric theory of gravity\nEinstein1915GR -> Friedmann1922 : solutions to field equations\nFriedmann1922 -> Hubble1929 : observational support for expansion\nEinstein1915GR -> Hawking1974 : basis for black-hole theory\n\nBoltzmann1877 -> Planck1900 : statistical background to blackbody radiation\nBoltzmann1877 -> Einstein1905Brownian : atomism and stochastic processes\nEinstein1905Brownian -> Statistical : supports the reality of atoms\nBoltzmann1877 -> Born1926 : basis for probabilistic worldview\n\nPlanck1900 -> Einstein1905Photo : extends quantum hypothesis to light\nEinstein1905Photo -> Quantum : particle nature of light\nRutherford1911 -> Bohr1913 : provides nuclear model\nPlanck1900 -> Bohr1913 : quantum condition\nBohr1913 -> DeBroglie1924 : from old quantum theory to matter waves\nDeBroglie1924 -> Schrodinger1926 : basis of wave mechanics\nBohr1913 -> Heisenberg1925 : toward observable-centered formulation\nHeisenberg1925 == Schrodinger1926 : equivalent formulations\nSchrodinger1926 -> Born1926 : meaning of the wave function\n\nEinstein1905SR -> Dirac1928 : relativistic constraints\nSchrodinger1926 -> Dirac1928 : extension of quantum equations\nDirac1928 -> QFT : antiparticles, spin, and field theory\nSchrodinger1926 == Feynman1948 : alternative formulation\nFeynman1948 -> QFT : path-integral computation\nDirac1928 -> Feynman1948 : development of relativistic quantum theory\nFeynman1948 -> YangMills1954 : extends field-theoretic thinking\n\nBorn1926 -> EPR1935 : challenge to probabilistic interpretation\nEPR1935 -> Bell1964 : makes nonlocality testable\nBell1964 -> Aspect1982 : leads to experimental tests\nAspect1982 -> Quantum : empirical support for quantum correlations\n\nYangMills1954 -> GellMann1964 : theoretical background for strong interaction\nYangMills1954 -> Weinberg1967 : foundation for electroweak theory\nHiggs1964 -> Weinberg1967 : symmetry breaking and mass generation\nWeinberg1967 -> Particle : path to the Standard Model\nWilson1971 -> YangMills1954 : clarifies renormalization\nWilson1971 -> BCS1957 : connects many-body physics and field theory\n\nQuantum <-> Relativity : unification problem\nQuantum <-> QFT : quantum theory as fields\nRelativity <-> QFT : basis of high-energy physics\nRelativity -> Cosmology : gravitational cosmology\nQFT -> Particle : language of particle physics\nQFT -> Condensed : applications to condensed matter\nHawking1974 -> QFT : quantum fields in curved spacetime\nHawking1974 -> Cosmology : black-hole thermodynamics\n\nNotice -- Physics : note on color policy",
     "layout": {},
     "manualMeta": {}
   },
@@ -471,126 +234,15 @@ Notice -- Physics : note on color policy",
     "title": "Zeus and Hera Family Categories",
     "name": "Greek Mythology Focus Example",
     "savedAt": "Initial sample",
-    "source": "title: Zeus and Hera Family Categories
-direction: Focus
-
-#nodes
-Zeus((Zeus
-Sky and thunder god)) +Parent
-Hera[Hera
-Goddess of marriage and sovereignty] +Parent
-Poseidon[Poseidon
-God of the sea] +Sibling
-Hades[Hades
-God of the underworld] +Sibling
-Demeter[Demeter
-Goddess of agriculture] +Sibling
-Hestia[Hestia
-Goddess of the hearth] +Sibling
-Athena[Athena
-Goddess of wisdom] +Child
-Apollo[Apollo
-God of prophecy and arts] +Child
-Artemis[Artemis
-Goddess of the hunt] +Child
-Ares[Ares
-God of war] +Child
-Hermes[Hermes
-Messenger god] +Child
-Dionysus[Dionysus
-God of wine and ecstasy] +Child
-Persephone[Persephone
-Queen of the underworld] +Child
-Hephaestus[Hephaestus
-God of smithing] +Child
-SiblingsOrder[Sibling network
-Gods of Zeus's generation]
-DivineFamily[Divine family
-Parent, sibling, and child categories]
-MarriageHera[Marriage of Zeus and Hera
-Stabilizes divine sovereignty]
-BirthAthena[Birth of Athena
-Born from the head of Zeus]
-BirthTwins[Birth of Apollo and Artemis
-Formation of the twin deities]
-DionysusBirth[Birth of Dionysus
-The twice-born god]
-PersephoneAbduction[Abduction of Persephone
-Underworld and seasonal myth]
-Thunderbolt[Thunderbolt
-Weapon of Zeus]
-Aegis[Aegis
-Protection and majesty]
-MountOlympus[Mount Olympus
-Seat of divine rule]
-
-#styles
-+Parent color:#fde68a
-+Sibling color:#dbeafe
-+Child color:#dcfce7
-
-#edges
-Zeus <-> Hera : married couple
-Zeus => DivineFamily : parent category
-Hera => DivineFamily : parent category
-Poseidon => DivineFamily : sibling category
-Hades => DivineFamily : sibling category
-Demeter => DivineFamily : sibling category
-Hestia => DivineFamily : sibling category
-Athena => DivineFamily : child category
-Apollo => DivineFamily : child category
-Artemis => DivineFamily : child category
-Ares => DivineFamily : child category
-Hermes => DivineFamily : child category
-Dionysus => DivineFamily : child category
-Persephone => DivineFamily : child category
-Hephaestus => DivineFamily : child category
-Zeus <-> Poseidon : brothers
-Zeus <-> Hades : brothers
-Zeus <-> Demeter : siblings
-Zeus <-> Hestia : siblings
-Hera <-> Poseidon : siblings
-Hera <-> Hades : siblings
-Hera <-> Demeter : sisters
-Hera <-> Hestia : sisters
-Poseidon <-> Hades : brothers
-Demeter <-> Hestia : sisters
-SiblingsOrder -- Zeus : generational center
-SiblingsOrder -- Hera : queen of the same generation
-SiblingsOrder -- Poseidon : sibling
-SiblingsOrder -- Hades : sibling
-SiblingsOrder -- Demeter : sibling
-SiblingsOrder -- Hestia : sibling
-Zeus -> Athena : father
-Zeus -> Apollo : father
-Zeus -> Artemis : father
-Zeus -> Ares : father
-Hera -> Ares : mother
-Zeus -> Hermes : father
-Zeus -> Dionysus : father
-Zeus -> Persephone : father
-Demeter -> Persephone : mother
-Hera -> Hephaestus : mother
-Zeus -- Hephaestus : father in some traditions
-Apollo <-> Artemis : twins
-Hades <-> Persephone : married couple
-Zeus -> MarriageHera : marriage
-Hera -> MarriageHera : marriage
-MarriageHera -> DivineFamily : forms the center of the parent category
-Zeus -> BirthAthena : father
-BirthAthena -> Athena : birth
-Zeus -> BirthTwins : father
-BirthTwins -> Apollo : birth
-BirthTwins -> Artemis : birth
-Zeus -> DionysusBirth : father
-DionysusBirth -> Dionysus : birth
-PersephoneAbduction -> Persephone : moves to the underworld
-PersephoneAbduction -> Demeter : mother's loss and seasonal myth
-PersephoneAbduction -> Hades : gains queen of the underworld
-Zeus -> Thunderbolt : uses as a weapon
-Zeus -> Aegis : symbol of majesty and protection
-Zeus -> MountOlympus : rules from this seat
-Hera -> MountOlympus : sits as queen",
+    "source": "title: Zeus and Hera Family Categories\ndirection: Focus\n\n#nodes\nZeus((Zeus\nSky and thunder god)) +Parent\nHera[Hera\nGoddess of marriage and sovereignty] +Parent\nPoseidon[Poseidon\nGod of the sea] +Sibling\nHades[Hades\nGod of the underworld] +Sibling\nDemeter[Demeter\nGoddess of agriculture] +Sibling\nHestia[Hestia\nGoddess of the hearth] +Sibling\nAthena[Athena\nGoddess of wisdom] +Child\nApollo[Apollo\nGod of prophecy and arts] +Child\nArtemis[Artemis\nGoddess of the hunt] +Child\nAres[Ares\nGod of war] +Child\nHermes[Hermes\nMessenger god] +Child\nDionysus[Dionysus\nGod of wine and ecstasy] +Child\nPersephone[Persephone\nQueen of the underworld] +Child\nHephaestus[Hephaestus\nGod of smithing] +Child\nSiblingsOrder[Sibling network\nGods of Zeus's generation]\nDivineFamily[Divine family\nParent, sibling, and child categories]\nMarriageHera[Marriage of Zeus and Hera\nStabilizes divine sovereignty]\nBirthAthena[Birth of Athena\nBorn from the head of Zeus]\nBirthTwins[Birth of Apollo and Artemis\nFormation of the twin deities]\nDionysusBirth[Birth of Dionysus\nThe twice-born god]\nPersephoneAbduction[Abduction of Persephone\nUnderworld and seasonal myth]\nThunderbolt[Thunderbolt\nWeapon of Zeus]\nAegis[Aegis\nProtection and majesty]\nMountOlympus[Mount Olympus\nSeat of divine rule]\n\n#styles\n+Parent color:#fde68a\n+Sibling color:#dbeafe\n+Child color:#dcfce7\n\n#edges\nZeus <-> Hera : married couple\nZeus => DivineFamily : parent category\nHera => DivineFamily : parent category\nPoseidon => DivineFamily : sibling category\nHades => DivineFamily : sibling category\nDemeter => DivineFamily : sibling category\nHestia => DivineFamily : sibling category\nAthena => DivineFamily : child category\nApollo => DivineFamily : child category\nArtemis => DivineFamily : child category\nAres => DivineFamily : child category\nHermes => DivineFamily : child category\nDionysus => DivineFamily : child category\nPersephone => DivineFamily : child category\nHephaestus => DivineFamily : child category\nZeus <-> Poseidon : brothers\nZeus <-> Hades : brothers\nZeus <-> Demeter : siblings\nZeus <-> Hestia : siblings\nHera <-> Poseidon : siblings\nHera <-> Hades : siblings\nHera <-> Demeter : sisters\nHera <-> Hestia : sisters\nPoseidon <-> Hades : brothers\nDemeter <-> Hestia : sisters\nSiblingsOrder -- Zeus : generational center\nSiblingsOrder -- Hera : queen of the same generation\nSiblingsOrder -- Poseidon : sibling\nSiblingsOrder -- Hades : sibling\nSiblingsOrder -- Demeter : sibling\nSiblingsOrder -- Hestia : sibling\nZeus -> Athena : father\nZeus -> Apollo : father\nZeus -> Artemis : father\nZeus -> Ares : father\nHera -> Ares : mother\nZeus -> Hermes : father\nZeus -> Dionysus : father\nZeus -> Persephone : father\nDemeter -> Persephone : mother\nHera -> Hephaestus : mother\nZeus -- Hephaestus : father in some traditions\nApollo <-> Artemis : twins\nHades <-> Persephone : married couple\nZeus -> MarriageHera : marriage\nHera -> MarriageHera : marriage\nMarriageHera -> DivineFamily : forms the center of the parent category\nZeus -> BirthAthena : father\nBirthAthena -> Athena : birth\nZeus -> BirthTwins : father\nBirthTwins -> Apollo : birth\nBirthTwins -> Artemis : birth\nZeus -> DionysusBirth : father\nDionysusBirth -> Dionysus : birth\nPersephoneAbduction -> Persephone : moves to the underworld\nPersephoneAbduction -> Demeter : mother's loss and seasonal myth\nPersephoneAbduction -> Hades : gains queen of the underworld\nZeus -> Thunderbolt : uses as a weapon\nZeus -> Aegis : symbol of majesty and protection\nZeus -> MountOlympus : rules from this seat\nHera -> MountOlympus : sits as queen",
+    "layout": {},
+    "manualMeta": {}
+  },
+  {
+    "title": "Ocean Circular Flow",
+    "name": "Ocean Circular Flow",
+    "savedAt": "Initial sample",
+    "source": "title: Ocean Circular Flow\ndirection: Circle\n\n#nodes\nOcean[(OCEAN)] +Storage +Core\nSun[Sunlight] +Energy\nEvaporation[Evaporation] +Process\nWaterVapor[Water vapor] +State\nCondensation[Condensation] +Process\nClouds[Clouds] +State\nPrecipitation[Precipitation] +Process\nRain[Rain] +State\nRunoff[Surface runoff] +Process\nRiver[River] +Storage\nInfiltration[Infiltration] +Process\nGroundwater[(Groundwater)] +Storage\nPlants[Plants] +Living\nTranspiration[Transpiration] +Process\nSnow[Snow and ice] +Storage\nMeltwater[Meltwater] +Process\nPollution[Pollution] +Risk\n\n#styles\n+Core color:#bfdbfe\n+Energy color:#fef9c3\n+Storage color:#dbeafe\n+Process color:#dcfce7\n+State color:#e0f2fe\n+Living color:#bbf7d0\n+Risk color:#fecaca\n@Ocean color:#bfdbfe shape:circle size:l\n@Sun color:#fde68a shape:star size:m\n@Clouds color:#e0f2fe shape:ellipse size:m\n@Rain color:#dbeafe shape:document\n@River color:#93c5fd shape:parallelogram size:m\n@Groundwater color:#bfdbfe shape:double\n@Plants color:#bbf7d0 shape:star\n@Pollution color:#fecaca shape:trapezoid\n\n#edges\nOcean -> Evaporation : surface water warms\nSun -> Evaporation : provides energy\nEvaporation -> WaterVapor : rises as vapor\nWaterVapor -> Condensation : cools in the air\nCondensation -> Clouds : forms clouds\nClouds -> Precipitation : releases water\nPrecipitation -> Rain : falls as liquid water\nRain -> Runoff : flows over land\nRunoff -> River : gathers into channels\nRiver -> Ocean : returns to the sea\nRain -> Infiltration : enters soil\nInfiltration -> Groundwater : stored below ground\nGroundwater -> River : feeds the river\nPlants -> Transpiration : release moisture\nTranspiration -> WaterVapor : adds vapor to air\nPrecipitation -> Snow : freezes at high altitude\nSnow -> Meltwater : melts when warm\nMeltwater -> River : joins the river\nPollution -x-> River : reduces water quality\nPollution -x-> Groundwater : contaminates storage\nOcean <-> Clouds : continuous exchange over time",
     "layout": {},
     "manualMeta": {}
   },
@@ -598,75 +250,42 @@ Hera -> MountOlympus : sits as queen",
     "title": "FizzBuzz Process Flow",
     "name": "FizzBuzz Flow Example",
     "savedAt": "Initial sample",
-    "source": "title: FizzBuzz Process Flow
-direction: Flow
-
-#nodes
-FizzBuzz((FizzBuzz)) +Core
-InputN[(Input n)] +Input
-Loop[Repeat from 1 to n] +Process
-CurrentI[(Current number i)] +Input
-Check15{i % 15 == 0?} +Decision
-PrintFizzBuzz[print FizzBuzz] +Output
-Check3{i % 3 == 0?} +Decision
-PrintFizz[print Fizz] +Output
-Check5{i % 5 == 0?} +Decision
-PrintBuzz[print Buzz] +Output
-PrintNumber[print i] +Output
-NextI[Next i] +Process
-End((End)) +End
-Modulo[(Modulo operator %)] +Concept
-Rule15[Divisible by both 3 and 5] +Rule
-Rule3[Divisible by 3] +Rule
-Rule5[Divisible by 5] +Rule
-
-#styles
-+Core color:#fde68a
-+Input color:#e0f2fe
-+Process color:#dbeafe
-+Decision color:#fed7aa
-+Output color:#dcfce7
-+End color:#e5e7eb
-+Concept color:#ede9fe
-+Rule color:#fef9c3
-+Note color:#f5f5f5
-
-#edges
-FizzBuzz -> InputN : receive input
-InputN -> Loop : start iteration
-Loop -> CurrentI : take i
-CurrentI -> Check15 : test 15 first
-Check15 -> PrintFizzBuzz : Yes
-Check15 -> Check3 : No
-Check3 -> PrintFizz : Yes
-Check3 -> Check5 : No
-Check5 -> PrintBuzz : Yes
-Check5 -> PrintNumber : No
-PrintFizzBuzz -> NextI : after output
-PrintFizz -> NextI : after output
-PrintBuzz -> NextI : after output
-PrintNumber -> NextI : after output
-NextI -> Loop : next number
-Loop -> End : complete up to n
-Modulo -> Check15 : used by
-Modulo -> Check3 : used by
-Modulo -> Check5 : used by
-Rule15 -> Check15 : condition
-Rule3 -> Check3 : condition
-Rule5 -> Check5 : condition
-Check15 -x-> Check3 : if Yes, skip later checks
-Check3 -x-> Check5 : if Yes, skip later checks
-Check5 -x-> PrintNumber : if Yes, skip number output",
+    "source": "title: FizzBuzz Process Flow\ndirection: Flow\n\n#nodes\nFizzBuzz((FizzBuzz)) +Core\nInputN[(Input n)] +Input\nLoop[Repeat from 1 to n] +Process\nCurrentI[(Current number i)] +Input\nCheck15{i % 15 == 0?} +Decision\nPrintFizzBuzz[print FizzBuzz] +Output\nCheck3{i % 3 == 0?} +Decision\nPrintFizz[print Fizz] +Output\nCheck5{i % 5 == 0?} +Decision\nPrintBuzz[print Buzz] +Output\nPrintNumber[print i] +Output\nNextI[Next i] +Process\nEnd((End)) +End\nModulo[(Modulo operator %)] +Concept\nRule15[Divisible by both 3 and 5] +Rule\nRule3[Divisible by 3] +Rule\nRule5[Divisible by 5] +Rule\n\n#styles\n+Core color:#fde68a\n+Input color:#e0f2fe\n+Process color:#dbeafe\n+Decision color:#fed7aa\n+Output color:#dcfce7\n+End color:#e5e7eb\n+Concept color:#ede9fe\n+Rule color:#fef9c3\n+Note color:#f5f5f5\n\n#edges\nFizzBuzz -> InputN : receive input\nInputN -> Loop : start iteration\nLoop -> CurrentI : take i\nCurrentI -> Check15 : test 15 first\nCheck15 -> PrintFizzBuzz : Yes\nCheck15 -> Check3 : No\nCheck3 -> PrintFizz : Yes\nCheck3 -> Check5 : No\nCheck5 -> PrintBuzz : Yes\nCheck5 -> PrintNumber : No\nPrintFizzBuzz -> NextI : after output\nPrintFizz -> NextI : after output\nPrintBuzz -> NextI : after output\nPrintNumber -> NextI : after output\nNextI -> Loop : next number\nLoop -> End : complete up to n\nModulo -> Check15 : used by\nModulo -> Check3 : used by\nModulo -> Check5 : used by\nRule15 -> Check15 : condition\nRule3 -> Check3 : condition\nRule5 -> Check5 : condition\nCheck15 -x-> Check3 : if Yes, skip later checks\nCheck3 -x-> Check5 : if Yes, skip later checks\nCheck5 -x-> PrintNumber : if Yes, skip number output",
     "layout": {},
     "manualMeta": {}
   },
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null
+  {
+    "title": "Forest Ecosystem Relationship Map",
+    "name": "Forest Ecosystem",
+    "savedAt": "Initial sample",
+    "source": "title: Forest Ecosystem Relationship Map\ndirection: Cluster\n\n#nodes\nForest((Forest Ecosystem)) +Core\nSun[Sun] +Energy\nSoil[(Soil)] +Environment\nWater[(Water)] +Environment\nTree[Tree] +Producer\nGrass[Grass] +Producer\nFlower[Flower] +Producer\nInsect[Insect] +PrimaryConsumer\nRabbit[Rabbit] +PrimaryConsumer\nDeer[Deer] +PrimaryConsumer\nBird[Bird] +SecondaryConsumer\nFox[Fox] +Predator\nWolf[Wolf] +Predator\nOwl[Owl] +Predator\nMushroom[Mushroom] +Decomposer\nBacteria[Bacteria] +Decomposer\nNutrients[Nutrients] +Resource\nDeadMatter[(Dead leaves and animals)] +Resource\nHumanImpact[Human impact] +Risk\n\n#styles\n+Core color:#fde68a\n+Energy color:#fef9c3\n+Environment color:#dbeafe\n+Producer color:#dcfce7\n+PrimaryConsumer color:#e0f2fe\n+SecondaryConsumer color:#ede9fe\n+Predator color:#fee2e2\n+Decomposer color:#fed7aa\n+Resource color:#e5e7eb\n+Risk color:#fecaca\n\n#edges\nForest => Tree : contains\nForest => Grass : contains\nForest => Flower : contains\nForest => Rabbit : contains\nForest => Fox : contains\nForest => Mushroom : contains\nSun -> Tree : energy\nSun -> Grass : energy\nSun -> Flower : energy\nSoil -> Tree : supports roots\nWater -> Tree : hydrates\nWater -> Grass : hydrates\nTree -> DeadMatter : drops leaves\nGrass -> Rabbit : eaten by\nGrass -> Deer : eaten by\nFlower -> Insect : nectar and pollen\nInsect -> Bird : eaten by\nRabbit -> Fox : prey of\nRabbit -> Owl : prey of\nDeer -> Wolf : prey of\nBird -> Fox : prey of\nDeadMatter -> Mushroom : decomposed by\nDeadMatter -> Bacteria : decomposed by\nMushroom -> Nutrients : releases\nBacteria -> Nutrients : releases\nNutrients -> Soil : enriches\nSoil -> Grass : feeds\nSoil -> Flower : feeds\nFox <-> Wolf : compete\nBird <-> Tree : nests in\nHumanImpact -x-> Forest : can damage balance\nHumanImpact -x-> Water : can pollute",
+    "layout": {},
+    "manualMeta": {}
+  },
+  {
+    "title": "AI Agent Project Map",
+    "name": "AI Agent Project Map",
+    "savedAt": "Initial sample",
+    "source": "title: AI Agent Project Map\ndirection: Focus\n\n#nodes\nAgentMap((AI Agent Project Map)) +Core\nAgentsMD[AGENTS.md] +Entry\nClaudeMD[CLAUDE.md] +Entry\nProjectFlowLite[(project.flowlite)] +Map\nMissionMD[MISSION.md] +CoreDoc\nProjectMD[PROJECT.md] +CoreDoc\nTasksMD[TASKS.md] +CoreDoc\nRulesMD[RULES.md] +CoreDoc\nMemoryMD[MEMORY.md] +CoreDoc\nPlanMD[PLAN.md] +Ledger\nChangelogMD[CHANGELOG.md] +Ledger\nTestingMD[TESTING.md] +Ledger\nDecisionsMD[DECISIONS.md] +Ledger\nSourceCode[(Source code)] +Artifact\nTests[(Tests)] +Artifact\nRelease[(Release)] +Artifact\nUnsafeChange[Unsafe change] +Risk\nUserRequest[User request] +Input\nAgentWork[Agent work] +Process\n\n#styles\n+Core color:#fde68a\n+Entry color:#fef9c3\n+Map color:#e0f2fe\n+CoreDoc color:#dbeafe\n+Ledger color:#dcfce7\n+Artifact color:#ede9fe\n+Risk color:#fecaca\n+Input color:#fed7aa\n+Process color:#fbcfe8\n\n#edges\nUserRequest -> AgentsMD : read instructions\nAgentsMD -> ProjectFlowLite : start from map\nClaudeMD -> ProjectFlowLite : alternative entry\nProjectFlowLite -> MissionMD : purpose\nProjectFlowLite -> ProjectMD : project outline\nProjectFlowLite -> TasksMD : current work\nProjectFlowLite -> RulesMD : constraints\nProjectFlowLite -> MemoryMD : durable context\nProjectFlowLite -> PlanMD : plan ledger\nProjectFlowLite -> ChangelogMD : change history\nProjectFlowLite -> TestingMD : test ledger\nProjectFlowLite -> DecisionsMD : decision ledger\nMissionMD -> AgentWork : guides\nTasksMD -> AgentWork : selects next task\nRulesMD -x-> UnsafeChange : blocks\nMemoryMD -> AgentWork : supplies context\nAgentWork -> SourceCode : edits\nAgentWork -> Tests : creates or runs\nTests -> TestingMD : records result\nDecisionsMD -> AgentWork : preserves reasoning\nSourceCode -> ChangelogMD : documents changes\nTestingMD -> Release : required before release\nChangelogMD -> Release : summarizes version",
+    "layout": {},
+    "manualMeta": {}
+  },
+  {
+    "title": "Web App Architecture",
+    "name": "Web App Architecture",
+    "savedAt": "Initial sample",
+    "source": "title: Web App Architecture\ndirection: Cluster\n\n#nodes\nWebApp((Web App)) +Core\nUser[User] +Actor\nBrowser[Browser] +Client\nFrontend[Frontend UI] +Client\nRouter[Router] +Client\nAPIServer[API Server] +Server\nAuth[Auth Service] +Server\nDatabase[(Database)] +Data\nObjectStorage[(Object Storage)] +Data\nCache[(Cache)] +Data\nPayment[Payment Provider] +External\nEmail[Email Service] +External\nLogger[Logger] +Ops\nMonitor[Error Monitor] +Ops\nAdmin[Admin Dashboard] +Client\nInvalidSession[Invalid session] +Risk\n\n#styles\n+Core color:#fde68a\n+Actor color:#fed7aa\n+Client color:#dbeafe\n+Server color:#dcfce7\n+Data color:#e0f2fe\n+External color:#ede9fe\n+Ops color:#fef9c3\n+Risk color:#fecaca\n\n#edges\nUser -> Browser : operates\nBrowser -> Frontend : loads\nFrontend -> Router : changes page\nFrontend -> APIServer : requests data\nAPIServer <-> Auth : verifies identity\nAuth -x-> APIServer : blocks invalid access\nInvalidSession -x-> Auth : fails verification\nAPIServer <-> Database : reads and writes\nAPIServer <-> Cache : stores fast responses\nAPIServer -> ObjectStorage : uploads files\nPayment -> APIServer : sends payment result\nAPIServer -> Email : sends notification\nAPIServer -> Logger : writes logs\nFrontend -> Monitor : reports client errors\nAPIServer -> Monitor : reports server errors\nAdmin -> APIServer : manages data\nAdmin => WebApp : internal tool\nFrontend => WebApp : user-facing part\nAPIServer => WebApp : backend part\nDatabase => WebApp : persistence layer",
+    "layout": {},
+    "manualMeta": {}
+  },
+  {
+    "title": "GitHub Development Flow",
+    "name": "GitHub Development Flow",
+    "savedAt": "Initial sample",
+    "source": "title: GitHub Development Flow\ndirection: Flow\n\n#nodes\nIdea((Idea)) +Start\nIssue[Issue] +Planning\nBranch[Feature branch] +Work\nCommit[Commit] +Work\nPullRequest[Pull Request] +Review\nReview[Code review] +Review\nCI[CI checks] +Check\nTests[Automated tests] +Check\nDocs[Docs update] +Work\nMerge[Merge] +Release\nRelease[Release] +Release\nBugReport[Bug report] +Feedback\nUserFeedback[User feedback] +Feedback\nHotfix[Hotfix branch] +Work\nFailedCheck[Failed check] +Risk\nMain[(main branch)] +Repository\nTag[(Version tag)] +Repository\n\n#styles\n+Start color:#fde68a\n+Planning color:#fef9c3\n+Work color:#dbeafe\n+Review color:#fbcfe8\n+Check color:#dcfce7\n+Release color:#bbf7d0\n+Feedback color:#fed7aa\n+Risk color:#fecaca\n+Repository color:#e0f2fe\n\n#edges\nIdea -> Issue : becomes task\nIssue -> Branch : creates work branch\nBranch -> Commit : contains changes\nCommit -> PullRequest : submitted as\nPullRequest -> Review : asks for feedback\nReview -> PullRequest : approves or requests changes\nPullRequest -> CI : triggers\nCI -> Tests : runs\nTests -> CI : reports result\nFailedCheck -x-> Merge : blocks merge\nCI -> Merge : passes\nDocs -> PullRequest : included when needed\nMerge -> Main : updates\nMain -> Tag : versioned\nTag -> Release : published as\nBugReport -> Issue : creates follow-up\nBugReport -> Hotfix : urgent path\nHotfix -> PullRequest : quick fix\nPullRequest <-> Review : discussion\nRelease -> UserFeedback : receives feedback",
+    "layout": {},
+    "manualMeta": {}
+  }
 ]
 </script>
 <!-- FLOWLITE_SAVES_END -->
@@ -807,12 +426,15 @@ Tags are auxiliary metadata, not substitutes for semantic relationships.
 
 4. Tags and styles
 - Tags can have colors through #styles.
-- The initial style specification supports only color.
+- The style specification supports tag color, node-level color/shape/size/position, edge color, and canvas background. This keeps the plain text as the source of truth for the complete drawing.
 - Use #RRGGBB color values when possible.
 
 Style syntax:
 #styles
 +Tag color:#RRGGBB
+@NodeID color:#RRGGBB shape:star size:l x:100 y:200
+@edge:EdgeID color:#RRGGBB
+@canvas background:#RRGGBB
 
 Color priority:
 1. Per-node GUI color
@@ -822,6 +444,10 @@ Color priority:
 Multiple tags:
 - If a node has multiple tags, FlowLite searches #styles from left to right and uses the first matching tag color.
 - Put the tag whose color should apply as far left as possible.
+- A node-specific @NodeID style overrides tag color and basic node shape.
+- Supported shape values: round, rect, circle, ellipse, diamond, parallelogram, hexagon, trapezoid, document, star, heart, double.
+- Supported size values: m and l. Omit size for the default small size.
+- x and y store manual coordinates in the same plain text, so HTML/SVG output can be regenerated from the notation.
 
 Example:
 CaoCao[Cao Cao] +Wei +Ruler +Important
@@ -882,7 +508,7 @@ Nodes versus tags:
 - Layer 1: objects, represented by nodes.
 - Layer 2: relationships, represented by edges.
 - Layer 3: attributes, states, and classifications, represented by tags.
-- Layer 4: visual appearance, represented by #styles or GUI settings.
+- Layer 4: visual appearance, represented by #styles. GUI changes are written back into #styles so the plain text can recreate the drawing.
 
 Principles:
 - Semantic relationships belong in edges.
@@ -918,7 +544,7 @@ Use direction: Flow by default. Use Compact to reduce area, Lane to separate nod
   </div>
   <textarea id="editor" spellcheck="false"></textarea>
   <div id="help">Double-click: edit node or edge label<br>Ctrl/Cmd+click: multi-select; Drag after multi-select: move as group; Ctrl/Cmd additional selection: show relationship depth; Delete: delete selection<br>Wheel: zoom; Drag background: pan<br>Undo applies to: structure, layout, color, shape, size, edge kind, connection, deletion / Not included: save slots, HTML save, SVG save, zoom, pan</div>
-  <div id="status">Ready: the initial view is Physics. Data slots 1-3 contain Physics, Greek Mythology, and FizzBuzz samples.</div>
+  <div id="status">Ready: Data slots 1-10 contain Alice, Hamburger, Physics, Greek Mythology, Ocean Circular Flow, FizzBuzz, Forest Ecosystem, AI Agent, Web App, and GitHub examples.</div>
 </div>
 <div id="splitter" title="Resize left and right panes"></div>
 <div id="toast">Copied</div>
@@ -992,8 +618,10 @@ Use direction: Flow by default. Use Compact to reduce area, Lane to separate nod
     const maxLen=Math.max(...lines.map(x=>Array.from(x).reduce((n,ch)=>n+(/[\u3000-\u9fff\u3040-\u30ff]/.test(ch)?1.7:1),0)));
     return Math.max(116,Math.min(240,Math.round(maxLen*7+34)));
   }
+  function nodePlainStyle(id){return (graph&&graph.meta&&graph.meta.nodeStyles&&graph.meta.nodeStyles[id])||{}}
+  function nodeVisualMeta(id){return {...((manualMeta&&manualMeta[id])||{}), ...nodePlainStyle(id)}}
   function nodeSizeScaleById(id){
-    const m=(manualMeta&&manualMeta[id])||{};
+    const m=nodeVisualMeta(id);
     return m.size==='l'?1.50:(m.size==='m'?1.25:1);
   }
   function edgePadForNode(id, base){
@@ -1003,7 +631,7 @@ Use direction: Flow by default. Use Compact to reduce area, Lane to separate nod
   function graphNodeById(id){return (graph.nodes||[]).find(n=>n.id===id)||null}
   function currentNodeShape(id){
     const n=graphNodeById(id);
-    const meta=(manualMeta&&manualMeta[id])||{};
+    const meta=nodeVisualMeta(id);
     let sh=(meta.shape||(n&&n.shape)||'process');
     if(sh==='wavy')sh='double';
     if(sh==='cloud')sh='parallelogram';
@@ -1186,15 +814,27 @@ Use direction: Flow by default. Use Compact to reduce area, Lane to separate nod
     }
   }
   function nodeMeta(id){manualMeta[id]=manualMeta[id]||{};return manualMeta[id]}
-  function selectedNodeMetaValues(key){const vals=Array.from(selectedNodeIds).map(id=>((manualMeta&&manualMeta[id])||{})[key]||'');return vals.length&&vals.every(v=>v===vals[0])?vals[0]:null}
+  function selectedNodeMetaValues(key){const vals=Array.from(selectedNodeIds).map(id=>(nodeVisualMeta(id)||{})[key]||'');return vals.length&&vals.every(v=>v===vals[0])?vals[0]:null}
   function selectedEdgeKindValue(){const ids=Array.from(selectedEdgeIds);if(!ids.length)return null;const vals=ids.map(id=>{const e=graph.edges.find(x=>x.id===id);return e?normalizeEdgeKind(e.kind):''});return vals.every(v=>v===vals[0])?vals[0]:null}
   function edgeMeta(id){manualMeta.__edges=manualMeta.__edges||{};manualMeta.__edges[id]=manualMeta.__edges[id]||{};return manualMeta.__edges[id]}
   function getEdgeMeta(id){return (manualMeta&&manualMeta.__edges&&manualMeta.__edges[id])||{}}
-  function edgeManualColor(id){return safeCssColor(getEdgeMeta(id).color,'')}
+  function edgeStyleAliases(e){
+    if(!e)return [];
+    const conn=kindToConnector(e.kind).replace(/\s+/g,'');
+    return [e.id, `${e.from}->${e.to}`, `${e.from}${conn}${e.to}`];
+  }
+  function edgePlainStyle(e){
+    const styles=(graph&&graph.meta&&graph.meta.edgeStyles)||{};
+    for(const k of edgeStyleAliases(e)){if(styles[k])return styles[k]}
+    return {};
+  }
+  function edgeVisualMeta(e){return {...getEdgeMeta(e&&e.id), ...edgePlainStyle(e)}}
+  function edgeEffectiveColor(e){return safeCssColor((edgeVisualMeta(e)||{}).color,'')}
   function canvasMeta(){manualMeta.__canvas=manualMeta.__canvas||{};return manualMeta.__canvas}
-  function getCanvasBackground(){return safeCssColor(manualMeta&&manualMeta.__canvas&&manualMeta.__canvas.background,'#f8fafc')}
+  function canvasPlainStyle(){return (graph&&graph.meta&&graph.meta.canvasStyle)||{}}
+  function getCanvasBackground(){return safeCssColor(canvasPlainStyle().background,'')||safeCssColor(manualMeta&&manualMeta.__canvas&&manualMeta.__canvas.background,'#f8fafc')}
   function applyCanvasBackground(){if(right)right.style.backgroundColor=getCanvasBackground()}
-  function nodeShapeClass(n){const m=(manualMeta&&manualMeta[n.id])||{};let sh=m.shape||n.shape||'process'; if(sh==='wavy')sh='double'; if(sh==='cloud')sh='parallelogram'; let cls=''; if(sh==='diamond')cls='manual-diamond'; else if(['rect','round','circle','ellipse','parallelogram','hexagon','trapezoid','document','star','heart','double'].includes(sh))cls='manual-'+sh; else cls=sh; if(m.size==='m')cls+=' manual-size-m'; if(m.size==='l')cls+=' manual-size-l'; return cls}
+  function nodeShapeClass(n){const m=nodeVisualMeta(n.id);let sh=m.shape||n.shape||'process'; if(sh==='wavy')sh='double'; if(sh==='cloud')sh='parallelogram'; let cls=''; if(sh==='diamond')cls='manual-diamond'; else if(['rect','round','circle','ellipse','parallelogram','hexagon','trapezoid','document','star','heart','double'].includes(sh))cls='manual-'+sh; else cls=sh; if(m.size==='m')cls+=' manual-size-m'; if(m.size==='l')cls+=' manual-size-l'; return cls}
   function readData(){
     let layout={};
     try{layout=JSON.parse(layoutEl.textContent||'{}')}catch(e){status.textContent='Layout JSON parse error: '+e.message;layout={}}
@@ -1202,7 +842,7 @@ Use direction: Flow by default. Use Compact to reduce area, Lane to separate nod
     try{return normalize(parseText(source,{meta:{title:'FlowLite',direction:'Flow'},layout}))}
     catch(e){status.textContent='Source parse error: '+e.message;return {meta:{title:'Error',direction:'Flow'},nodes:[],edges:[],layout:{}}}
   }
-  function normalize(g){g=g||{};g.meta=g.meta||{title:'FlowLite',direction:'Flow',styles:{}};g.meta.styles=g.meta.styles||{};g.nodes=Array.isArray(g.nodes)?g.nodes:[];g.edges=Array.isArray(g.edges)?g.edges:[];g.layout=g.layout||{};g.nodes=g.nodes.map(n=>({id:safeId(n.id),label:String(n.label??n.id??''),shape:n.shape||'process',tags:Array.isArray(n.tags)?n.tags.slice(0,3).map(String):[]}));g.edges=g.edges.map((e,i)=>({id:e.id||`e_${safeId(e.from)}_${safeId(e.to)}_${i}`,from:safeId(e.from),to:safeId(e.to),label:String(e.label??''),kind:normalizeEdgeKind(e.kind||e.connector||'directed')}));return g}
+  function normalize(g){g=g||{};g.meta=g.meta||{title:'FlowLite',direction:'Flow',styles:{}};g.meta.styles=g.meta.styles||{};g.meta.nodeStyles=g.meta.nodeStyles||{};g.meta.edgeStyles=g.meta.edgeStyles||{};g.meta.canvasStyle=g.meta.canvasStyle||{};g.nodes=Array.isArray(g.nodes)?g.nodes:[];g.edges=Array.isArray(g.edges)?g.edges:[];g.layout=g.layout||{};g.nodes=g.nodes.map(n=>({id:safeId(n.id),label:String(n.label??n.id??''),shape:n.shape||'process',tags:Array.isArray(n.tags)?n.tags.slice(0,3).map(String):[]}));g.edges=g.edges.map((e,i)=>({id:e.id||`e_${safeId(e.from)}_${safeId(e.to)}_${i}`,from:safeId(e.from),to:safeId(e.to),label:String(e.label??''),kind:normalizeEdgeKind(e.kind||e.connector||'directed')}));return g}
   function syncSourceData(){setSourceScriptText(editor.value||'')}
   function syncLayoutData(){setJsonScriptText(layoutEl,graph.layout||{})}
   function syncManualMetaData(){manualMeta=sanitizeManualMeta(manualMeta||{});setJsonScriptText(manualMetaEl,manualMeta)}
@@ -1267,7 +907,7 @@ Use direction: Flow by default. Use Compact to reduce area, Lane to separate nod
   }
   function edgeSvgAttrs(e,isSelected,isEmphasis,selectionDistance=null){
     const k=normalizeEdgeKind(e.kind);
-    const manual=edgeManualColor(e.id);
+    const manual=edgeEffectiveColor(e);
     const base=manual||edgeStrokeBase(k);
     const fadeColor=!isSelected?selectionEdgeFadeColor(selectionDistance):'';
     const stroke=isSelected?'#2563eb':(fadeColor||base);
@@ -1364,10 +1004,27 @@ Use direction: Flow by default. Use Compact to reduce area, Lane to separate nod
       lines.push(line);
     }
     const styles=g.meta?.styles||{};
+    const nodeStyles=g.meta?.nodeStyles||{};
+    const edgeStyles=g.meta?.edgeStyles||{};
+    const canvasStyle=g.meta?.canvasStyle||{};
     const styleKeys=Object.keys(styles).filter(k=>styles[k]&&styles[k].color);
-    if(styleKeys.length){
+    const nodeStyleKeys=Object.keys(nodeStyles).filter(k=>hasStyleProps(nodeStyles[k]));
+    const edgeStyleKeys=Object.keys(edgeStyles).filter(k=>hasStyleProps(edgeStyles[k]));
+    const hasCanvas=hasStyleProps(canvasStyle);
+    if(styleKeys.length||nodeStyleKeys.length||edgeStyleKeys.length||hasCanvas){
       lines.push('');lines.push('#styles');
       for(const k of styleKeys){lines.push(`+${k} color:${styles[k].color}`)}
+      if(hasCanvas){const t=stylePropsToText(canvasStyle,['background']); if(t)lines.push(`@canvas ${t}`)}
+      const nodeOrder=(g.nodes||[]).map(n=>n.id);
+      const orderedNodeKeys=[...nodeOrder.filter(id=>nodeStyles[id]), ...nodeStyleKeys.filter(id=>!nodeOrder.includes(id)).sort()];
+      for(const id of orderedNodeKeys){
+        const t=stylePropsToText(nodeStyles[id],['color','shape','size','x','y']);
+        if(t)lines.push(`@${id} ${t}`);
+      }
+      for(const k of edgeStyleKeys.sort()){
+        const t=stylePropsToText(edgeStyles[k],['color']);
+        if(t)lines.push(`@edge:${k} ${t}`);
+      }
     }
     lines.push('');lines.push('#edges');
     for(const e of g.edges){const conn=kindToConnector(e.kind);lines.push(e.label?`${e.from} ${conn} ${e.to} : ${e.label}`:`${e.from} ${conn} ${e.to}`)}
@@ -1447,10 +1104,69 @@ Use direction: Flow by default. Use Compact to reduce area, Lane to separate nod
     if(tags.length>3)parseWarnings.push(`Tag limit exceeded: only first 3 tags are recognized in "${line.slice(0,80)}"`);
     return {body,tags:tags.slice(0,3)};
   }
+  function cleanNumber(n){
+    const v=Number(n);
+    if(!Number.isFinite(v))return null;
+    return Math.round(v*10)/10;
+  }
+  function formatNumber(n){
+    const v=cleanNumber(n);
+    return v===null?'':String(v).replace(/\.0$/,'');
+  }
+  function parseStyleProps(rest){
+    const props={};
+    const tokens=String(rest||'').trim().split(/\s+/).filter(Boolean);
+    for(const tok of tokens){
+      const m=tok.match(/^([A-Za-z][A-Za-z0-9_-]*)\s*:\s*(.+)$/);
+      if(!m)continue;
+      const key=m[1].toLowerCase();
+      const val=m[2].trim();
+      if(key==='color'){
+        const c=safeCssColor(val,'');
+        if(c)props.color=c;
+      }else if(key==='background'){
+        const c=safeCssColor(val,'');
+        if(c)props.background=c;
+      }else if(key==='shape'){
+        let sh=val.toLowerCase();
+        if(sh==='wavy')sh='double';
+        if(sh==='cloud')sh='parallelogram';
+        if(ALLOWED_MANUAL_SHAPES.has(sh))props.shape=sh;
+      }else if(key==='size'){
+        const s=val.toLowerCase();
+        if(s==='m'||s==='medium')props.size='m';
+        else if(s==='l'||s==='large')props.size='l';
+      }else if(key==='x'||key==='y'){
+        const v=cleanNumber(val);
+        if(v!==null)props[key]=v;
+      }
+    }
+    return props;
+  }
+  function hasStyleProps(obj){return !!obj&&Object.keys(obj).length>0}
+  function stylePropsToText(obj,keys){
+    const parts=[];
+    for(const key of keys){
+      if(key==='color'&&safeCssColor(obj.color,''))parts.push(`color:${obj.color}`);
+      else if(key==='background'&&safeCssColor(obj.background,''))parts.push(`background:${obj.background}`);
+      else if(key==='shape'&&obj.shape)parts.push(`shape:${obj.shape}`);
+      else if(key==='size'&&obj.size)parts.push(`size:${obj.size}`);
+      else if((key==='x'||key==='y')&&obj[key]!==undefined&&obj[key]!==null){const v=formatNumber(obj[key]);if(v)parts.push(`${key}:${v}`)}
+    }
+    return parts.join(' ');
+  }
   function parseStyleLine(line){
-    const m=String(line||'').trim().match(/^\+([^\s\[\]\{\}\(\):#,+]+)\s+color\s*:\s*(#[0-9a-fA-F]{6})\s*$/u);
+    const s=String(line||'').trim();
+    const tag=s.match(/^\+([^\s\[\]\{\}\(\):#,+]+)\s+color\s*:\s*(#[0-9a-fA-F]{6})\s*$/u);
+    if(tag)return {kind:'tag',tag:tag[1],color:tag[2]};
+    const m=s.match(/^(\S+)\s+(.+)$/u);
     if(!m)return null;
-    return {tag:m[1],color:m[2]};
+    const target=m[1], props=parseStyleProps(m[2]);
+    if(!hasStyleProps(props))return null;
+    if(target==='@canvas')return {kind:'canvas',props};
+    if(target.startsWith('@edge:'))return {kind:'edge',target:target.slice(6),props};
+    if(target.startsWith('@'))return {kind:'node',id:safeId(target.slice(1)),props};
+    return null;
   }
   function tagStyleColor(tags,styles){
     const t=Array.isArray(tags)?tags:[];
@@ -1459,7 +1175,7 @@ Use direction: Flow by default. Use Compact to reduce area, Lane to separate nod
     return '';
   }
   function nodeEffectiveColor(n){
-    const meta=(manualMeta&&manualMeta[n.id])||{};
+    const meta=nodeVisualMeta(n.id);
     const manualColor=safeCssColor(meta.color,'');
     if(manualColor)return manualColor;
     return tagStyleColor(n.tags, graph?.meta?.styles)||'';
@@ -1611,7 +1327,7 @@ Use direction: Flow by default. Use Compact to reduce area, Lane to separate nod
   function parseText(text,base){
     const baseGraph=base||graph||{};
     const nodes=new Map(), edges=[];
-    const styles={};
+    const styles={}, nodeStyles={}, edgeStyles={}, canvasStyle={};
     const lines=normalizeSourceLines(text);
     let title=baseGraph.meta?.title||'FlowLite', direction=baseGraph.meta?.direction||'Flow';
     let section='';
@@ -1633,8 +1349,14 @@ Use direction: Flow by default. Use Compact to reduce area, Lane to separate nod
 
       if(section==='styles'){
         const st=parseStyleLine(line);
-        if(st){styles[st.tag]={color:st.color};continue}
-        parseWarnings.push(`Line ${item.line}: invalid #styles syntax: ${line.slice(0,80)} / #styles must use +Tag color:#RRGGBB. Example: +Theory color:#dbeafe`);
+        if(st){
+          if(st.kind==='tag')styles[st.tag]={color:st.color};
+          else if(st.kind==='node')nodeStyles[st.id]={...(nodeStyles[st.id]||{}),...st.props};
+          else if(st.kind==='edge')edgeStyles[st.target]={...(edgeStyles[st.target]||{}),...st.props};
+          else if(st.kind==='canvas')Object.assign(canvasStyle,st.props);
+          continue;
+        }
+        parseWarnings.push(`Line ${item.line}: invalid #styles syntax: ${line.slice(0,80)} / examples: +Theory color:#dbeafe, @Alice shape:star size:l color:#fde68a, @edge:e_A_B color:#ef4444, @canvas background:#f8fafc`);
         continue;
       }
 
@@ -1666,9 +1388,18 @@ Use direction: Flow by default. Use Compact to reduce area, Lane to separate nod
       parseWarnings.push(`Auto-generated nodes: ${shown}${more} / IDs not defined in #nodes are used in #edges. Check malformed or missing node definitions.`);
     }
     const prevDirection=normalizeLayoutMode(baseGraph.meta?.direction||'Flow');
-    const next={meta:{...(baseGraph.meta||{}),title,direction:normalizeLayoutMode(direction),styles},nodes:[...nodes.values()],edges,layout:{...(baseGraph.layout||{})}};
+    const next={meta:{...(baseGraph.meta||{}),title,direction:normalizeLayoutMode(direction),styles,nodeStyles,edgeStyles,canvasStyle},nodes:[...nodes.values()],edges,layout:{...(baseGraph.layout||{})}};
     cleanupLayout(next);
-    if(normalizeLayoutMode(direction)!==prevDirection || Object.keys(next.layout||{}).length===0){applyLayoutModeToGraph(next,direction);}else{ensureLayout(next);}
+    let hasPlainLayout=false;
+    const nodeIds=new Set(next.nodes.map(n=>n.id));
+    for(const [id,st] of Object.entries(nodeStyles||{})){
+      if(nodeIds.has(id)&&Number.isFinite(Number(st.x))&&Number.isFinite(Number(st.y))){
+        next.layout[id]={x:Number(st.x),y:Number(st.y)};
+        hasPlainLayout=true;
+      }
+    }
+    if(hasPlainLayout){ensureLayout(next);}
+    else if(normalizeLayoutMode(direction)!==prevDirection || Object.keys(next.layout||{}).length===0){applyLayoutModeToGraph(next,direction);}else{ensureLayout(next);}
     return next;
   }
 
@@ -2984,6 +2715,69 @@ Edges connected to selected nodes will also be deleted.`))return;
   window.clearActiveTag=clearActiveTag;
   window.clearTagAndViewSelection=clearTagAndViewSelection;
   
+  function ensureGraphMetaStyles(){
+    graph.meta=graph.meta||{};
+    graph.meta.styles=graph.meta.styles||{};
+    graph.meta.nodeStyles=graph.meta.nodeStyles||{};
+    graph.meta.edgeStyles=graph.meta.edgeStyles||{};
+    graph.meta.canvasStyle=graph.meta.canvasStyle||{};
+  }
+  function cleanPlainNodeStyle(id){
+    ensureGraphMetaStyles();
+    const st=graph.meta.nodeStyles[id];
+    if(!st)return;
+    if(!safeCssColor(st.color,''))delete st.color;
+    if(!st.shape)delete st.shape;
+    if(!st.size)delete st.size;
+    if(st.x===undefined||st.x===null||!Number.isFinite(Number(st.x)))delete st.x;
+    if(st.y===undefined||st.y===null||!Number.isFinite(Number(st.y)))delete st.y;
+    if(!Object.keys(st).length)delete graph.meta.nodeStyles[id];
+  }
+  function setPlainNodeStyleProp(id,key,value){
+    ensureGraphMetaStyles();
+    const st=graph.meta.nodeStyles[id]||{};
+    if(value===undefined||value===null||value==='')delete st[key];
+    else st[key]=value;
+    graph.meta.nodeStyles[id]=st;
+    cleanPlainNodeStyle(id);
+  }
+  function setPlainEdgeStyleProp(id,key,value){
+    ensureGraphMetaStyles();
+    const st=graph.meta.edgeStyles[id]||{};
+    if(value===undefined||value===null||value==='')delete st[key];
+    else st[key]=value;
+    graph.meta.edgeStyles[id]=st;
+    if(!Object.keys(st).length)delete graph.meta.edgeStyles[id];
+  }
+  function setPlainCanvasStyleProp(key,value){
+    ensureGraphMetaStyles();
+    if(value===undefined||value===null||value==='')delete graph.meta.canvasStyle[key];
+    else graph.meta.canvasStyle[key]=value;
+  }
+  function mergeManualMetaIntoPlainStyles(includeLayout=false){
+    ensureGraphMetaStyles();
+    for(const n of (graph.nodes||[])){
+      const id=n.id;
+      const m=(manualMeta&&manualMeta[id])||{};
+      if(safeCssColor(m.color,''))setPlainNodeStyleProp(id,'color',m.color);
+      if(m.shape)setPlainNodeStyleProp(id,'shape',m.shape);
+      if(m.size)setPlainNodeStyleProp(id,'size',m.size);
+      if(includeLayout&&graph.layout&&graph.layout[id]){
+        setPlainNodeStyleProp(id,'x',cleanNumber(graph.layout[id].x));
+        setPlainNodeStyleProp(id,'y',cleanNumber(graph.layout[id].y));
+      }
+    }
+    if(manualMeta&&manualMeta.__edges){
+      for(const [eid,m] of Object.entries(manualMeta.__edges)){
+        if(safeCssColor(m.color,''))setPlainEdgeStyleProp(eid,'color',m.color);
+      }
+    }
+    if(manualMeta&&manualMeta.__canvas&&safeCssColor(manualMeta.__canvas.background,''))setPlainCanvasStyleProp('background',manualMeta.__canvas.background);
+  }
+  function writeGraphToEditorFromPlainStyles(){
+    editor.value=jsonToText(graph);
+    syncData();
+  }
   function currentColorTargetLabel(){
     if(activeTag)return `Color target: tag +${activeTag}`;
     const c=selectionCounts();
@@ -3001,28 +2795,32 @@ Edges connected to selected nodes will also be deleted.`))return;
     if(activeTag){applyActiveTagColor(color);return}
     pushHistory();
     if(hasSelection()){
-      for(const eid of selectedEdgeIds){const m=edgeMeta(eid);if(color)m.color=color;else delete m.color;if(Object.keys(m).length===0){delete manualMeta.__edges[eid];}}
+      for(const eid of selectedEdgeIds){const m=edgeMeta(eid);if(color)m.color=color;else delete m.color;if(Object.keys(m).length===0){delete manualMeta.__edges[eid];}setPlainEdgeStyleProp(eid,'color',color);}
       if(manualMeta.__edges&&!Object.keys(manualMeta.__edges).length)delete manualMeta.__edges;
-      for(const nid of selectedNodeIds){const m=nodeMeta(nid);if(color)m.color=color;else delete m.color;if(!m.color&&!m.shape&&!m.size)delete manualMeta[nid];}
-      const c=selectionCounts();render();closeToolMenus();setStatus(color?`Color changed: nodes ${c.nodes}, edges ${c.edges}`:`Color reset to default: nodes ${c.nodes}, edges ${c.edges}`);return;
+      for(const nid of selectedNodeIds){const m=nodeMeta(nid);if(color)m.color=color;else delete m.color;if(!m.color&&!m.shape&&!m.size)delete manualMeta[nid];setPlainNodeStyleProp(nid,'color',color);}
+      const c=selectionCounts();writeGraphToEditorFromPlainStyles();render();closeToolMenus();setStatus(color?`Color changed: nodes ${c.nodes}, edges ${c.edges}`:`Color reset to default: nodes ${c.nodes}, edges ${c.edges}`);return;
     }
     const m=canvasMeta();
     if(color)m.background=color;else delete m.background;
     if(Object.keys(m).length===0)delete manualMeta.__canvas;
-    applyCanvasBackground();syncData();closeToolMenus();setStatus(color?'Background color changed':'Background color reset to default');
+    setPlainCanvasStyleProp('background',color);
+    writeGraphToEditorFromPlainStyles();
+    applyCanvasBackground();closeToolMenus();setStatus(color?'Background color changed':'Background color reset to default');
   };
   window.applyNodeShape=function(shape){
     shape=ALLOWED_MANUAL_SHAPES.has(String(shape||''))?String(shape||''):'';
     if(!selectedNodeIds.size){setStatus('Select nodes to change shape');return}
     pushHistory();
-    for(const nid of selectedNodeIds){const m=nodeMeta(nid);if(shape)m.shape=shape;else delete m.shape;if(!m.color&&!m.shape&&!m.size)delete manualMeta[nid];}
+    for(const nid of selectedNodeIds){const m=nodeMeta(nid);if(shape)m.shape=shape;else delete m.shape;if(!m.color&&!m.shape&&!m.size)delete manualMeta[nid];setPlainNodeStyleProp(nid,'shape',shape);}
+    writeGraphToEditorFromPlainStyles();
     render();closeToolMenus();setStatus(`nodes ${selectedNodeIds.size} shape changed`)
   };
   window.applyNodeSize=function(size){
     size=ALLOWED_MANUAL_SIZES.has(String(size||''))?String(size||''):'';
     if(!selectedNodeIds.size){setStatus('Select nodes to change size');return}
     pushHistory();
-    for(const nid of selectedNodeIds){const m=nodeMeta(nid);if(size)m.size=size;else delete m.size;if(!m.color&&!m.shape&&!m.size)delete manualMeta[nid];}
+    for(const nid of selectedNodeIds){const m=nodeMeta(nid);if(size)m.size=size;else delete m.size;if(!m.color&&!m.shape&&!m.size)delete manualMeta[nid];setPlainNodeStyleProp(nid,'size',size);}
+    writeGraphToEditorFromPlainStyles();
     render();closeToolMenus();setStatus(size?`nodes ${selectedNodeIds.size} set to ${size==='l'?'Large':'Medium'} size`:`nodes ${selectedNodeIds.size} set to Small size`)
   };
   window.applyEdgeKind=function(kind){
@@ -3070,6 +2868,8 @@ Edges connected to selected nodes will also be deleted.`))return;
     graph=parseText(editor.value,{meta:graph.meta,layout:graph.layout});
     cleanupLayout(graph);
     ensureLayout(graph);
+    mergeManualMetaIntoPlainStyles(true);
+    editor.value=jsonToText(graph);
     syncData();
     return {
       title:snapshotTitle(editor.value),
@@ -3173,7 +2973,7 @@ Edges connected to selected nodes will also be deleted.`))return;
     const base=String(name||'flowlite').trim().replace(/[\\/:*?"<>|]/g,'_').replace(/\s+/g,'_').slice(0,80);
     return base||'flowlite';
   }
-  window.saveHtml=function(){syncData();const html='<!DOCTYPE html>\n'+document.documentElement.outerHTML;const name=safeFileName(graph.meta&&graph.meta.title);download(`${name}_${Date.now()}.html`,html,'text/html;charset=utf-8');closeTopMenus();setStatus('HTML saved');showToast('HTML saved')};
+  window.saveHtml=function(){graph=parseText(editor.value,{meta:graph.meta,layout:graph.layout});cleanupLayout(graph);ensureLayout(graph);mergeManualMetaIntoPlainStyles(true);editor.value=jsonToText(graph);syncData();const html='<!DOCTYPE html>\n'+document.documentElement.outerHTML;const name=safeFileName(graph.meta&&graph.meta.title);download(`${name}_${Date.now()}.html`,html,'text/html;charset=utf-8');closeTopMenus();setStatus('HTML saved with plain-text styles');showToast('HTML saved')};
   function polygonPointsForShape(shape,x,y,w,h){
     if(shape==='parallelogram'||shape==='cloud')return `${x+w*0.16},${y} ${x+w},${y} ${x+w*0.84},${y+h} ${x},${y+h}`;
     if(shape==='hexagon')return `${x+w*0.18},${y} ${x+w*0.82},${y} ${x+w},${y+h/2} ${x+w*0.82},${y+h} ${x+w*0.18},${y+h} ${x},${y+h/2}`;
@@ -3293,7 +3093,7 @@ Edges connected to selected nodes will also be deleted.`))return;
       lines.forEach((line,i)=>{nodeSvg+=`<tspan x="${p.x}" dy="${i===0?0:lineH}">${escapeHtml(line)}</tspan>`});
       nodeSvg+='</text>';
     }
-    const bg=safeCssColor(manualMeta&&manualMeta.__canvas&&manualMeta.__canvas.background,'#f8fafc');
+    const bg=getCanvasBackground();
     const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="${minX} ${minY} ${w} ${h}"><defs>${markerDefs}</defs><rect x="${minX}" y="${minY}" width="${w}" height="${h}" fill="${bg}"/>${edgeSvg}${nodeSvg}</svg>`;
     download(`${safeFileName(graph.meta&&graph.meta.title)}_${Date.now()}.svg`,svg,'image/svg+xml;charset=utf-8')
   };
@@ -3311,7 +3111,7 @@ Edges connected to selected nodes will also be deleted.`))return;
       '## Instructions',
       'Return only FlowLite plain text that reflects the user request and follows the specification below.',
       'Do not return coordinates, HTML, JSON, Markdown code fences, or explanatory prose.',
-      'Use #styles tag colors only when needed. Do not output GUI-only colors, coordinates, sizes, or shapes.',
+      'Use #styles for tag colors and optional plain-text visual styles such as @NodeID shape:star size:l color:#RRGGBB x:100 y:200, @edge:EdgeID color:#RRGGBB, and @canvas background:#RRGGBB.',
       '',
       '## Important Rules',
       '- Return FlowLite plain text only.',
@@ -3328,7 +3128,7 @@ Edges connected to selected nodes will also be deleted.`))return;
       '- Tags are metadata for layers, attributes, states, or classifications. They are not substitutes for semantic relationships.',
       '- Express membership, causality, identity, blocking, and interaction as edges, not tags.',
       '- When color-coding, use tags from the same dimension. Do not mix era, role, country, field, and other dimensions in one color layer.',
-      '- Define #styles only for the tag layer you want to focus on. Do not add styles for tags that do not need color.',
+      '- Define #styles for tag colors and optional node/edge/canvas visual properties. Do not add decorative styles without purpose.',
       '- Do not add tags when the meaning is already clear without them.',
       '- Do not create #styles when there is no color-coding purpose.',
       '- To keep the graph minimal, represent cross-cutting classifications as tags and only turn them into nodes when you need semantic relationships.',
