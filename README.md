@@ -57,6 +57,7 @@ It is about giving AI a stable structure format, then using the browser as an in
 ---
 
 ## Screenshot / Demo
+![FlowLite animation demo](assets/flowlite-animation-demo.gif)
 
 ### Main screen
 
@@ -66,7 +67,6 @@ It is about giving AI a stable structure format, then using the browser as an in
 
 ![FlowLite click highlight demo](assets/flowlite-born-highlight-demo.gif)
 
-![FlowLite animation demo](assets/flowlite-animation-demo.gif)
 
 ### Relationship highlighting
 
