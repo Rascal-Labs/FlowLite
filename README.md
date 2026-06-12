@@ -15,6 +15,18 @@ The AI follows the specification and generates a structure that FlowLite can ren
 
 ---
 
+## Try FlowLite
+
+Let’s try it.
+
+Open FlowLite, ask AI to create a relationship map in FlowLite format, and move the map around.
+
+It is more fun than reading the spec.
+
+[Launch FlowLite](https://rascal-labs.github.io/FlowLite/FlowLite.html)
+
+---
+
 ## Use FlowLite with AI
 
 This is the main workflow.
