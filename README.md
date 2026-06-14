@@ -56,6 +56,27 @@ It is about giving AI a stable structure format, then using the browser as an in
 
 ---
 
+---
+
+## Quick Open from AI Output
+
+If you use FlowLite with AI often, install the bookmarklet.
+
+[Install the FlowLite Bookmarklet](https://rascal-labs.github.io/FlowLite/bookmarklet_en.html)
+
+Workflow:
+
+1. Ask AI to generate FlowLite plaintext.
+2. Copy or select the generated FlowLite text.
+3. Click the “Open in FlowLite” bookmarklet.
+4. The map opens directly in FlowLite.
+
+The bookmarklet reads FlowLite text from your clipboard or selection.
+If the text does not contain FlowLite syntax, it only opens FlowLite without importing anything.
+
+---
+
+
 ## Screenshot / Demo
 
 
