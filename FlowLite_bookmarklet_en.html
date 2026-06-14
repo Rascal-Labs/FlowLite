@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Bookmarklet installer page for opening AI-generated FlowLite plaintext directly in FlowLite_test.html.">
+<title>FlowLite Bookmarklet Installer</title>
+<style>
+  :root {
+    --bg:#f8fafc; --panel:#ffffff; --text:#0f172a; --sub:#64748b;
+    --border:#e2e8f0; --accent:#2563eb; --accent2:#16a34a;
+    --danger:#dc2626; --code:#111827; --shadow:0 18px 45px rgba(15,23,42,.10);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:linear-gradient(180deg,#f8fafc,#eef2ff);color:var(--text);line-height:1.65}
+  .wrap{max-width:980px;margin:0 auto;padding:34px 18px 56px}
+  header{background:rgba(255,255,255,.86);border:1px solid var(--border);border-radius:22px;padding:28px;box-shadow:var(--shadow)}
+  h1{margin:0 0 8px;font-size:30px;letter-spacing:-.02em}
+  h2{margin:30px 0 12px;font-size:20px}
+  h3{margin:20px 0 10px;font-size:16px}
+  p{margin:8px 0;color:#334155}
+  .sub{color:var(--sub)}
+  .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:18px}
+  @media(min-width:860px){.grid{grid-template-columns:1fr 1fr}}
+  .card{background:rgba(255,255,255,.92);border:1px solid var(--border);border-radius:18px;padding:20px;box-shadow:0 10px 30px rgba(15,23,42,.06)}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;align-items:center}
+  button,.bookmarklet-link{appearance:none;border:1px solid var(--border);border-radius:12px;padding:10px 13px;font-size:14px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px;background:#f1f5f9;color:var(--text)}
+  button:hover,.bookmarklet-link:hover{background:#e2e8f0}
+  .primary{background:var(--text);border-color:var(--text);color:#fff}
+  .primary:hover{background:#1e293b}
+  .install{background:#dbeafe;border-color:#93c5fd;color:#1d4ed8}
+  .ok{background:#dcfce7;border-color:#86efac;color:#166534}
+  .warnbtn{background:#fffbeb;border-color:#fbbf24;color:#78350f}
+  code,kbd{font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;padding:2px 5px}
+  textarea{width:100%;min-height:126px;border:1px solid var(--border);border-radius:14px;padding:13px;background:#fff;color:var(--text);font:12px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;resize:vertical;outline:none}
+  textarea:focus{border-color:#93c5fd;box-shadow:0 0 0 4px rgba(59,130,246,.12)}
+  .bookmarklet-code{min-height:112px;white-space:nowrap;overflow:auto}
+  .spec-code{min-height:330px}
+  ol,ul{margin:8px 0 0 1.25em;padding:0;color:#334155}
+  li{margin:5px 0}
+  .note{border-left:4px solid #93c5fd;background:#eff6ff;border-radius:12px;padding:12px 14px;color:#1e3a8a}
+  .warn{border-left:4px solid #f59e0b;background:#fffbeb;border-radius:12px;padding:12px 14px;color:#78350f}
+  .small{font-size:13px;color:var(--sub)}
+  .target{display:inline-block;margin-top:8px;font-size:13px;color:#334155;word-break:break-all}
+  #toast{position:fixed;left:50%;top:18px;transform:translateX(-50%) translateY(-12px);background:#111827;color:#fff;border-radius:999px;padding:10px 15px;box-shadow:0 16px 40px rgba(15,23,42,.22);font-weight:800;font-size:13px;opacity:0;pointer-events:none;transition:.18s ease;z-index:999}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  footer{margin-top:30px;color:var(--sub);font-size:13px;text-align:center}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+<div class="wrap">
+  <header>
+    <h1>FlowLite Bookmarklet Installer</h1>
+    <p class="sub">Install a bookmarklet that opens AI-generated FlowLite plaintext directly in the current TEST FlowLite page.</p>
+    <div class="target">Open target: <code>https://rascal-labs.github.io/FlowLite/FlowLite_test.html</code></div>
+    <div class="hero-actions">
+      <a id="bookmarkletDrag" class="bookmarklet-link install" href="#">Open in FlowLite</a>
+      <button id="copyBookmarklet" class="primary">Copy Bookmarklet</button>
+      <button id="copySpec" class="warnbtn">Copy AI Prompt Spec</button>
+    </div>
+    <p class="small">On desktop, drag the “Open in FlowLite” button to your bookmarks bar. If dragging does not work, copy the bookmarklet and paste it into a bookmark URL field manually.</p>
+  </header>
+
+  <section class="grid">
+    <div class="card">
+      <h2>How to use</h2>
+      <ol>
+        <li>Click <b>Copy Bookmarklet</b> on this page.</li>
+        <li>Create a new browser bookmark.</li>
+        <li>Name it <code>Open in FlowLite</code>.</li>
+        <li>Paste the copied <code>javascript:...</code> code into the bookmark URL field.</li>
+        <li>Copy or select FlowLite plaintext from ChatGPT or another page.</li>
+        <li>Click the registered <code>Open in FlowLite</code> bookmark to open it in FlowLite_test.html.</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h2>Behavior</h2>
+      <ul>
+        <li>If the clipboard contains FlowLite syntax, the clipboard text is used first.</li>
+        <li>If the clipboard contains text but no FlowLite syntax, import is cancelled and only FlowLite_test.html is opened.</li>
+        <li>If the clipboard is empty, selected text is used only when it contains FlowLite syntax.</li>
+        <li>The clipboard is read only. It is not cleared or overwritten.</li>
+        <li>The FlowLite text is not uploaded to GitHub Pages. It is passed inside the browser with <code>postMessage</code>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Bookmarklet URL</h2>
+    <p class="sub">For manual installation, copy the entire text below and paste it into your bookmark URL field.</p>
+    <textarea id="bookmarkletCode" class="bookmarklet-code" spellcheck="false" readonly></textarea>
+    <div class="hero-actions">
+      <button id="copyBookmarklet2" class="primary">Copy this code</button>
+      <button id="selectBookmarklet">Select all</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>AI Prompt Specification</h2>
+    <p class="sub">Use this prompt specification when asking an AI to create a FlowLite relationship map. You can paste it before your request.</p>
+    <textarea id="aiSpecText" class="spec-code" spellcheck="false" readonly></textarea>
+    <div class="hero-actions">
+      <button id="copySpec2" class="warnbtn">Copy specification</button>
+      <button id="selectSpec">Select specification</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Test FlowLite plaintext</h2>
+    <p class="sub">Copy the sample below, then click your installed bookmarklet.</p>
+    <textarea id="sampleText" spellcheck="false"></textarea>
+    <div class="hero-actions">
+      <button id="copySample" class="ok">Copy test plaintext</button>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="card note">
+      <h3>Chrome / Edge note</h3>
+      <p>If the bookmarks bar is hidden, press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd> to show it.</p>
+    </div>
+    <div class="card warn">
+      <h3>Safety behavior</h3>
+      <p>When ordinary text is in the clipboard, the bookmarklet does not import it as FlowLite. It only opens FlowLite_test.html.</p>
+    </div>
+  </section>
+
+  <footer>
+    FlowLite Bookmarklet Installer / target: FlowLite_test.html
+  </footer>
+</div>
+<script>
+const BOOKMARKLET = "javascript:(async()=>{const base=\"https://rascal-labs.github.io/FlowLite/FlowLite_test.html\";const origin=\"https://rascal-labs.github.io\";const looks=s=>{s=String(s||\"\");return /(^|\\n)\\s*title\\s*:/.test(s)||/(^|\\n)\\s*direction\\s*:/.test(s)||/(^|\\n)\\s*#nodes(\\s|\\n|$)/.test(s)||/(^|\\n)\\s*#edges(\\s|\\n|$)/.test(s)||/(^|\\n)\\s*#styles(\\s|\\n|$)/.test(s)};let clip=\"\";try{clip=await navigator.clipboard.readText()}catch(e){}const sel=String(getSelection());const ct=String(clip||\"\").trim();const st=String(sel||\"\").trim();let t=\"\";if(ct){if(looks(ct))t=clip}else if(st&&looks(st)){t=sel}const n=Date.now().toString(36)+Math.random().toString(36).slice(2);const w=open(t?base+\"#pm=\"+encodeURIComponent(n):base,\"_blank\");if(!w){alert(\"Popup was blocked\");return}if(!t)return;let done=false;const onmsg=e=>{if(e&&e.source===w&&e.origin===origin&&e.data&&e.data.type===\"FLOWLITE_IMPORT_ACK\"&&e.data.nonce===n){done=true;removeEventListener(\"message\",onmsg)}};addEventListener(\"message\",onmsg);let c=0;const send=()=>{if(done)return;try{w.postMessage({type:\"FLOWLITE_IMPORT\",nonce:n,source:\"bookmarklet\",text:t},origin)}catch(e){}if(++c<40)setTimeout(send,250);else removeEventListener(\"message\",onmsg)};setTimeout(send,500)})();";
+const AI_SPEC = "You are a FlowLite notation editor for structural relationship maps.\n\nGoal:\nConvert the user's request into FlowLite plaintext that can be opened directly in FlowLite.\n\nOutput rules:\n- Output FlowLite plaintext only.\n- Do not include Markdown code fences, HTML, JSON, explanations, introductions, or closing comments.\n- Always include title: and direction:.\n- Always include #nodes, #styles, and #edges.\n- Use node IDs mainly composed of ASCII letters, numbers, and underscores.\n- Display labels may be written in English or in the user's requested language.\n- Use at most 3 tags per node.\n- Define colors through tag colors in #styles.\n- Use @NodeID color:#RRGGBB shape:... size:... only when individual node styling is necessary.\n- Do not add x/y coordinates unless the user explicitly asks for fixed layout.\n- Express relationships through #edges, not through tags alone.\n\nNode syntax:\nA[Normal node]\nB{Decision node}\nC((Start / End / Center))\nD[(Data / Place / Storage)]\nN>Note]\n\nEdge syntax:\nA -> B : action / reference / causality / flow\nA => B : membership / classification / composition / containment\nA == B : identity / alias / equivalence\nA -- B : supplemental or weak association\nA <-> B : interaction / bidirectional relationship\nA -x-> B : block / prohibition / negation / constraint\n\nComposition guidelines:\n- Place one central concept.\n- Represent people, places, organizations, events, tools, and concepts as nodes when useful.\n- Explain important relationships with edge labels.\n- Keep color tags within one consistent dimension, such as role, faction, era, or state. Do not mix unrelated dimensions in one color layer.\n- If the map becomes large, use Hub nodes or Group nodes to keep it readable.\n\nUser request:\nWrite the relationship map request here.";
+const SAMPLE_TEXT = "title: FlowLite Bookmarklet Test\ndirection: Flow\n\n#nodes\nStart((Copy or select)) +Input\nBookmarklet[Open in FlowLite] +Action\nViewer[(FlowLite_test.html)] +Viewer\nDone((Rendered)) +Output\n\n#styles\n+Input color:#dbeafe\n+Action color:#fde68a\n+Viewer color:#dcfce7\n+Output color:#bbf7d0\n\n#edges\nStart -> Bookmarklet : launch\nBookmarklet -> Viewer : send with postMessage\nViewer -> Done : render automatically\n";
+const toastEl = document.getElementById('toast');
+function toast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastEl._t);
+  toastEl._t = setTimeout(()=>toastEl.classList.remove('show'), 1400);
+}
+async function copyText(text, label){
+  try{
+    await navigator.clipboard.writeText(text);
+    toast(label || 'Copied');
+  }catch(e){
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try{document.execCommand('copy');toast(label || 'Copied');}
+    catch(err){alert('Copy failed. Please copy manually from the text field.');}
+    ta.remove();
+  }
+}
+const drag = document.getElementById('bookmarkletDrag');
+drag.href = BOOKMARKLET;
+document.getElementById('bookmarkletCode').value = BOOKMARKLET;
+document.getElementById('aiSpecText').value = AI_SPEC;
+document.getElementById('sampleText').value = SAMPLE_TEXT;
+document.getElementById('copyBookmarklet').addEventListener('click',()=>copyText(BOOKMARKLET,'Bookmarklet copied'));
+document.getElementById('copyBookmarklet2').addEventListener('click',()=>copyText(BOOKMARKLET,'Bookmarklet copied'));
+document.getElementById('copySpec').addEventListener('click',()=>copyText(AI_SPEC,'AI prompt specification copied'));
+document.getElementById('copySpec2').addEventListener('click',()=>copyText(AI_SPEC,'AI prompt specification copied'));
+document.getElementById('copySample').addEventListener('click',()=>copyText(SAMPLE_TEXT,'Test plaintext copied'));
+document.getElementById('selectBookmarklet').addEventListener('click',()=>{
+  const el = document.getElementById('bookmarkletCode');
+  el.focus();
+  el.select();
+  toast('Selected all');
+});
+document.getElementById('selectSpec').addEventListener('click',()=>{
+  const el = document.getElementById('aiSpecText');
+  el.focus();
+  el.select();
+  toast('Specification selected');
+});
+</script>
+</body>
+</html>
