@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="FlowLiteのAI出力をワンクリックでFlowLite_test.htmlへ開くためのブックマークレット配布ページです。">
+<title>FlowLite Bookmarklet Installer</title>
+<style>
+  :root {
+    --bg:#f8fafc; --panel:#ffffff; --text:#0f172a; --sub:#64748b;
+    --border:#e2e8f0; --accent:#2563eb; --accent2:#16a34a;
+    --danger:#dc2626; --code:#111827; --shadow:0 18px 45px rgba(15,23,42,.10);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:linear-gradient(180deg,#f8fafc,#eef2ff);color:var(--text);line-height:1.65}
+  .wrap{max-width:980px;margin:0 auto;padding:34px 18px 56px}
+  header{background:rgba(255,255,255,.86);border:1px solid var(--border);border-radius:22px;padding:28px;box-shadow:var(--shadow)}
+  h1{margin:0 0 8px;font-size:30px;letter-spacing:-.02em}
+  h2{margin:30px 0 12px;font-size:20px}
+  h3{margin:20px 0 10px;font-size:16px}
+  p{margin:8px 0;color:#334155}
+  .sub{color:var(--sub)}
+  .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:18px}
+  @media(min-width:860px){.grid{grid-template-columns:1fr 1fr}}
+  .card{background:rgba(255,255,255,.92);border:1px solid var(--border);border-radius:18px;padding:20px;box-shadow:0 10px 30px rgba(15,23,42,.06)}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;align-items:center}
+  button,.bookmarklet-link{appearance:none;border:1px solid var(--border);border-radius:12px;padding:10px 13px;font-size:14px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px;background:#f1f5f9;color:var(--text)}
+  button:hover,.bookmarklet-link:hover{background:#e2e8f0}
+  .primary{background:var(--text);border-color:var(--text);color:#fff}
+  .primary:hover{background:#1e293b}
+  .install{background:#dbeafe;border-color:#93c5fd;color:#1d4ed8}
+  .ok{background:#dcfce7;border-color:#86efac;color:#166534}
+  .warnbtn{background:#fffbeb;border-color:#fbbf24;color:#78350f}
+  code,kbd{font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;padding:2px 5px}
+  textarea{width:100%;min-height:126px;border:1px solid var(--border);border-radius:14px;padding:13px;background:#fff;color:var(--text);font:12px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;resize:vertical;outline:none}
+  textarea:focus{border-color:#93c5fd;box-shadow:0 0 0 4px rgba(59,130,246,.12)}
+  .bookmarklet-code{min-height:112px;white-space:nowrap;overflow:auto}
+  .spec-code{min-height:330px}
+  ol,ul{margin:8px 0 0 1.25em;padding:0;color:#334155}
+  li{margin:5px 0}
+  .note{border-left:4px solid #93c5fd;background:#eff6ff;border-radius:12px;padding:12px 14px;color:#1e3a8a}
+  .warn{border-left:4px solid #f59e0b;background:#fffbeb;border-radius:12px;padding:12px 14px;color:#78350f}
+  .small{font-size:13px;color:var(--sub)}
+  .target{display:inline-block;margin-top:8px;font-size:13px;color:#334155;word-break:break-all}
+  #toast{position:fixed;left:50%;top:18px;transform:translateX(-50%) translateY(-12px);background:#111827;color:#fff;border-radius:999px;padding:10px 15px;box-shadow:0 16px 40px rgba(15,23,42,.22);font-weight:800;font-size:13px;opacity:0;pointer-events:none;transition:.18s ease;z-index:999}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  footer{margin-top:30px;color:var(--sub);font-size:13px;text-align:center}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+<div class="wrap">
+  <header>
+    <h1>FlowLite Bookmarklet Installer</h1>
+    <p class="sub">ChatGPTなどで生成したFlowLite平文を、現行TESTのFlowLiteで直接開くためのブックマークレット配布ページです。</p>
+    <div class="target">Open target: <code>https://rascal-labs.github.io/FlowLite/FlowLite_test.html</code></div>
+    <div class="hero-actions">
+      <a id="bookmarkletDrag" class="bookmarklet-link install" href="#">Open in FlowLite</a>
+      <button id="copyBookmarklet" class="primary">ブックマークレットをコピー</button>
+      <button id="copySpec" class="warnbtn">検索・依頼用仕様書をコピー</button>
+    </div>
+    <p class="small">PCでは「Open in FlowLite」ボタンをブックマークバーへドラッグできます。ドラッグできない場合はコピーして、ブックマークのURL欄へ貼り付けてください。</p>
+  </header>
+
+  <section class="grid">
+    <div class="card">
+      <h2>使い方</h2>
+      <ol>
+        <li>このページで <b>ブックマークレットをコピー</b> します。</li>
+        <li>ブラウザで新規ブックマークを作ります。</li>
+        <li>名前を <code>Open in FlowLite</code> にします。</li>
+        <li>URL欄にコピーした <code>javascript:...</code> を貼ります。</li>
+        <li>ChatGPTなどでFlowLite平文をコピー、または範囲選択します。</li>
+        <li>登録した <code>Open in FlowLite</code> を押すと、FlowLite_test.htmlで開きます。</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h2>仕様</h2>
+      <ul>
+        <li>クリップボードにFlowLite書式があれば、クリップボードを優先します。</li>
+        <li>クリップボードに文字があってもFlowLite書式が1つもなければ、本文送信はキャンセルしてページだけ開きます。</li>
+        <li>クリップボードが空の場合だけ、選択テキストにFlowLite書式があれば送信します。</li>
+        <li>クリップボードは読み取りのみです。内容は消しません。</li>
+        <li>FlowLite本文はGitHub Pagesへアップロードされず、ブラウザ内の <code>postMessage</code> で渡します。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>ブックマークレットURL</h2>
+    <p class="sub">手動登録する場合は、以下を丸ごとコピーしてブックマークのURL欄へ入れてください。</p>
+    <textarea id="bookmarkletCode" class="bookmarklet-code" spellcheck="false" readonly></textarea>
+    <div class="hero-actions">
+      <button id="copyBookmarklet2" class="primary">このコードをコピー</button>
+      <button id="selectBookmarklet">全選択</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>検索・依頼用仕様書</h2>
+    <p class="sub">AIにFlowLite形式で関係図を作らせる時に使う仕様書です。コピーして依頼文の先頭に貼れます。</p>
+    <textarea id="aiSpecText" class="spec-code" spellcheck="false" readonly></textarea>
+    <div class="hero-actions">
+      <button id="copySpec2" class="warnbtn">仕様書をコピー</button>
+      <button id="selectSpec">仕様書を全選択</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>動作テスト用FlowLite平文</h2>
+    <p class="sub">以下をコピーしてから、登録したブックマークレットを押してください。</p>
+    <textarea id="sampleText" spellcheck="false"></textarea>
+    <div class="hero-actions">
+      <button id="copySample" class="ok">テスト平文をコピー</button>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="card note">
+      <h3>Chrome / Edge向けメモ</h3>
+      <p>ブックマークバーが表示されていない場合は <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd> で表示できます。</p>
+    </div>
+    <div class="card warn">
+      <h3>安全判定</h3>
+      <p>普通の文章がクリップボードに入っている時は、FlowLite本文として読み込まず、FlowLite_test.htmlを開くだけにします。</p>
+    </div>
+  </section>
+
+  <footer>
+    FlowLite Bookmarklet Installer / target: FlowLite_test.html
+  </footer>
+</div>
+<script>
+const BOOKMARKLET = "javascript:(async()=>{const base=\"https://rascal-labs.github.io/FlowLite/FlowLite_test.html\";const origin=\"https://rascal-labs.github.io\";const looks=s=>{s=String(s||\"\");return /(^|\\n)\\s*title\\s*:/.test(s)||/(^|\\n)\\s*direction\\s*:/.test(s)||/(^|\\n)\\s*#nodes(\\s|\\n|$)/.test(s)||/(^|\\n)\\s*#edges(\\s|\\n|$)/.test(s)||/(^|\\n)\\s*#styles(\\s|\\n|$)/.test(s)};let clip=\"\";try{clip=await navigator.clipboard.readText()}catch(e){}const sel=String(getSelection());const ct=String(clip||\"\").trim();const st=String(sel||\"\").trim();let t=\"\";if(ct){if(looks(ct))t=clip}else if(st&&looks(st)){t=sel}const n=Date.now().toString(36)+Math.random().toString(36).slice(2);const w=open(t?base+\"#pm=\"+encodeURIComponent(n):base,\"_blank\");if(!w){alert(\"ポップアップがブロックされました\");return}if(!t)return;let done=false;const onmsg=e=>{if(e&&e.source===w&&e.origin===origin&&e.data&&e.data.type===\"FLOWLITE_IMPORT_ACK\"&&e.data.nonce===n){done=true;removeEventListener(\"message\",onmsg)}};addEventListener(\"message\",onmsg);let c=0;const send=()=>{if(done)return;try{w.postMessage({type:\"FLOWLITE_IMPORT\",nonce:n,source:\"bookmarklet\",text:t},origin)}catch(e){}if(++c<40)setTimeout(send,250);else removeEventListener(\"message\",onmsg)};setTimeout(send,500)})();";
+const AI_SPEC = "あなたはFlowLite記法の構造図編集者です。\n\n目的:\nユーザーの依頼内容を、FlowLiteでそのまま開ける平文の関係図として出力してください。\n\n出力ルール:\n- 出力はFlowLite平文のみ。\n- Markdownコードフェンス、HTML、JSON、説明文、前置き、後書きは不要。\n- 必ず title: と direction: を含める。\n- 必ず #nodes、#styles、#edges を含める。\n- ノードIDは英数字とアンダースコア中心にする。\n- 表示名は日本語でよい。\n- タグは1ノード最大3つまで。\n- 色は #styles のタグ色で指定する。\n- 個別ノード装飾が必要な場合のみ @NodeID color:#RRGGBB shape:... size:... を使う。\n- 座標 x/y は原則不要。\n- 関係はタグではなく #edges で明示する。\n\nノード記法:\nA[通常ノード]\nB{判断ノード}\nC((開始・終了・中心))\nD[(データ・場所・格納)]\nN>注記]\n\nエッジ記法:\nA -> B : 作用・参照・因果・流れ\nA => B : 所属・分類・構成・包含\nA == B : 同一・別名・等価\nA -- B : 補足関係・弱い関連\nA <-> B : 相互作用・双方向関係\nA -x-> B : 阻止・禁止・否定・制約\n\n構成方針:\n- 中心概念を1つ置く。\n- 人物、場所、組織、出来事、道具、概念を必要に応じてノード化する。\n- 重要な関係はエッジラベルで説明する。\n- 色分けタグは同じ次元でそろえる。例: 役割、陣営、時代、状態などを混在させない。\n- ノード数が多い場合は、HubノードやGroupノードを使って読みやすくする。\n\n依頼内容:\nここに作成したい関係図の内容を書く。";
+const SAMPLE_TEXT = "title: FlowLite Bookmarklet Test\ndirection: Flow\n\n#nodes\nStart((コピーまたは選択)) +Input\nBookmarklet[Open in FlowLite] +Action\nViewer[(FlowLite_test.html)] +Viewer\nDone((表示完了)) +Output\n\n#styles\n+Input color:#dbeafe\n+Action color:#fde68a\n+Viewer color:#dcfce7\n+Output color:#bbf7d0\n\n#edges\nStart -> Bookmarklet : 起動\nBookmarklet -> Viewer : postMessageで送信\nViewer -> Done : 自動描画\n";
+const toastEl = document.getElementById('toast');
+function toast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastEl._t);
+  toastEl._t = setTimeout(()=>toastEl.classList.remove('show'), 1400);
+}
+async function copyText(text, label){
+  try{
+    await navigator.clipboard.writeText(text);
+    toast(label || 'コピーしました');
+  }catch(e){
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try{document.execCommand('copy');toast(label || 'コピーしました');}
+    catch(err){alert('コピーできませんでした。テキスト欄から手動でコピーしてください。');}
+    ta.remove();
+  }
+}
+const drag = document.getElementById('bookmarkletDrag');
+drag.href = BOOKMARKLET;
+document.getElementById('bookmarkletCode').value = BOOKMARKLET;
+document.getElementById('aiSpecText').value = AI_SPEC;
+document.getElementById('sampleText').value = SAMPLE_TEXT;
+document.getElementById('copyBookmarklet').addEventListener('click',()=>copyText(BOOKMARKLET,'ブックマークレットをコピーしました'));
+document.getElementById('copyBookmarklet2').addEventListener('click',()=>copyText(BOOKMARKLET,'ブックマークレットをコピーしました'));
+document.getElementById('copySpec').addEventListener('click',()=>copyText(AI_SPEC,'検索・依頼用仕様書をコピーしました'));
+document.getElementById('copySpec2').addEventListener('click',()=>copyText(AI_SPEC,'検索・依頼用仕様書をコピーしました'));
+document.getElementById('copySample').addEventListener('click',()=>copyText(SAMPLE_TEXT,'テスト平文をコピーしました'));
+document.getElementById('selectBookmarklet').addEventListener('click',()=>{
+  const el = document.getElementById('bookmarkletCode');
+  el.focus();
+  el.select();
+  toast('全選択しました');
+});
+document.getElementById('selectSpec').addEventListener('click',()=>{
+  const el = document.getElementById('aiSpecText');
+  el.focus();
+  el.select();
+  toast('仕様書を全選択しました');
+});
+</script>
+</body>
+</html>
