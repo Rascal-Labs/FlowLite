@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="FlowLite English edition. Create and edit interactive structural diagrams from plain text that can be passed to AI.">
-<title>FlowLite v1.1.0 QuickOpen Demo</title>
+<title>FlowLite v1.1.1 QuickOpen Demo</title>
 <style>
   :root{--bg:#f8fafc;--panel:#fff;--border:#e2e8f0;--text:#0f172a;--sub:#64748b;--accent:#2563eb;--edge:#94a3b8;--node:#fff;--shadow:0 8px 20px rgba(15,23,42,.08);--danger:#dc2626;--green:#16a34a}
   *{box-sizing:border-box} body{margin:0;height:100vh;display:flex;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--text);background:var(--bg);overflow:hidden}
@@ -538,7 +538,6 @@ Use direction: Flow by default. Use Compact to reduce area, Lane to separate nod
 <div id="left">
   <div id="toolbar">
     <button onclick="copySpecText()">AI Prompt</button>
-    <button onclick="copyQuickRequestPrompt()" title="Copy a compact prompt for requesting FlowLite plaintext from AI">AI Request</button>
     <div class="toolbar-menu" id="quickMenu">
       <button onclick="toggleTopMenu('quickMenu')">Quick</button>
       <div class="toolbar-flyout">
@@ -583,7 +582,7 @@ Use direction: Flow by default. Use Compact to reduce area, Lane to separate nod
 <script>
 (function(){
   'use strict';
-  const FLOWLITE_VERSION='1.1.0-quickopen-demo';
+  const FLOWLITE_VERSION='1.1.1-quickopen-demo';
   const sourceEl=document.getElementById('flowlite-source');
   const layoutEl=document.getElementById('flowlite-layout');
   const manualMetaEl=document.getElementById('flowlite-manual-meta');
@@ -997,8 +996,9 @@ Use direction: Flow by default. Use Compact to reduce area, Lane to separate nod
   };
   window.copyOpenInFlowLiteBookmarklet=async function(){
     const base=quickBaseUrl();
-    const bookmarklet="javascript:(()=>{const t=String(getSelection());if(!t.trim()){alert('FlowLiteテキストを選択してください');return;}const base="+JSON.stringify(base)+";const n=Date.now().toString(36)+Math.random().toString(36).slice(2);const w=open(base+'#pm='+encodeURIComponent(n),'_blank');if(!w){alert('ポップアップがブロックされました');return;}let c=0;const send=()=>{try{w.postMessage({type:'FLOWLITE_IMPORT',nonce:n,source:'bookmarklet',text:t},'*')}catch(e){}if(++c<40)setTimeout(send,250)};setTimeout(send,700)})();";
-    await quickWriteClipboard(bookmarklet,'Bookmarklet copied. Save it as a browser bookmark URL.');
+    const origin=new URL(base).origin;
+    const bookmarklet="javascript:(async()=>{const base="+JSON.stringify(base)+";const origin="+JSON.stringify(origin)+";let clip='';try{clip=await navigator.clipboard.readText()}catch(e){}const sel=String(getSelection());const t=String(clip||'').trim()?clip:sel;if(!String(t||'').trim()){alert('FlowLiteテキストを選択、またはクリップボードにコピーしてください');return;}const n=Date.now().toString(36)+Math.random().toString(36).slice(2);const w=open(base+'#pm='+encodeURIComponent(n),'_blank');if(!w){alert('ポップアップがブロックされました');return;}let done=false;const onmsg=e=>{if(e&&e.source===w&&e.origin===origin&&e.data&&e.data.type==='FLOWLITE_IMPORT_ACK'&&e.data.nonce===n){done=true;removeEventListener('message',onmsg)}};addEventListener('message',onmsg);let c=0;const send=()=>{if(done)return;try{w.postMessage({type:'FLOWLITE_IMPORT',nonce:n,source:'bookmarklet',text:t},origin)}catch(e){}if(++c<40)setTimeout(send,250);else removeEventListener('message',onmsg)};setTimeout(send,500)})();";
+    await quickWriteClipboard(bookmarklet,'Bookmarklet copied. Clipboard text is preferred over selection.');
   };
   window.copyQuickRequestPrompt=async function(){
     const currentText=String(editor.value||'').trim();
@@ -1035,20 +1035,30 @@ Use direction: Flow by default. Use Compact to reduce area, Lane to separate nod
       loadFlowLitePlainText(text,'Opened FlowLite plaintext from clipboard');
       render();
       setTimeout(()=>fitToContent(),30);
-      showToast('Opened from clipboard');
+      showToast('Opened from clipboard',700);
     }catch(err){setStatus('Clipboard read failed: '+(err&&err.message?err.message:String(err)));showToast('Clipboard read failed')}
   };
+  const quickImportNonces=new Set();
+  function ackQuickImport(ev,nonce){
+    try{
+      if(ev&&ev.source&&nonce)ev.source.postMessage({type:'FLOWLITE_IMPORT_ACK',nonce:String(nonce)},ev.origin||'*');
+    }catch(_e){}
+  }
   window.addEventListener('message',ev=>{
     const data=ev&&ev.data;
     if(!data||data.type!=='FLOWLITE_IMPORT'||typeof data.text!=='string')return;
-    const nonce=quickHashParams().get('pm');
-    if(nonce&&data.nonce!==nonce)return;
+    const receivedNonce=String(data.nonce||'');
+    const expectedNonce=quickHashParams().get('pm');
+    if(expectedNonce&&receivedNonce!==expectedNonce)return;
+    if(receivedNonce&&quickImportNonces.has(receivedNonce)){ackQuickImport(ev,receivedNonce);return;}
     try{
+      if(receivedNonce)quickImportNonces.add(receivedNonce);
       loadFlowLitePlainText(data.text,'Imported from bookmarklet');
       render();
       setTimeout(()=>fitToContent(),30);
-      if(nonce&&history&&history.replaceState)history.replaceState(null,'',quickBaseUrl());
-      showToast('Imported from bookmarklet');
+      if(expectedNonce&&history&&history.replaceState)history.replaceState(null,'',quickBaseUrl());
+      ackQuickImport(ev,receivedNonce);
+      // Do not show a toast here. Repeated bookmarklet messages previously stole focus/interaction feel.
     }catch(err){setStatus('Bookmarklet import failed: '+(err&&err.message?err.message:String(err)));showToast('Import failed')}
   });
 
@@ -3039,13 +3049,13 @@ Edges connected to selected nodes will also be deleted.`))return;
     applyRankedRadialByScores(analysisScores, `Selected view shown; ${sid} placed at the center`);
   };
   window.clearAnalysis=function(){analysisMode=null;analysisRanks={};analysisScores={};localDistances={};communityLabels={};analysisCacheKey='';renderNodes();drawEdges();validate();updateClearButtonState();setStatus('Analysis view cleared')};
-  function showToast(message){
+  function showToast(message,duration=900){
     const toast=document.getElementById('toast');
     if(!toast)return;
     toast.textContent=message||'Copied';
     toast.classList.add('show');
     clearTimeout(showToast._timer);
-    showToast._timer=setTimeout(()=>toast.classList.remove('show'),1500);
+    showToast._timer=setTimeout(()=>toast.classList.remove('show'),Math.max(250,Number(duration)||900));
   }
   function readSaveSlots(){
     try{
