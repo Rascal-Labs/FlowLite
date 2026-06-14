@@ -56,13 +56,11 @@ It is about giving AI a stable structure format, then using the browser as an in
 
 ---
 
----
-
 ## Quick Open from AI Output
 
 If you use FlowLite with AI often, install the bookmarklet.
 
-[Install the FlowLite Bookmarklet](https://rascal-labs.github.io/FlowLite/bookmarklet_en.html)
+[Install the FlowLite Bookmarklet](https://rascal-labs.github.io/FlowLite/FlowLite_bookmarklet_en.html)
 
 Workflow:
 
