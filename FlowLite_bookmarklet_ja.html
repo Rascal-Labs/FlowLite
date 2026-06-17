@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="FlowLiteのAI出力をワンクリックでFlowLite_test.htmlへ開くためのブックマークレット配布ページです。">
-<title>FlowLite Bookmarklet Installer</title>
+<meta name="description" content="FlowLiteの依頼フォームとOpen in FlowLiteをドラッグで追加するためのシンプルなブックマークレット配布ページです。">
+<title>FlowLite Bookmarklet Installer v1.2.1</title>
 <style>
   :root {
     --bg:#f8fafc; --panel:#ffffff; --text:#0f172a; --sub:#64748b;
@@ -13,7 +13,7 @@
   }
   *{box-sizing:border-box}
   body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:linear-gradient(180deg,#f8fafc,#eef2ff);color:var(--text);line-height:1.65}
-  .wrap{max-width:980px;margin:0 auto;padding:34px 18px 56px}
+  .wrap{max-width:1040px;margin:0 auto;padding:34px 18px 56px}
   header{background:rgba(255,255,255,.86);border:1px solid var(--border);border-radius:22px;padding:28px;box-shadow:var(--shadow)}
   h1{margin:0 0 8px;font-size:30px;letter-spacing:-.02em}
   h2{margin:30px 0 12px;font-size:20px}
@@ -31,11 +31,12 @@
   .install{background:#dbeafe;border-color:#93c5fd;color:#1d4ed8}
   .ok{background:#dcfce7;border-color:#86efac;color:#166534}
   .warnbtn{background:#fffbeb;border-color:#fbbf24;color:#78350f}
+  .formbtn{background:#ede9fe;border-color:#c4b5fd;color:#5b21b6}
   code,kbd{font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;padding:2px 5px}
   textarea{width:100%;min-height:126px;border:1px solid var(--border);border-radius:14px;padding:13px;background:#fff;color:var(--text);font:12px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;resize:vertical;outline:none}
   textarea:focus{border-color:#93c5fd;box-shadow:0 0 0 4px rgba(59,130,246,.12)}
   .bookmarklet-code{min-height:112px;white-space:nowrap;overflow:auto}
-  .spec-code{min-height:330px}
+  .spec-code{min-height:560px}
   ol,ul{margin:8px 0 0 1.25em;padding:0;color:#334155}
   li{margin:5px 0}
   .note{border-left:4px solid #93c5fd;background:#eff6ff;border-radius:12px;padding:12px 14px;color:#1e3a8a}
@@ -51,65 +52,41 @@
 <div id="toast"></div>
 <div class="wrap">
   <header>
-    <h1>FlowLite Bookmarklet Installer</h1>
-    <p class="sub">ChatGPTなどで生成したFlowLite平文を、現行TESTのFlowLiteで直接開くためのブックマークレット配布ページです。</p>
+    <h1>FlowLite Bookmarklet Installer v1.2.1</h1>
+    <p class="sub">2つのブックマークレットをブックマークバーへドラッグして使います。作成依頼はフォームで作り、生成後のFlowLite平文はOpen in FlowLiteで開きます。</p>
     <div class="target">Open target: <code>https://rascal-labs.github.io/FlowLite/FlowLite_test.html</code></div>
     <div class="hero-actions">
-      <a id="bookmarkletDrag" class="bookmarklet-link install" href="#">Open in FlowLite</a>
-      <button id="copyBookmarklet" class="primary">ブックマークレットをコピー</button>
-      <button id="copySpec" class="warnbtn">検索・依頼用仕様書をコピー</button>
+      <a id="requestBookmarkletDrag" class="bookmarklet-link formbtn" href="#" title="このリンクをブックマークバーへドラッグ">FlowLite依頼フォーム</a>
+      <a id="bookmarkletDrag" class="bookmarklet-link install" href="#" title="このリンクをブックマークバーへドラッグ">Open in FlowLite</a>
     </div>
-    <p class="small">PCでは「Open in FlowLite」ボタンをブックマークバーへドラッグできます。ドラッグできない場合はコピーして、ブックマークのURL欄へ貼り付けてください。</p>
+    <p class="small">一番簡単な追加方法は、上の2つのボタンをブックマークバーへドラッグすることです。クリックではなくドラッグして登録します。</p>
   </header>
 
   <section class="grid">
     <div class="card">
-      <h2>使い方</h2>
+      <h2>一番簡単な追加方法</h2>
       <ol>
-        <li>このページで <b>ブックマークレットをコピー</b> します。</li>
-        <li>ブラウザで新規ブックマークを作ります。</li>
-        <li>名前を <code>Open in FlowLite</code> にします。</li>
-        <li>URL欄にコピーした <code>javascript:...</code> を貼ります。</li>
-        <li>ChatGPTなどでFlowLite平文をコピー、または範囲選択します。</li>
-        <li>登録した <code>Open in FlowLite</code> を押すと、FlowLite_test.htmlで開きます。</li>
+        <li><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd> でブックマークバーを表示します。</li>
+        <li><b>FlowLite依頼フォーム</b> をブックマークバーへドラッグします。</li>
+        <li><b>Open in FlowLite</b> をブックマークバーへドラッグします。</li>
+        <li>以後は、ブックマークバー上のボタンとして使えます。</li>
       </ol>
     </div>
 
     <div class="card">
-      <h2>仕様</h2>
-      <ul>
-        <li>クリップボードにFlowLite書式があれば、クリップボードを優先します。</li>
-        <li>クリップボードに文字があってもFlowLite書式が1つもなければ、本文送信はキャンセルしてページだけ開きます。</li>
-        <li>クリップボードが空の場合だけ、選択テキストにFlowLite書式があれば送信します。</li>
-        <li>クリップボードは読み取りのみです。内容は消しません。</li>
-        <li>FlowLite本文はGitHub Pagesへアップロードされず、ブラウザ内の <code>postMessage</code> で渡します。</li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="card">
-    <h2>ブックマークレットURL</h2>
-    <p class="sub">手動登録する場合は、以下を丸ごとコピーしてブックマークのURL欄へ入れてください。</p>
-    <textarea id="bookmarkletCode" class="bookmarklet-code" spellcheck="false" readonly></textarea>
-    <div class="hero-actions">
-      <button id="copyBookmarklet2" class="primary">このコードをコピー</button>
-      <button id="selectBookmarklet">全選択</button>
-    </div>
-  </section>
-
-  <section class="card">
-    <h2>検索・依頼用仕様書</h2>
-    <p class="sub">AIにFlowLite形式で関係図を作らせる時に使う仕様書です。コピーして依頼文の先頭に貼れます。</p>
-    <textarea id="aiSpecText" class="spec-code" spellcheck="false" readonly></textarea>
-    <div class="hero-actions">
-      <button id="copySpec2" class="warnbtn">仕様書をコピー</button>
-      <button id="selectSpec">仕様書を全選択</button>
+      <h2>使い方</h2>
+      <ol>
+        <li><b>FlowLite依頼フォーム</b> を押し、作りたい関係図を入力します。</li>
+        <li>フォームが仕様書込みの依頼文をクリップボードへコピーします。</li>
+        <li>AIの入力欄へ貼り付け、FlowLite平文を生成します。</li>
+        <li>生成されたFlowLite平文をコピーし、<b>Open in FlowLite</b> を押して開きます。</li>
+      </ol>
     </div>
   </section>
 
   <section class="card">
     <h2>動作テスト用FlowLite平文</h2>
-    <p class="sub">以下をコピーしてから、登録したブックマークレットを押してください。</p>
+    <p class="sub">以下をコピーしてから、登録したOpen in FlowLiteを押してください。</p>
     <textarea id="sampleText" spellcheck="false"></textarea>
     <div class="hero-actions">
       <button id="copySample" class="ok">テスト平文をコピー</button>
@@ -118,23 +95,24 @@
 
   <section class="grid">
     <div class="card note">
-      <h3>Chrome / Edge向けメモ</h3>
-      <p>ブックマークバーが表示されていない場合は <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd> で表示できます。</p>
+      <h3>クリックで自動追加はできません</h3>
+      <p>通常のWebページから、ブラウザへブックマークレットを完全自動追加することはできません。安全上の制約があるため、ドラッグ登録が最も簡単で堅牢です。</p>
     </div>
     <div class="card warn">
-      <h3>安全判定</h3>
-      <p>普通の文章がクリップボードに入っている時は、FlowLite本文として読み込まず、FlowLite_test.htmlを開くだけにします。</p>
+      <h3>ドラッグできない場合</h3>
+      <p>リンクを右クリックしてURLをコピーし、新規ブックマークのURL欄へ貼り付けます。ただしPCではドラッグ登録が一番簡単です。</p>
     </div>
   </section>
 
   <footer>
-    FlowLite Bookmarklet Installer / target: FlowLite_test.html
+    FlowLite Bookmarklet Installer v1.2.1 / target: FlowLite_test.html
   </footer>
 </div>
 <script>
 const BOOKMARKLET = "javascript:(async()=>{const base=\"https://rascal-labs.github.io/FlowLite/FlowLite_test.html\";const origin=\"https://rascal-labs.github.io\";const looks=s=>{s=String(s||\"\");return /(^|\\n)\\s*title\\s*:/.test(s)||/(^|\\n)\\s*direction\\s*:/.test(s)||/(^|\\n)\\s*#nodes(\\s|\\n|$)/.test(s)||/(^|\\n)\\s*#edges(\\s|\\n|$)/.test(s)||/(^|\\n)\\s*#styles(\\s|\\n|$)/.test(s)};let clip=\"\";try{clip=await navigator.clipboard.readText()}catch(e){}const sel=String(getSelection());const ct=String(clip||\"\").trim();const st=String(sel||\"\").trim();let t=\"\";if(ct){if(looks(ct))t=clip}else if(st&&looks(st)){t=sel}const n=Date.now().toString(36)+Math.random().toString(36).slice(2);const w=open(t?base+\"#pm=\"+encodeURIComponent(n):base,\"_blank\");if(!w){alert(\"ポップアップがブロックされました\");return}if(!t)return;let done=false;const onmsg=e=>{if(e&&e.source===w&&e.origin===origin&&e.data&&e.data.type===\"FLOWLITE_IMPORT_ACK\"&&e.data.nonce===n){done=true;removeEventListener(\"message\",onmsg)}};addEventListener(\"message\",onmsg);let c=0;const send=()=>{if(done)return;try{w.postMessage({type:\"FLOWLITE_IMPORT\",nonce:n,source:\"bookmarklet\",text:t},origin)}catch(e){}if(++c<40)setTimeout(send,250);else removeEventListener(\"message\",onmsg)};setTimeout(send,500)})();";
-const AI_SPEC = "あなたはFlowLite記法の構造図編集者です。\n\n目的:\nユーザーの依頼内容を、FlowLiteでそのまま開ける平文の関係図として出力してください。\n\n出力ルール:\n- 出力はFlowLite平文のみ。\n- Markdownコードフェンス、HTML、JSON、説明文、前置き、後書きは不要。\n- 必ず title: と direction: を含める。\n- 必ず #nodes、#styles、#edges を含める。\n- ノードIDは英数字とアンダースコア中心にする。\n- 表示名は日本語でよい。\n- タグは1ノード最大3つまで。\n- 色は #styles のタグ色で指定する。\n- 個別ノード装飾が必要な場合のみ @NodeID color:#RRGGBB shape:... size:... を使う。\n- 座標 x/y は原則不要。\n- 関係はタグではなく #edges で明示する。\n\nノード記法:\nA[通常ノード]\nB{判断ノード}\nC((開始・終了・中心))\nD[(データ・場所・格納)]\nN>注記]\n\nエッジ記法:\nA -> B : 作用・参照・因果・流れ\nA => B : 所属・分類・構成・包含\nA == B : 同一・別名・等価\nA -- B : 補足関係・弱い関連\nA <-> B : 相互作用・双方向関係\nA -x-> B : 阻止・禁止・否定・制約\n\n構成方針:\n- 中心概念を1つ置く。\n- 人物、場所、組織、出来事、道具、概念を必要に応じてノード化する。\n- 重要な関係はエッジラベルで説明する。\n- 色分けタグは同じ次元でそろえる。例: 役割、陣営、時代、状態などを混在させない。\n- ノード数が多い場合は、HubノードやGroupノードを使って読みやすくする。\n\n依頼内容:\nここに作成したい関係図の内容を書く。";
-const SAMPLE_TEXT = "title: FlowLite Bookmarklet Test\ndirection: Flow\n\n#nodes\nStart((コピーまたは選択)) +Input\nBookmarklet[Open in FlowLite] +Action\nViewer[(FlowLite_test.html)] +Viewer\nDone((表示完了)) +Output\n\n#styles\n+Input color:#dbeafe\n+Action color:#fde68a\n+Viewer color:#dcfce7\n+Output color:#bbf7d0\n\n#edges\nStart -> Bookmarklet : 起動\nBookmarklet -> Viewer : postMessageで送信\nViewer -> Done : 自動描画\n";
+const REQUEST_BOOKMARKLET = "javascript:(()=>{ const SPEC=\"# FlowLite 依頼用仕様書 v1.1.1準拠\\n\\n## 役割\\nあなたはFlowLite記法で書かれた構造図を作成・編集する担当者です。\\n\\n## 目的\\nユーザーの依頼内容を、FlowLiteでそのまま開ける平文の関係図として出力してください。\\n\\n## 出力ルール\\n- 出力はFlowLite平文のみ。\\n- Markdownコードフェンス、HTML、JSON、説明文、前置き、後書きは出力しない。\\n- 必ず title: と direction: を含める。\\n- 必ず #nodes、#styles、#edges をこの表記で含める。# nodes のように空白を入れない。\\n- セクション順は原則として title / direction / #nodes / #styles / #edges にする。\\n- すべてのエッジ元・先は、表示ラベルではなくノードIDで指定する。\\n- #edges に出すノードIDは、原則としてすべて #nodes で先に定義する。\\n- 既存図を編集する場合、既存ノードIDは可能な限り維持する。\\n- ノードを削除する場合、そのノードに接続するエッジも削除する。\\n\\n## 全体フォーマット\\n\\ntitle: 図のタイトル\\ndirection: Flow\\n\\n#nodes\\nNodeID[表示ラベル] +PrimaryTag +SubTag +StateTag\\n\\n#styles\\n+PrimaryTag color:#dbeafe\\n\\n#edges\\nNodeID -> OtherID : 関係ラベル\\n\\n## direction\\n使用できる値:\\n- Horizontal\\n- Vertical\\n- Circle\\n- Grid\\n- Focus\\n- Top\\n- Flow\\n- Compact\\n- Lane\\n- Cluster\\n\\n既定は Flow。小さく詰めたい場合は Compact。第1タグごとに横レーンへ分けたい場合は Lane。第1タグごとにクラスタ表示したい場合は Cluster。\\n\\n## ノードIDルール\\n- 推奨形式は半角英数字とアンダースコアのみ。例: MainCharacter / WhiteRabbit / Birth_Athena\\n- 先頭は英字推奨。\\n- 空白、[ ]、{ }、( )、: は使わない。\\n- 同じIDを重複定義しない。\\n- エッジでは必ずこのIDを使い、表示ラベルを使わない。\\n\\n## ノード記法\\nA[通常ノード]\\nB{判断ノード}\\nC((開始・終了・中心ノード))\\nD[(データ・場所・格納ノード)]\\nN>注記ノード]\\n\\nラベルを複数行にしたい場合は、1行内で \\n を使う。\\n例:\\nAlice[Alice\\n主人公]\\n\\n## タグ記法\\nタグはノード行の末尾にだけ付ける。\\n\\n正しい形式:\\nNodeID[表示ラベル] +Tag1 +Tag2 +Tag3\\n\\n固定ルール:\\n- タグは必ず + で始める。\\n- タグはノード定義の閉じ記号の後ろに、半角スペース区切りで置く。\\n- 1ノード最大3タグまで。4つ目以降はFlowLite側で無視されるため出力しない。\\n- タグ名は半角英数字とアンダースコア推奨。例: +Person +Place +Event +Parent +Child +Enemy +Important\\n- タグ名に空白、:、#、,、+、[ ]、{ }、( ) は使わない。\\n- 第1タグは主分類・色分け・Lane/Clusterの基準として扱う。\\n- 第2・第3タグは補助分類、状態、重要度などに使う。\\n- タグは属性・分類・状態を示す補助メタデータであり、関係そのものではない。\\n\\nタグで表してよいもの:\\n- 分類: +Person / +Place / +Event\\n- 役割: +Parent / +Child / +Guide / +Enemy\\n- 状態: +TODO / +Done / +Blocked\\n- 重要度: +Core / +Important\\n- 表示グループ: +Frontend / +Backend / +Database\\n\\nタグで表してはいけないもの:\\n- AがBに所属する\\n- AがBを呼び出す\\n- AがBを阻止する\\n- AとBが同一である\\n- AとBが相互作用する\\n\\nこれらは必ず #edges で表す。\\n\\n## #styles 記法\\n#styles ではタグ色、個別ノード装飾、エッジ色、キャンバス背景を指定できる。\\n\\nタグ色:\\n+Tag color:#RRGGBB\\n\\n個別ノード装飾:\\n@NodeID color:#RRGGBB shape:star size:l x:100 y:200\\n\\nエッジ色:\\n@edge:e_FromID_ToID color:#RRGGBB\\n\\nキャンバス背景:\\n@canvas background:#RRGGBB\\n\\nスタイル固定ルール:\\n- 色は #RRGGBB の6桁HEXにする。\\n- タグ色は +Tag color:#RRGGBB の形式に固定する。\\n- ノード個別装飾は必要な場合だけ使う。\\n- 座標 x/y は手動配置を再現したい場合だけ使う。通常は不要。\\n- shape に使える値は round, rect, circle, ellipse, diamond, parallelogram, hexagon, trapezoid, document, star, heart, double。\\n- size に使える値は m または l。省略時は標準サイズ。\\n\\n色の優先順位:\\n1. @NodeID の個別 color\\n2. #styles で定義されたタグ色\\n3. デフォルト色\\n\\n複数タグがある場合、FlowLiteは左から順に #styles に定義されたタグ色を探し、最初に見つかった色を使う。\\nしたがって、色分けしたい主分類タグを必ず一番左に置く。\\n\\n例:\\nAlice[Alice] +Hero +Person +Core\\nWhiteRabbit[White Rabbit] +Guide +Person\\n\\n#styles\\n+Hero color:#fde68a\\n+Guide color:#dcfce7\\n\\n## 色分け方針\\n- 色分けタグは同じ次元にそろえる。\\n- 良い例: 役割だけで色分けする。+Theory / +Experiment / +Synthesis\\n- 良い例: 陣営だけで色分けする。+Wei / +Shu / +Wu\\n- 良い例: 状態だけで色分けする。+TODO / +Done / +Blocked\\n- 悪い例: +Theory、+19thCentury、+Germany、+Quantum を同時に色分けする。\\n- 色が意味を持たない場合、#styles を増やさない。\\n- 意味関係を見せたい場合は、タグではなくノードとエッジを使う。\\n\\n## エッジ記法\\nFromID -> ToID : 作用・流れ・因果・参照・使用\\nFromID => ToID : 所属・分類・構成・包含・継承\\nFromID == ToID : 同一・別名・等価・対応\\nFromID -- ToID : 補足関係・弱い関連・分類不能な関係\\nFromID <-> ToID : 相互作用・双方向関係\\nFromID -x-> ToID : 阻止・禁止・否定・制約・反証\\n\\nエッジ固定ルール:\\n- 左右には必ずノードIDを書く。\\n- ラベルは : の後ろに短く書く。\\n- 判断に迷う関係は -- を使う。\\n- -x-> は強い否定・阻止・禁止・反証にだけ使い、弱い対立や比較には使わない。\\n- 所属や親子関係をタグだけで済ませず、必要なら => または -> で明示する。\\n\\n## 設計方針\\n- 中心概念を1つ置く。\\n- 人物、場所、組織、出来事、道具、概念、状態を必要に応じてノード化する。\\n- 重要な意味関係は必ずエッジラベルで説明する。\\n- ノード数が多い場合は、HubノードやGroupノードを作って読みやすくする。\\n- タグは分類補助、エッジは意味関係、#styles は見た目、という役割を崩さない。\\n\\n## 最小テンプレート\\n\\ntitle: Sample Diagram\\ndirection: Flow\\n\\n#nodes\\nCenter((中心概念)) +Core\\nA[対象A] +Group1\\nB[対象B] +Group2\\nNote>補足説明] +Note\\n\\n#styles\\n+Core color:#fde68a\\n+Group1 color:#dbeafe\\n+Group2 color:#dcfce7\\n+Note color:#f5f5f5\\n\\n#edges\\nCenter -> A : 関係\\nA -- B : 補足関係\\nNote -- Center : 補足\\n\\n## 依頼内容\\nここに作成・編集したい関係図の内容を書く。\"; const ID=\"flowlite_request_form_bookmarklet_v120\"; const old=document.getElementById(ID);if(old)old.remove(); const host=document.createElement(\"div\");host.id=ID;document.documentElement.appendChild(host); const root=host.attachShadow?host.attachShadow({mode:\"open\"}):host; root.innerHTML=`<style> :host{all:initial}*{box-sizing:border-box}.back{position:fixed;inset:0;z-index:2147483647;background:rgba(15,23,42,.46);display:flex;align-items:center;justify-content:center;padding:18px;font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,\"Helvetica Neue\",Arial,sans-serif;color:#0f172a}.panel{width:min(760px,100%);max-height:92vh;overflow:auto;background:#fff;border:1px solid #e2e8f0;border-radius:18px;box-shadow:0 24px 70px rgba(15,23,42,.28);padding:20px}h1{font-size:20px;line-height:1.35;margin:0 0 8px;letter-spacing:-.02em}p{font-size:13px;line-height:1.7;color:#475569;margin:6px 0 12px}label{display:block;font-size:12px;font-weight:800;color:#334155;margin:14px 0 6px}textarea,input,select{width:100%;border:1px solid #cbd5e1;border-radius:12px;background:#fff;color:#0f172a;font:13px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;padding:11px;outline:none}textarea:focus,input:focus,select:focus{border-color:#60a5fa;box-shadow:0 0 0 4px rgba(37,99,235,.14)}textarea{min-height:170px;resize:vertical}.row{display:grid;grid-template-columns:1fr 190px;gap:10px}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:center}button{appearance:none;border:1px solid #e2e8f0;border-radius:12px;padding:10px 14px;font-size:13px;font-weight:800;cursor:pointer;background:#f1f5f9;color:#0f172a}button:hover{background:#e2e8f0}.primary{background:#0f172a;color:#fff;border-color:#0f172a}.primary:hover{background:#1e293b}.warn{background:#fffbeb;color:#78350f;border-color:#fbbf24}.danger{background:#fee2e2;color:#991b1b;border-color:#fecaca}.small{font-size:12px;color:#64748b}.output{display:none;margin-top:12px}@media(max-width:640px){.row{grid-template-columns:1fr}.panel{padding:16px}} </style><div class=\"back\"><div class=\"panel\" role=\"dialog\" aria-modal=\"true\" aria-label=\"FlowLite依頼フォーム\"><h1>FlowLite依頼フォーム</h1><p>作りたい関係図の内容を入力すると、FlowLite v1.1.1準拠の仕様書と結合してクリップボードにコピーします。そのままAIの入力欄へ貼り付けてください。</p><label for=\"req\">どんな関係図を書きたいですか？</label><textarea id=\"req\" placeholder=\"例: スイミーの登場人物と出来事の関係図。スイミーを中心に、仲間、敵、行動、変化をノード化してください。タグは役割で分類してください。\"></textarea><div class=\"row\"><div><label for=\"title\">希望タイトル 任意</label><input id=\"title\" placeholder=\"例: スイミー関係図\"></div><div><label for=\"dir\">希望direction 任意</label><select id=\"dir\"><option value=\"\">自動選択</option><option>Flow</option><option>Focus</option><option>Cluster</option><option>Lane</option><option>Compact</option><option>Circle</option><option>Horizontal</option><option>Vertical</option><option>Grid</option><option>Top</option></select></div></div><div class=\"actions\"><button id=\"copy\" class=\"primary\">仕様書＋依頼内容をコピー</button><button id=\"sample\" class=\"warn\">例文を入れる</button><button id=\"close\" class=\"danger\">閉じる</button><span class=\"small\">Escでも閉じられます。</span></div><textarea id=\"out\" class=\"output\" readonly></textarea></div></div>`; const q=s=>root.querySelector(s);const req=q(\"#req\"),title=q(\"#title\"),dir=q(\"#dir\"),out=q(\"#out\"); const close=()=>host.remove();q(\"#close\").addEventListener(\"click\",close);root.querySelector(\".back\").addEventListener(\"click\",e=>{if(e.target.classList&&e.target.classList.contains(\"back\"))close()}); const onkey=e=>{if(e.key===\"Escape\"){close();removeEventListener(\"keydown\",onkey)}};addEventListener(\"keydown\",onkey); q(\"#sample\").addEventListener(\"click\",()=>{req.value=\"中心テーマを1つ置き、主要人物・組織・出来事・場所・概念をノード化してください。タグは第1タグを主分類として統一し、重要な関係はすべて#edgesのラベルで明示してください。\";req.focus()}); const build=()=>{const r=req.value.trim();if(!r){alert(\"依頼内容を入力してください\");req.focus();return \"\"}const add=[];if(title.value.trim())add.push(\"- 希望タイトル: \"+title.value.trim());if(dir.value) add.push(\"- 希望direction: \"+dir.value);let block=\"## 依頼内容 \"+r;if(add.length)block+=\" ## 追加指定 \"+add.join(\" \");return SPEC.replace(/## 依頼内容[\\s\\S]*$/,block)}; const fallback=text=>{out.style.display=\"block\";out.value=text;out.focus();out.select();try{if(document.execCommand(\"copy\")){alert(\"コピーしました。AIの入力欄へ貼り付けてください。\");close();return}}catch(e){}alert(\"自動コピーできませんでした。表示されたテキストを手動でコピーしてください。\")}; q(\"#copy\").addEventListener(\"click\",async()=>{const text=build();if(!text)return;try{await navigator.clipboard.writeText(text);alert(\"仕様書＋依頼内容をコピーしました。AIの入力欄へ貼り付けてください。\");close()}catch(e){fallback(text)}}); setTimeout(()=>req.focus(),50); })();";
+const AI_SPEC = "# FlowLite 依頼用仕様書 v1.1.1準拠\n\n## 役割\nあなたはFlowLite記法で書かれた構造図を作成・編集する担当者です。\n\n## 目的\nユーザーの依頼内容を、FlowLiteでそのまま開ける平文の関係図として出力してください。\n\n## 出力ルール\n- 出力はFlowLite平文のみ。\n- Markdownコードフェンス、HTML、JSON、説明文、前置き、後書きは出力しない。\n- 必ず title: と direction: を含める。\n- 必ず #nodes、#styles、#edges をこの表記で含める。# nodes のように空白を入れない。\n- セクション順は原則として title / direction / #nodes / #styles / #edges にする。\n- すべてのエッジ元・先は、表示ラベルではなくノードIDで指定する。\n- #edges に出すノードIDは、原則としてすべて #nodes で先に定義する。\n- 既存図を編集する場合、既存ノードIDは可能な限り維持する。\n- ノードを削除する場合、そのノードに接続するエッジも削除する。\n\n## 全体フォーマット\n\ntitle: 図のタイトル\ndirection: Flow\n\n#nodes\nNodeID[表示ラベル] +PrimaryTag +SubTag +StateTag\n\n#styles\n+PrimaryTag color:#dbeafe\n\n#edges\nNodeID -> OtherID : 関係ラベル\n\n## direction\n使用できる値:\n- Horizontal\n- Vertical\n- Circle\n- Grid\n- Focus\n- Top\n- Flow\n- Compact\n- Lane\n- Cluster\n\n既定は Flow。小さく詰めたい場合は Compact。第1タグごとに横レーンへ分けたい場合は Lane。第1タグごとにクラスタ表示したい場合は Cluster。\n\n## ノードIDルール\n- 推奨形式は半角英数字とアンダースコアのみ。例: MainCharacter / WhiteRabbit / Birth_Athena\n- 先頭は英字推奨。\n- 空白、[ ]、{ }、( )、: は使わない。\n- 同じIDを重複定義しない。\n- エッジでは必ずこのIDを使い、表示ラベルを使わない。\n\n## ノード記法\nA[通常ノード]\nB{判断ノード}\nC((開始・終了・中心ノード))\nD[(データ・場所・格納ノード)]\nN>注記ノード]\n\nラベルを複数行にしたい場合は、1行内で \n を使う。\n例:\nAlice[Alice\n主人公]\n\n## タグ記法\nタグはノード行の末尾にだけ付ける。\n\n正しい形式:\nNodeID[表示ラベル] +Tag1 +Tag2 +Tag3\n\n固定ルール:\n- タグは必ず + で始める。\n- タグはノード定義の閉じ記号の後ろに、半角スペース区切りで置く。\n- 1ノード最大3タグまで。4つ目以降はFlowLite側で無視されるため出力しない。\n- タグ名は半角英数字とアンダースコア推奨。例: +Person +Place +Event +Parent +Child +Enemy +Important\n- タグ名に空白、:、#、,、+、[ ]、{ }、( ) は使わない。\n- 第1タグは主分類・色分け・Lane/Clusterの基準として扱う。\n- 第2・第3タグは補助分類、状態、重要度などに使う。\n- タグは属性・分類・状態を示す補助メタデータであり、関係そのものではない。\n\nタグで表してよいもの:\n- 分類: +Person / +Place / +Event\n- 役割: +Parent / +Child / +Guide / +Enemy\n- 状態: +TODO / +Done / +Blocked\n- 重要度: +Core / +Important\n- 表示グループ: +Frontend / +Backend / +Database\n\nタグで表してはいけないもの:\n- AがBに所属する\n- AがBを呼び出す\n- AがBを阻止する\n- AとBが同一である\n- AとBが相互作用する\n\nこれらは必ず #edges で表す。\n\n## #styles 記法\n#styles ではタグ色、個別ノード装飾、エッジ色、キャンバス背景を指定できる。\n\nタグ色:\n+Tag color:#RRGGBB\n\n個別ノード装飾:\n@NodeID color:#RRGGBB shape:star size:l x:100 y:200\n\nエッジ色:\n@edge:e_FromID_ToID color:#RRGGBB\n\nキャンバス背景:\n@canvas background:#RRGGBB\n\nスタイル固定ルール:\n- 色は #RRGGBB の6桁HEXにする。\n- タグ色は +Tag color:#RRGGBB の形式に固定する。\n- ノード個別装飾は必要な場合だけ使う。\n- 座標 x/y は手動配置を再現したい場合だけ使う。通常は不要。\n- shape に使える値は round, rect, circle, ellipse, diamond, parallelogram, hexagon, trapezoid, document, star, heart, double。\n- size に使える値は m または l。省略時は標準サイズ。\n\n色の優先順位:\n1. @NodeID の個別 color\n2. #styles で定義されたタグ色\n3. デフォルト色\n\n複数タグがある場合、FlowLiteは左から順に #styles に定義されたタグ色を探し、最初に見つかった色を使う。\nしたがって、色分けしたい主分類タグを必ず一番左に置く。\n\n例:\nAlice[Alice] +Hero +Person +Core\nWhiteRabbit[White Rabbit] +Guide +Person\n\n#styles\n+Hero color:#fde68a\n+Guide color:#dcfce7\n\n## 色分け方針\n- 色分けタグは同じ次元にそろえる。\n- 良い例: 役割だけで色分けする。+Theory / +Experiment / +Synthesis\n- 良い例: 陣営だけで色分けする。+Wei / +Shu / +Wu\n- 良い例: 状態だけで色分けする。+TODO / +Done / +Blocked\n- 悪い例: +Theory、+19thCentury、+Germany、+Quantum を同時に色分けする。\n- 色が意味を持たない場合、#styles を増やさない。\n- 意味関係を見せたい場合は、タグではなくノードとエッジを使う。\n\n## エッジ記法\nFromID -> ToID : 作用・流れ・因果・参照・使用\nFromID => ToID : 所属・分類・構成・包含・継承\nFromID == ToID : 同一・別名・等価・対応\nFromID -- ToID : 補足関係・弱い関連・分類不能な関係\nFromID <-> ToID : 相互作用・双方向関係\nFromID -x-> ToID : 阻止・禁止・否定・制約・反証\n\nエッジ固定ルール:\n- 左右には必ずノードIDを書く。\n- ラベルは : の後ろに短く書く。\n- 判断に迷う関係は -- を使う。\n- -x-> は強い否定・阻止・禁止・反証にだけ使い、弱い対立や比較には使わない。\n- 所属や親子関係をタグだけで済ませず、必要なら => または -> で明示する。\n\n## 設計方針\n- 中心概念を1つ置く。\n- 人物、場所、組織、出来事、道具、概念、状態を必要に応じてノード化する。\n- 重要な意味関係は必ずエッジラベルで説明する。\n- ノード数が多い場合は、HubノードやGroupノードを作って読みやすくする。\n- タグは分類補助、エッジは意味関係、#styles は見た目、という役割を崩さない。\n\n## 最小テンプレート\n\ntitle: Sample Diagram\ndirection: Flow\n\n#nodes\nCenter((中心概念)) +Core\nA[対象A] +Group1\nB[対象B] +Group2\nNote>補足説明] +Note\n\n#styles\n+Core color:#fde68a\n+Group1 color:#dbeafe\n+Group2 color:#dcfce7\n+Note color:#f5f5f5\n\n#edges\nCenter -> A : 関係\nA -- B : 補足関係\nNote -- Center : 補足\n\n## 依頼内容\nここに作成・編集したい関係図の内容を書く。";
+const SAMPLE_TEXT = "title: FlowLite Bookmarklet Test\ndirection: Flow\n\n#nodes\nStart((コピーまたは選択)) +Input\nPrompt[FlowLite依頼フォーム] +Action\nSpec[仕様書＋依頼内容] +Prompt\nAI[AIに貼り付け] +AI\nViewer[(FlowLite_test.html)] +Viewer\nDone((表示完了)) +Output\n\n#styles\n+Input color:#dbeafe\n+Action color:#fde68a\n+Prompt color:#fffbeb\n+AI color:#e0e7ff\n+Viewer color:#dcfce7\n+Output color:#bbf7d0\n\n#edges\nStart -> Prompt : 依頼内容を入力\nPrompt -> Spec : 仕様書と結合してコピー\nSpec -> AI : 貼り付けてFlowLite生成依頼\nAI -> Viewer : 生成された平文をOpen in FlowLiteで開く\nViewer -> Done : 自動描画\n";
 const toastEl = document.getElementById('toast');
 function toast(msg){
   toastEl.textContent = msg;
@@ -159,28 +137,20 @@ async function copyText(text, label){
     ta.remove();
   }
 }
+function selectTextArea(id, label){
+  const el = document.getElementById(id);
+  el.focus();
+  el.select();
+  toast(label || '全選択しました');
+}
 const drag = document.getElementById('bookmarkletDrag');
 drag.href = BOOKMARKLET;
-document.getElementById('bookmarkletCode').value = BOOKMARKLET;
-document.getElementById('aiSpecText').value = AI_SPEC;
-document.getElementById('sampleText').value = SAMPLE_TEXT;
-document.getElementById('copyBookmarklet').addEventListener('click',()=>copyText(BOOKMARKLET,'ブックマークレットをコピーしました'));
-document.getElementById('copyBookmarklet2').addEventListener('click',()=>copyText(BOOKMARKLET,'ブックマークレットをコピーしました'));
-document.getElementById('copySpec').addEventListener('click',()=>copyText(AI_SPEC,'検索・依頼用仕様書をコピーしました'));
-document.getElementById('copySpec2').addEventListener('click',()=>copyText(AI_SPEC,'検索・依頼用仕様書をコピーしました'));
-document.getElementById('copySample').addEventListener('click',()=>copyText(SAMPLE_TEXT,'テスト平文をコピーしました'));
-document.getElementById('selectBookmarklet').addEventListener('click',()=>{
-  const el = document.getElementById('bookmarkletCode');
-  el.focus();
-  el.select();
-  toast('全選択しました');
-});
-document.getElementById('selectSpec').addEventListener('click',()=>{
-  const el = document.getElementById('aiSpecText');
-  el.focus();
-  el.select();
-  toast('仕様書を全選択しました');
-});
+const requestDrag = document.getElementById('requestBookmarkletDrag');
+requestDrag.href = REQUEST_BOOKMARKLET;
+const sampleTextEl = document.getElementById('sampleText');
+if(sampleTextEl) sampleTextEl.value = SAMPLE_TEXT;
+const copySampleBtn = document.getElementById('copySample');
+if(copySampleBtn) copySampleBtn.addEventListener('click',()=>copyText(SAMPLE_TEXT,'テスト平文をコピーしました'));
 </script>
 </body>
 </html>
