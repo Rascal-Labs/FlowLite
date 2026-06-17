@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Bookmarklet installer page for opening AI-generated FlowLite plaintext directly in FlowLite_test.html.">
-<title>FlowLite Bookmarklet Installer</title>
+<meta name="description" content="A simple bookmarklet installer for adding the FlowLite Request Form and Open in FlowLite to your bookmarks bar by dragging.">
+<title>FlowLite Bookmarklet Installer v1.2.1</title>
 <style>
   :root {
     --bg:#f8fafc; --panel:#ffffff; --text:#0f172a; --sub:#64748b;
@@ -13,7 +13,7 @@
   }
   *{box-sizing:border-box}
   body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:linear-gradient(180deg,#f8fafc,#eef2ff);color:var(--text);line-height:1.65}
-  .wrap{max-width:980px;margin:0 auto;padding:34px 18px 56px}
+  .wrap{max-width:1040px;margin:0 auto;padding:34px 18px 56px}
   header{background:rgba(255,255,255,.86);border:1px solid var(--border);border-radius:22px;padding:28px;box-shadow:var(--shadow)}
   h1{margin:0 0 8px;font-size:30px;letter-spacing:-.02em}
   h2{margin:30px 0 12px;font-size:20px}
@@ -31,11 +31,10 @@
   .install{background:#dbeafe;border-color:#93c5fd;color:#1d4ed8}
   .ok{background:#dcfce7;border-color:#86efac;color:#166534}
   .warnbtn{background:#fffbeb;border-color:#fbbf24;color:#78350f}
+  .formbtn{background:#ede9fe;border-color:#c4b5fd;color:#5b21b6}
   code,kbd{font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;padding:2px 5px}
   textarea{width:100%;min-height:126px;border:1px solid var(--border);border-radius:14px;padding:13px;background:#fff;color:var(--text);font:12px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;resize:vertical;outline:none}
   textarea:focus{border-color:#93c5fd;box-shadow:0 0 0 4px rgba(59,130,246,.12)}
-  .bookmarklet-code{min-height:112px;white-space:nowrap;overflow:auto}
-  .spec-code{min-height:330px}
   ol,ul{margin:8px 0 0 1.25em;padding:0;color:#334155}
   li{margin:5px 0}
   .note{border-left:4px solid #93c5fd;background:#eff6ff;border-radius:12px;padding:12px 14px;color:#1e3a8a}
@@ -51,90 +50,66 @@
 <div id="toast"></div>
 <div class="wrap">
   <header>
-    <h1>FlowLite Bookmarklet Installer</h1>
-    <p class="sub">Install a bookmarklet that opens AI-generated FlowLite plaintext directly in the current TEST FlowLite page.</p>
+    <h1>FlowLite Bookmarklet Installer v1.2.1</h1>
+    <p class="sub">Drag two bookmarklets to your bookmarks bar. Use the request form to create the AI prompt, then use Open in FlowLite to open the generated FlowLite plain text.</p>
     <div class="target">Open target: <code>https://rascal-labs.github.io/FlowLite/FlowLite_test.html</code></div>
     <div class="hero-actions">
-      <a id="bookmarkletDrag" class="bookmarklet-link install" href="#">Open in FlowLite</a>
-      <button id="copyBookmarklet" class="primary">Copy Bookmarklet</button>
-      <button id="copySpec" class="warnbtn">Copy AI Prompt Spec</button>
+      <a id="requestBookmarkletDrag" class="bookmarklet-link formbtn" href="#" title="Drag this link to your bookmarks bar">FlowLite Request Form</a>
+      <a id="bookmarkletDrag" class="bookmarklet-link install" href="#" title="Drag this link to your bookmarks bar">Open in FlowLite</a>
     </div>
-    <p class="small">On desktop, drag the “Open in FlowLite” button to your bookmarks bar. If dragging does not work, copy the bookmarklet and paste it into a bookmark URL field manually.</p>
+    <p class="small">The easiest way to add them is to drag the two buttons above to your bookmarks bar. Drag to register them; do not click them here.</p>
   </header>
 
   <section class="grid">
     <div class="card">
-      <h2>How to use</h2>
+      <h2>Easiest setup</h2>
       <ol>
-        <li>Click <b>Copy Bookmarklet</b> on this page.</li>
-        <li>Create a new browser bookmark.</li>
-        <li>Name it <code>Open in FlowLite</code>.</li>
-        <li>Paste the copied <code>javascript:...</code> code into the bookmark URL field.</li>
-        <li>Copy or select FlowLite plaintext from ChatGPT or another page.</li>
-        <li>Click the registered <code>Open in FlowLite</code> bookmark to open it in FlowLite_test.html.</li>
+        <li>Press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd> to show the bookmarks bar.</li>
+        <li>Drag <b>FlowLite Request Form</b> to the bookmarks bar.</li>
+        <li>Drag <b>Open in FlowLite</b> to the bookmarks bar.</li>
+        <li>After that, use them as buttons on your bookmarks bar.</li>
       </ol>
     </div>
 
     <div class="card">
-      <h2>Behavior</h2>
-      <ul>
-        <li>If the clipboard contains FlowLite syntax, the clipboard text is used first.</li>
-        <li>If the clipboard contains text but no FlowLite syntax, import is cancelled and only FlowLite_test.html is opened.</li>
-        <li>If the clipboard is empty, selected text is used only when it contains FlowLite syntax.</li>
-        <li>The clipboard is read only. It is not cleared or overwritten.</li>
-        <li>The FlowLite text is not uploaded to GitHub Pages. It is passed inside the browser with <code>postMessage</code>.</li>
-      </ul>
+      <h2>How to use</h2>
+      <ol>
+        <li>Click <b>FlowLite Request Form</b> and enter the relationship diagram you want.</li>
+        <li>The form copies a prompt that includes the FlowLite specification.</li>
+        <li>Paste it into an AI input field and generate FlowLite plain text.</li>
+        <li>Copy the generated FlowLite plain text, then click <b>Open in FlowLite</b>.</li>
+      </ol>
     </div>
   </section>
 
   <section class="card">
-    <h2>Bookmarklet URL</h2>
-    <p class="sub">For manual installation, copy the entire text below and paste it into your bookmark URL field.</p>
-    <textarea id="bookmarkletCode" class="bookmarklet-code" spellcheck="false" readonly></textarea>
-    <div class="hero-actions">
-      <button id="copyBookmarklet2" class="primary">Copy this code</button>
-      <button id="selectBookmarklet">Select all</button>
-    </div>
-  </section>
-
-  <section class="card">
-    <h2>AI Prompt Specification</h2>
-    <p class="sub">Use this prompt specification when asking an AI to create a FlowLite relationship map. You can paste it before your request.</p>
-    <textarea id="aiSpecText" class="spec-code" spellcheck="false" readonly></textarea>
-    <div class="hero-actions">
-      <button id="copySpec2" class="warnbtn">Copy specification</button>
-      <button id="selectSpec">Select specification</button>
-    </div>
-  </section>
-
-  <section class="card">
-    <h2>Test FlowLite plaintext</h2>
-    <p class="sub">Copy the sample below, then click your installed bookmarklet.</p>
+    <h2>FlowLite test plain text</h2>
+    <p class="sub">Copy the text below, then click your registered Open in FlowLite bookmarklet.</p>
     <textarea id="sampleText" spellcheck="false"></textarea>
     <div class="hero-actions">
-      <button id="copySample" class="ok">Copy test plaintext</button>
+      <button id="copySample" class="ok">Copy test plain text</button>
     </div>
   </section>
 
   <section class="grid">
     <div class="card note">
-      <h3>Chrome / Edge note</h3>
-      <p>If the bookmarks bar is hidden, press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd> to show it.</p>
+      <h3>Automatic one-click bookmark installation is not available</h3>
+      <p>Ordinary web pages cannot automatically add bookmarklets to your browser. Browser security restrictions make drag registration the simplest and most robust method.</p>
     </div>
     <div class="card warn">
-      <h3>Safety behavior</h3>
-      <p>When ordinary text is in the clipboard, the bookmarklet does not import it as FlowLite. It only opens FlowLite_test.html.</p>
+      <h3>If dragging does not work</h3>
+      <p>Right-click the link, copy its URL, create a new bookmark, and paste it into the URL field. On desktop, dragging is still the easiest method.</p>
     </div>
   </section>
 
   <footer>
-    FlowLite Bookmarklet Installer / target: FlowLite_test.html
+    FlowLite Bookmarklet Installer v1.2.1 / target: FlowLite_test.html
   </footer>
 </div>
 <script>
-const BOOKMARKLET = "javascript:(async()=>{const base=\"https://rascal-labs.github.io/FlowLite/FlowLite_test.html\";const origin=\"https://rascal-labs.github.io\";const looks=s=>{s=String(s||\"\");return /(^|\\n)\\s*title\\s*:/.test(s)||/(^|\\n)\\s*direction\\s*:/.test(s)||/(^|\\n)\\s*#nodes(\\s|\\n|$)/.test(s)||/(^|\\n)\\s*#edges(\\s|\\n|$)/.test(s)||/(^|\\n)\\s*#styles(\\s|\\n|$)/.test(s)};let clip=\"\";try{clip=await navigator.clipboard.readText()}catch(e){}const sel=String(getSelection());const ct=String(clip||\"\").trim();const st=String(sel||\"\").trim();let t=\"\";if(ct){if(looks(ct))t=clip}else if(st&&looks(st)){t=sel}const n=Date.now().toString(36)+Math.random().toString(36).slice(2);const w=open(t?base+\"#pm=\"+encodeURIComponent(n):base,\"_blank\");if(!w){alert(\"Popup was blocked\");return}if(!t)return;let done=false;const onmsg=e=>{if(e&&e.source===w&&e.origin===origin&&e.data&&e.data.type===\"FLOWLITE_IMPORT_ACK\"&&e.data.nonce===n){done=true;removeEventListener(\"message\",onmsg)}};addEventListener(\"message\",onmsg);let c=0;const send=()=>{if(done)return;try{w.postMessage({type:\"FLOWLITE_IMPORT\",nonce:n,source:\"bookmarklet\",text:t},origin)}catch(e){}if(++c<40)setTimeout(send,250);else removeEventListener(\"message\",onmsg)};setTimeout(send,500)})();";
-const AI_SPEC = "You are a FlowLite notation editor for structural relationship maps.\n\nGoal:\nConvert the user's request into FlowLite plaintext that can be opened directly in FlowLite.\n\nOutput rules:\n- Output FlowLite plaintext only.\n- Do not include Markdown code fences, HTML, JSON, explanations, introductions, or closing comments.\n- Always include title: and direction:.\n- Always include #nodes, #styles, and #edges.\n- Use node IDs mainly composed of ASCII letters, numbers, and underscores.\n- Display labels may be written in English or in the user's requested language.\n- Use at most 3 tags per node.\n- Define colors through tag colors in #styles.\n- Use @NodeID color:#RRGGBB shape:... size:... only when individual node styling is necessary.\n- Do not add x/y coordinates unless the user explicitly asks for fixed layout.\n- Express relationships through #edges, not through tags alone.\n\nNode syntax:\nA[Normal node]\nB{Decision node}\nC((Start / End / Center))\nD[(Data / Place / Storage)]\nN>Note]\n\nEdge syntax:\nA -> B : action / reference / causality / flow\nA => B : membership / classification / composition / containment\nA == B : identity / alias / equivalence\nA -- B : supplemental or weak association\nA <-> B : interaction / bidirectional relationship\nA -x-> B : block / prohibition / negation / constraint\n\nComposition guidelines:\n- Place one central concept.\n- Represent people, places, organizations, events, tools, and concepts as nodes when useful.\n- Explain important relationships with edge labels.\n- Keep color tags within one consistent dimension, such as role, faction, era, or state. Do not mix unrelated dimensions in one color layer.\n- If the map becomes large, use Hub nodes or Group nodes to keep it readable.\n\nUser request:\nWrite the relationship map request here.";
-const SAMPLE_TEXT = "title: FlowLite Bookmarklet Test\ndirection: Flow\n\n#nodes\nStart((Copy or select)) +Input\nBookmarklet[Open in FlowLite] +Action\nViewer[(FlowLite_test.html)] +Viewer\nDone((Rendered)) +Output\n\n#styles\n+Input color:#dbeafe\n+Action color:#fde68a\n+Viewer color:#dcfce7\n+Output color:#bbf7d0\n\n#edges\nStart -> Bookmarklet : launch\nBookmarklet -> Viewer : send with postMessage\nViewer -> Done : render automatically\n";
+const BOOKMARKLET = "javascript:(async()=>{const base=\"https://rascal-labs.github.io/FlowLite/FlowLite_test.html\";const origin=\"https://rascal-labs.github.io\";const looks=s=>{s=String(s||\"\");return /(^|\\n)\\s*title\\s*:/.test(s)||/(^|\\n)\\s*direction\\s*:/.test(s)||/(^|\\n)\\s*#nodes(\\s|\\n|$)/.test(s)||/(^|\\n)\\s*#edges(\\s|\\n|$)/.test(s)||/(^|\\n)\\s*#styles(\\s|\\n|$)/.test(s)};let clip=\"\";try{clip=await navigator.clipboard.readText()}catch(e){}const sel=String(getSelection());const ct=String(clip||\"\").trim();const st=String(sel||\"\").trim();let t=\"\";if(ct){if(looks(ct))t=clip}else if(st&&looks(st)){t=sel}const n=Date.now().toString(36)+Math.random().toString(36).slice(2);const w=open(t?base+\"#pm=\"+encodeURIComponent(n):base,\"_blank\");if(!w){alert(\"Popup blocked.\");return}if(!t)return;let done=false;const onmsg=e=>{if(e&&e.source===w&&e.origin===origin&&e.data&&e.data.type===\"FLOWLITE_IMPORT_ACK\"&&e.data.nonce===n){done=true;removeEventListener(\"message\",onmsg)}};addEventListener(\"message\",onmsg);let c=0;const send=()=>{if(done)return;try{w.postMessage({type:\"FLOWLITE_IMPORT\",nonce:n,source:\"bookmarklet\",text:t},origin)}catch(e){}if(++c<40)setTimeout(send,250);else removeEventListener(\"message\",onmsg)};setTimeout(send,500)})();";
+const REQUEST_BOOKMARKLET = "javascript:(()=>{ const SPEC=\"# FlowLite request specification v1.1.1 compliant\\n\\n## Role\\nYou are responsible for creating and editing structural diagrams written in FlowLite notation.\\n\\n## Goal\\nConvert the user's request into plain FlowLite text that can be opened directly in FlowLite.\\n\\n## Output rules\\n- Output FlowLite plain text only.\\n- Do not output Markdown code fences, HTML, JSON, explanations, prefaces, or afterwords.\\n- Always include title: and direction:.\\n- Always include #nodes, #styles, and #edges exactly in this form. Do not write # nodes with a space.\\n- Use this section order by default: title / direction / #nodes / #styles / #edges.\\n- In #edges, always refer to nodes by node ID, not by display label.\\n- Every node ID used in #edges should normally be defined first in #nodes.\\n- When editing an existing diagram, preserve existing node IDs whenever possible.\\n- When deleting a node, also delete all edges connected to that node.\\n\\n## Overall format\\n\\ntitle: Diagram title\\ndirection: Flow\\n\\n#nodes\\nNodeID[Display label] +PrimaryTag +SubTag +StateTag\\n\\n#styles\\n+PrimaryTag color:#dbeafe\\n\\n#edges\\nNodeID -> OtherID : relationship label\\n\\n## direction\\nAllowed values:\\n- Horizontal\\n- Vertical\\n- Circle\\n- Grid\\n- Focus\\n- Top\\n- Flow\\n- Compact\\n- Lane\\n- Cluster\\n\\nDefault to Flow. Use Compact when the diagram should be dense. Use Lane when the first tag should create horizontal lanes. Use Cluster when the first tag should create visual clusters.\\n\\n## Node ID rules\\n- Recommended format: ASCII letters, numbers, and underscores only. Examples: MainCharacter / WhiteRabbit / Birth_Athena\\n- Starting with a letter is recommended.\\n- Do not use spaces, [ ], { }, ( ), or : in node IDs.\\n- Do not define the same ID more than once.\\n- In edges, always use the node ID, not the display label.\\n\\n## Node notation\\nA[Normal node]\\nB{Decision node}\\nC((Start, end, or central node))\\nD[(Data, place, or storage node)]\\nN>Note node]\\n\\nTo make a multi-line label, use \\\\n inside a single node line.\\nExample:\\nAlice[Alice\\\\nMain character]\\n\\n## Tag notation\\nTags are placed only at the end of a node line.\\n\\nCorrect format:\\nNodeID[Display label] +Tag1 +Tag2 +Tag3\\n\\nFixed rules:\\n- Every tag must start with +.\\n- Put tags after the closing node symbol, separated by half-width spaces.\\n- Use at most 3 tags per node. FlowLite ignores the 4th and later tags, so do not output them.\\n- Recommended tag names use ASCII letters, numbers, and underscores. Examples: +Person +Place +Event +Parent +Child +Enemy +Important\\n- Do not use spaces, :, #, ,, +, [ ], { }, or ( ) inside tag names.\\n- The first tag is the primary category and is used for color, Lane grouping, and Cluster grouping.\\n- The second and third tags are for subcategory, state, role, or importance.\\n- Tags are auxiliary metadata for category, role, or state. They are not relationships.\\n\\nGood uses of tags:\\n- Category: +Person / +Place / +Event\\n- Role: +Parent / +Child / +Guide / +Enemy\\n- State: +TODO / +Done / +Blocked\\n- Importance: +Core / +Important\\n- Display group: +Frontend / +Backend / +Database\\n\\nDo not express these with tags alone:\\n- A belongs to B\\n- A calls B\\n- A blocks B\\n- A is identical to B\\n- A interacts with B\\n\\nExpress these relationships in #edges.\\n\\n## #styles notation\\n#styles can define tag colors, individual node styling, edge colors, and canvas background.\\n\\nTag color:\\n+Tag color:#RRGGBB\\n\\nIndividual node style:\\n@NodeID color:#RRGGBB shape:star size:l x:100 y:200\\n\\nEdge color:\\n@edge:e_FromID_ToID color:#RRGGBB\\n\\nCanvas background:\\n@canvas background:#RRGGBB\\n\\nStyle rules:\\n- Colors must be 6-digit HEX in #RRGGBB format.\\n- Tag colors must use +Tag color:#RRGGBB.\\n- Use individual node styling only when needed.\\n- Use x/y only when manual placement must be reproduced. Usually omit x/y.\\n- Allowed shape values: round, rect, circle, ellipse, diamond, parallelogram, hexagon, trapezoid, document, star, heart, double.\\n- Allowed size values: m or l. Omit size for the default size.\\n\\nColor priority:\\n1. Individual @NodeID color\\n2. Tag color defined in #styles\\n3. Default color\\n\\nWhen a node has multiple tags, FlowLite scans tags from left to right and uses the first tag that has a color defined in #styles.\\nTherefore, put the tag you want to control color as the leftmost tag.\\n\\nExample:\\nAlice[Alice] +Hero +Person +Core\\nWhiteRabbit[White Rabbit] +Guide +Person\\n\\n#styles\\n+Hero color:#fde68a\\n+Guide color:#dcfce7\\n\\n## Color policy\\n- Keep color tags on one consistent dimension.\\n- Good: color only by role. +Theory / +Experiment / +Synthesis\\n- Good: color only by faction. +Wei / +Shu / +Wu\\n- Good: color only by state. +TODO / +Done / +Blocked\\n- Bad: mixing +Theory, +19thCentury, +Germany, and +Quantum as color categories.\\n- If color does not carry meaning, do not add unnecessary #styles entries.\\n- To show semantic relationships, use nodes and edges, not tags.\\n\\n## Edge notation\\nFromID -> ToID : action, flow, cause, reference, or use\\nFromID => ToID : membership, category, composition, containment, or inheritance\\nFromID == ToID : identity, alias, equivalence, or correspondence\\nFromID -- ToID : supplementary, weak, or unclear relation\\nFromID <-> ToID : mutual or bidirectional relation\\nFromID -x-> ToID : block, prohibition, negation, constraint, or refutation\\n\\nEdge rules:\\n- Always write node IDs on both sides.\\n- Keep labels short after the colon.\\n- If the relationship is ambiguous, use --.\\n- Use -x-> only for strong negation, blocking, prohibition, or refutation. Do not use it for weak contrast.\\n- Do not rely only on tags for membership, parent-child, or composition. Use => or -> when the relationship matters.\\n\\n## Design policy\\n- Place one central concept.\\n- Create nodes for people, places, organizations, events, tools, concepts, and states as needed.\\n- Important semantic relationships must be explained with edge labels.\\n- When there are many nodes, use hub nodes or group nodes to keep the diagram readable.\\n- Keep the roles separate: tags classify, edges express meaning, and #styles controls appearance.\\n\\n## Minimal template\\n\\ntitle: Sample Diagram\\ndirection: Flow\\n\\n#nodes\\nCenter((Central concept)) +Core\\nA[Subject A] +Group1\\nB[Subject B] +Group2\\nNote>Supplementary note] +Note\\n\\n#styles\\n+Core color:#fde68a\\n+Group1 color:#dbeafe\\n+Group2 color:#dcfce7\\n+Note color:#f5f5f5\\n\\n#edges\\nCenter -> A : relationship\\nA -- B : supplementary relation\\nNote -- Center : note\\n\\n## User request\\nWrite the diagram request here.\"; const ID=\"flowlite_request_form_bookmarklet_v121_en\"; const old=document.getElementById(ID);if(old)old.remove(); const host=document.createElement(\"div\");host.id=ID;document.documentElement.appendChild(host); const root=host.attachShadow?host.attachShadow({mode:\"open\"}):host; root.innerHTML=`<style>:host{all:initial}*{box-sizing:border-box}.back{position:fixed;inset:0;z-index:2147483647;background:rgba(15,23,42,.46);display:flex;align-items:center;justify-content:center;padding:18px;font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,\"Helvetica Neue\",Arial,sans-serif;color:#0f172a}.panel{width:min(760px,100%);max-height:92vh;overflow:auto;background:#fff;border:1px solid #e2e8f0;border-radius:18px;box-shadow:0 24px 70px rgba(15,23,42,.28);padding:20px}h1{font-size:20px;line-height:1.35;margin:0 0 8px;letter-spacing:-.02em}p{font-size:13px;line-height:1.7;color:#475569;margin:6px 0 12px}label{display:block;font-size:12px;font-weight:800;color:#334155;margin:14px 0 6px}textarea,input,select{width:100%;border:1px solid #cbd5e1;border-radius:12px;background:#fff;color:#0f172a;font:13px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;padding:11px;outline:none}textarea:focus,input:focus,select:focus{border-color:#60a5fa;box-shadow:0 0 0 4px rgba(37,99,235,.14)}textarea{min-height:170px;resize:vertical}.row{display:grid;grid-template-columns:1fr 190px;gap:10px}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:center}button{appearance:none;border:1px solid #e2e8f0;border-radius:12px;padding:10px 14px;font-size:13px;font-weight:800;cursor:pointer;background:#f1f5f9;color:#0f172a}button:hover{background:#e2e8f0}.primary{background:#0f172a;color:#fff;border-color:#0f172a}.primary:hover{background:#1e293b}.warn{background:#fffbeb;color:#78350f;border-color:#fbbf24}.danger{background:#fee2e2;color:#991b1b;border-color:#fecaca}.small{font-size:12px;color:#64748b}.output{display:none;margin-top:12px}@media(max-width:640px){.row{grid-template-columns:1fr}.panel{padding:16px}}</style><div class=\"back\"><div class=\"panel\" role=\"dialog\" aria-modal=\"true\" aria-label=\"FlowLite request form\"><h1>FlowLite Request Form</h1><p>Enter what kind of relationship diagram you want. This form combines your request with the FlowLite v1.1.1 specification and copies it to the clipboard. Paste it directly into an AI input field.</p><label for=\"req\">What kind of relationship diagram do you want?</label><textarea id=\"req\" placeholder=\"Example: Create a relationship diagram for Alice in Wonderland. Place Alice at the center and include characters, places, events, objects, and transformations. Classify tags by role.\"></textarea><div class=\"row\"><div><label for=\"title\">Preferred title optional</label><input id=\"title\" placeholder=\"Example: Alice in Wonderland Relationship Map\"></div><div><label for=\"dir\">Preferred direction optional</label><select id=\"dir\"><option value=\"\">Auto select</option><option>Flow</option><option>Focus</option><option>Cluster</option><option>Lane</option><option>Compact</option><option>Circle</option><option>Horizontal</option><option>Vertical</option><option>Grid</option><option>Top</option></select></div></div><div class=\"actions\"><button id=\"copy\" class=\"primary\">Copy specification + request</button><button id=\"sample\" class=\"warn\">Insert example</button><button id=\"close\" class=\"danger\">Close</button><span class=\"small\">Esc also closes this form.</span></div><textarea id=\"out\" class=\"output\" readonly></textarea></div></div>`; const q=s=>root.querySelector(s);const req=q(\"#req\"),title=q(\"#title\"),dir=q(\"#dir\"),out=q(\"#out\"); const close=()=>host.remove();q(\"#close\").addEventListener(\"click\",close);root.querySelector(\".back\").addEventListener(\"click\",e=>{if(e.target.classList&&e.target.classList.contains(\"back\"))close()}); const onkey=e=>{if(e.key===\"Escape\"){close();removeEventListener(\"keydown\",onkey)}};addEventListener(\"keydown\",onkey); q(\"#sample\").addEventListener(\"click\",()=>{req.value=\"Place one central theme. Turn major people, organizations, events, places, and concepts into nodes. Use the first tag as the primary category, and express every important relationship with #edges labels.\";req.focus()}); const build=()=>{const r=req.value.trim();if(!r){alert(\"Enter a request first.\");req.focus();return \"\"}const add=[];if(title.value.trim())add.push(\"- Preferred title: \"+title.value.trim());if(dir.value)add.push(\"- Preferred direction: \"+dir.value);let block=\"## User request\\n\"+r;if(add.length)block+=\"\\n\\n## Additional instructions\\n\"+add.join(\"\\n\");return SPEC.replace(/## User request[\\s\\S]*$/,block)}; const fallback=text=>{out.style.display=\"block\";out.value=text;out.focus();out.select();try{if(document.execCommand(\"copy\")){alert(\"Copied. Paste it into an AI input field.\");close();return}}catch(e){}alert(\"Automatic copy failed. Copy the displayed text manually.\")}; q(\"#copy\").addEventListener(\"click\",async()=>{const text=build();if(!text)return;try{await navigator.clipboard.writeText(text);alert(\"Specification + request copied. Paste it into an AI input field.\");close()}catch(e){fallback(text)}}); setTimeout(()=>req.focus(),50); })();";
+const SAMPLE_TEXT = "title: FlowLite Bookmarklet Test\ndirection: Flow\n\n#nodes\nStart((Copy or select)) +Input\nPrompt[FlowLite Request Form] +Action\nSpec[Specification + request] +Prompt\nAI[Paste into AI] +AI\nViewer[(FlowLite_test.html)] +Viewer\nDone((Rendered)) +Output\n\n#styles\n+Input color:#dbeafe\n+Action color:#fde68a\n+Prompt color:#fffbeb\n+AI color:#e0e7ff\n+Viewer color:#dcfce7\n+Output color:#bbf7d0\n\n#edges\nStart -> Prompt : enter the request\nPrompt -> Spec : combine with the specification and copy\nSpec -> AI : paste and ask for FlowLite output\nAI -> Viewer : open the generated plain text with Open in FlowLite\nViewer -> Done : render automatically\n";
 const toastEl = document.getElementById('toast');
 function toast(msg){
   toastEl.textContent = msg;
@@ -161,26 +136,12 @@ async function copyText(text, label){
 }
 const drag = document.getElementById('bookmarkletDrag');
 drag.href = BOOKMARKLET;
-document.getElementById('bookmarkletCode').value = BOOKMARKLET;
-document.getElementById('aiSpecText').value = AI_SPEC;
-document.getElementById('sampleText').value = SAMPLE_TEXT;
-document.getElementById('copyBookmarklet').addEventListener('click',()=>copyText(BOOKMARKLET,'Bookmarklet copied'));
-document.getElementById('copyBookmarklet2').addEventListener('click',()=>copyText(BOOKMARKLET,'Bookmarklet copied'));
-document.getElementById('copySpec').addEventListener('click',()=>copyText(AI_SPEC,'AI prompt specification copied'));
-document.getElementById('copySpec2').addEventListener('click',()=>copyText(AI_SPEC,'AI prompt specification copied'));
-document.getElementById('copySample').addEventListener('click',()=>copyText(SAMPLE_TEXT,'Test plaintext copied'));
-document.getElementById('selectBookmarklet').addEventListener('click',()=>{
-  const el = document.getElementById('bookmarkletCode');
-  el.focus();
-  el.select();
-  toast('Selected all');
-});
-document.getElementById('selectSpec').addEventListener('click',()=>{
-  const el = document.getElementById('aiSpecText');
-  el.focus();
-  el.select();
-  toast('Specification selected');
-});
+const requestDrag = document.getElementById('requestBookmarkletDrag');
+requestDrag.href = REQUEST_BOOKMARKLET;
+const sampleTextEl = document.getElementById('sampleText');
+if(sampleTextEl) sampleTextEl.value = SAMPLE_TEXT;
+const copySampleBtn = document.getElementById('copySample');
+if(copySampleBtn) copySampleBtn.addEventListener('click',()=>copyText(SAMPLE_TEXT,'Test plain text copied'));
 </script>
 </body>
 </html>
