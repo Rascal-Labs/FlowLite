@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="FlowLite 日本語版。AIに渡せる平文から、対話的な構造図を作成・編集できます。">
-<title>FlowLite 日本語版 v1.0.4</title>
+<title>FlowLite 日本語版 v1.0.5</title>
 <style>
   :root{--bg:#f8fafc;--panel:#fff;--border:#e2e8f0;--text:#0f172a;--sub:#64748b;--accent:#2563eb;--edge:#94a3b8;--node:#fff;--shadow:0 8px 20px rgba(15,23,42,.08);--danger:#dc2626;--green:#16a34a}
   *{box-sizing:border-box} body{margin:0;height:100vh;display:flex;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--text);background:var(--bg);overflow:hidden}
@@ -109,98 +109,179 @@
 <body>
 <!-- FLOWLITE_SOURCE_EDITABLE_START: USER AND AI MAY EDIT THIS PLAINTEXT -->
 <script type="text/plain" id="flowlite-source">
-title: 不思議の国のアリス 形デモ
-direction: Focus
+title: 近代物理学の主要論文と概念
+direction: Cluster
 
 #nodes
-Alice((アリス)) +Hero +ShapeDemo
-Wonderland((不思議の国)) +Place +Core
-WhiteRabbit[白ウサギ
-いつも急いでいる] +Guide +Creature
-RabbitHole[(ウサギ穴)] +Place +Portal
-Door[小さな扉] +Object +Portal
-GoldenKey[金の鍵] +Object +Key
-DrinkMeBottle[(Drink Me の瓶)] +Object +Transform
-EatMeCake[(Eat Me のケーキ)] +Object +Transform
-CheshireCat[チェシャ猫
-現れたり消えたりする] +Guide +Creature
-MadHatter[帽子屋] +TeaParty +Character
-MarchHare[三月ウサギ] +TeaParty +Character
-Dormouse[眠りネズミ] +TeaParty +Character
-TeaParty((狂ったお茶会)) +Event +TeaParty
-QueenOfHearts[ハートの女王] +Royal +Heart
-KingOfHearts[ハートの王] +Royal +Heart
-CardSoldiers[トランプ兵] +Royal +Heart
-Trial[裁判] +Event +Royal
-Caterpillar[芋虫] +Guide +Creature
-Advice[あなたはだれ？] +Question
-GrowthChange[大きさの変化] +Transform
-Exit((目が覚める)) +End
+Physics((近代物理学)) +Core
+Newton1687[ニュートン 1687
+プリンキピア] +Theory +Classical
+Maxwell1865[マクスウェル 1865
+電磁場方程式] +Theory +Electromagnetism
+Boltzmann1877[ボルツマン 1877
+統計力学] +Theory +Statistics
+MichelsonMorley1887[マイケルソン=モーリー 1887
+エーテル問題] +Experiment +Relativity
+Planck1900[プランク 1900
+黒体放射] +Theory +Quantum
+Einstein1905Photo[アインシュタイン 1905
+光量子] +Theory +Quantum
+Einstein1905SR[アインシュタイン 1905
+特殊相対性理論] +Theory +Relativity +Core
+Einstein1905Mass[アインシュタイン 1905
+質量とエネルギー] +Theory +Relativity
+Einstein1905Brownian[アインシュタイン 1905
+ブラウン運動] +Theory +Statistics
+Minkowski1908[ミンコフスキー 1908
+時空] +Synthesis +Relativity
+Einstein1915GR[アインシュタイン 1915
+一般相対性理論] +Theory +Relativity
+Friedmann1922[フリードマン 1922
+膨張宇宙解] +Theory +Cosmology
+Hubble1929[ハッブル 1929
+銀河後退] +Experiment +Cosmology
+Rutherford1911[ラザフォード 1911
+原子核モデル] +Experiment +Quantum
+Bohr1913[ボーア 1913
+原子モデル] +Theory +Quantum
+DeBroglie1924[ド・ブロイ 1924
+物質波] +Theory +Quantum
+Heisenberg1925[ハイゼンベルク 1925
+行列力学] +Theory +Quantum
+Schrodinger1926[シュレーディンガー 1926
+波動力学] +Theory +Quantum
+Born1926[ボルン 1926
+確率解釈] +Interpretation +Quantum
+Dirac1928[ディラック 1928
+相対論的電子] +Synthesis +Quantum +Relativity
+EPR1935[EPR 1935
+量子非局所性問題] +Problem +Quantum
+Bell1964[ベル 1964
+ベル不等式] +Problem +Quantum
+Aspect1982[アスペ 1982
+ベル実験] +Experiment +Quantum
+Feynman1948[ファインマン 1948
+経路積分] +Synthesis +Quantum
+YangMills1954[ヤン=ミルズ 1954
+ゲージ理論] +Synthesis +FieldTheory
+BCS1957[BCS 1957
+超伝導] +Theory +CondensedMatter
+GellMann1964[ゲルマン 1964
+クォーク模型] +Theory +Particle
+Higgs1964[ヒッグス 1964
+質量生成機構] +Theory +Particle
+Weinberg1967[ワインバーグ 1967
+電弱統一] +Synthesis +Particle
+Wilson1971[ウィルソン 1971
+くりこみ群] +Synthesis +FieldTheory
+Hawking1974[ホーキング 1974
+ブラックホール放射] +Synthesis +Gravity +Quantum
+Classical[(古典力学)] +Field +Classical
+Electromagnetism[(電磁気学)] +Field +Electromagnetism
+Statistical[(統計物理)] +Field +Statistics
+Quantum[(量子論)] +Field +Quantum
+Relativity[(相対論)] +Field +Relativity
+Cosmology[(宇宙論)] +Field +Cosmology
+QFT[(量子場理論)] +Field +FieldTheory
+Particle[(素粒子物理)] +Field +Particle
+Condensed[(物性物理)] +Field +CondensedMatter
+Notice>色は分野ではなく、理論・実験・統合などの役割を表します。] +Note
 
 #styles
-+Hero color:#fde68a
-+Place color:#e0f2fe
-+Guide color:#dcfce7
-+Object color:#ede9fe
-+TeaParty color:#fef9c3
-+Royal color:#fecaca
-+Event color:#fbcfe8
-+Question color:#f5f5f5
-+Transform color:#fed7aa
-+End color:#e5e7eb
-
-@Alice color:#fde68a shape:star size:l
-@Wonderland color:#dcfce7 shape:circle size:l
-@WhiteRabbit color:#e0f2fe shape:ellipse size:m
-@RabbitHole color:#bfdbfe shape:circle size:m
-@Door color:#dbeafe shape:rect
-@GoldenKey color:#fcd34d shape:star
-@DrinkMeBottle color:#ddd6fe shape:document
-@EatMeCake color:#fed7aa shape:document
-@CheshireCat color:#c4b5fd shape:star size:m
-@MadHatter color:#fef9c3 shape:diamond size:m
-@MarchHare color:#ffedd5 shape:ellipse
-@Dormouse color:#f5f5f5 shape:circle
-@TeaParty color:#fef3c7 shape:double size:m
-@QueenOfHearts color:#fbcfe8 shape:heart size:l
-@KingOfHearts color:#fecaca shape:heart size:m
-@CardSoldiers color:#fee2e2 shape:heart
-@Trial color:#e5e7eb shape:hexagon size:m
-@Caterpillar color:#bbf7d0 shape:ellipse
-@Advice color:#f8fafc shape:parallelogram
-@GrowthChange color:#fed7aa shape:trapezoid size:m
-@Exit color:#e5e7eb shape:circle
++Core color:#fde68a
++Theory color:#dbeafe
++Experiment color:#dcfce7
++Interpretation color:#fef9c3
++Synthesis color:#fbcfe8
++Problem color:#fed7aa
++Field color:#e5e7eb
++Note color:#f5f5f5
 
 #edges
-Alice -> WhiteRabbit : 追いかける
-WhiteRabbit -> RabbitHole : 入り口へ導く
-RabbitHole -> Wonderland : 不思議の国への入口
-Wonderland -> Door : 小さな扉がある
-GoldenKey -> Door : 扉を開ける
-Door -x-> Alice : 大きすぎると通れない
-DrinkMeBottle -> GrowthChange : アリスを小さくする
-EatMeCake -> GrowthChange : アリスを大きくする
-GrowthChange -> Door : 通れる条件を変える
-Wonderland -> CheshireCat : チェシャ猫が現れる
-CheshireCat -> Alice : 謎めいた助言をする
-CheshireCat -> QueenOfHearts : 女王の方角を示す
-Wonderland -> Caterpillar : 芋虫がいる
-Caterpillar -> Advice : 問いかける
-Advice -> Alice : 自分が誰かを揺さぶる
-Wonderland -> TeaParty : お茶会が開かれる
-MadHatter => TeaParty : 主催者
-MarchHare => TeaParty : 主催者
-Dormouse => TeaParty : 参加者
-Alice -> TeaParty : 訪れる
-QueenOfHearts -> CardSoldiers : 命令する
-KingOfHearts -- QueenOfHearts : 王と女王
-QueenOfHearts -x-> Alice : 脅かす
-CardSoldiers -> Trial : 秩序を守る
-Alice -> Trial : 裁判に出る
-Trial -> QueenOfHearts : 女王に支配される
-Trial -> KingOfHearts : 王が裁く
-Trial -> Exit : 物語が解ける
-Alice -> Exit : 目が覚める
+Physics => Classical : 古典力学の基盤
+Physics => Electromagnetism : 電磁気学
+Physics => Statistical : 確率と多粒子
+Physics => Quantum : 微視的世界
+Physics => Relativity : 時空と重力
+Physics => Cosmology : 宇宙の構造
+Physics => QFT : 量子と場
+Physics => Particle : 素粒子
+Physics => Condensed : 物性
+
+Newton1687 => Classical : 古典力学
+Maxwell1865 => Electromagnetism : 電磁気学
+Boltzmann1877 => Statistical : 統計力学
+Planck1900 => Quantum : 量子仮説
+Einstein1905SR => Relativity : 特殊相対論
+Einstein1915GR => Relativity : 一般相対論
+Friedmann1922 => Cosmology : 動的宇宙
+Hubble1929 => Cosmology : 観測的宇宙論
+Heisenberg1925 => Quantum : 量子力学
+Schrodinger1926 => Quantum : 量子力学
+Born1926 => Quantum : 確率解釈
+Dirac1928 => QFT : 相対論的量子論
+YangMills1954 => QFT : ゲージ理論
+GellMann1964 => Particle : ハドロン分類
+Higgs1964 => Particle : 質量生成
+Weinberg1967 => Particle : 電弱統一
+BCS1957 => Condensed : 多体系の量子論
+Wilson1971 => QFT : 場の理論の再構成
+Wilson1971 => Condensed : 臨界現象の理解
+
+Newton1687 -> Einstein1905SR : 絶対時空を修正
+Maxwell1865 -> Einstein1905SR : 光速度一定の問題
+MichelsonMorley1887 -> Einstein1905SR : エーテル仮説への圧力
+Einstein1905SR -> Einstein1905Mass : 質量エネルギー関係
+Einstein1905SR -> Minkowski1908 : 幾何学的時空
+Minkowski1908 -> Einstein1915GR : 重力の幾何学
+Einstein1915GR -> Friedmann1922 : 場の方程式の解
+Friedmann1922 -> Hubble1929 : 膨張宇宙の観測的支持
+Einstein1915GR -> Hawking1974 : ブラックホール理論の基礎
+
+Boltzmann1877 -> Planck1900 : 黒体放射への統計的背景
+Boltzmann1877 -> Einstein1905Brownian : 原子論と確率過程
+Einstein1905Brownian -> Statistical : 原子の実在を支持
+Boltzmann1877 -> Born1926 : 確率的世界観の基礎
+
+Planck1900 -> Einstein1905Photo : 光へ量子仮説を拡張
+Einstein1905Photo -> Quantum : 光の粒子性
+Rutherford1911 -> Bohr1913 : 原子核モデルを提供
+Planck1900 -> Bohr1913 : 量子条件
+Bohr1913 -> DeBroglie1924 : 物質波へ
+DeBroglie1924 -> Schrodinger1926 : 波動力学の基礎
+Bohr1913 -> Heisenberg1925 : 観測可能量中心へ
+Heisenberg1925 == Schrodinger1926 : 等価な定式化
+Schrodinger1926 -> Born1926 : 波動関数の意味
+
+Einstein1905SR -> Dirac1928 : 相対論的制約
+Schrodinger1926 -> Dirac1928 : 量子方程式の拡張
+Dirac1928 -> QFT : 反粒子・スピン・場
+Schrodinger1926 == Feynman1948 : 別の定式化
+Feynman1948 -> QFT : 経路積分による計算
+Dirac1928 -> Feynman1948 : 相対論的量子論の展開
+Feynman1948 -> YangMills1954 : 場の理論的発想を拡張
+
+Born1926 -> EPR1935 : 確率解釈への挑戦
+EPR1935 -> Bell1964 : 非局所性を検証可能にする
+Bell1964 -> Aspect1982 : 実験検証へ
+Aspect1982 -> Quantum : 量子相関の実証
+
+YangMills1954 -> GellMann1964 : 強い相互作用の背景
+YangMills1954 -> Weinberg1967 : 電弱理論の基礎
+Higgs1964 -> Weinberg1967 : 対称性の破れと質量
+Weinberg1967 -> Particle : 標準模型への道
+Wilson1971 -> YangMills1954 : くりこみを明確化
+Wilson1971 -> BCS1957 : 多体系と場を接続
+
+Quantum <-> Relativity : 統一問題
+Quantum <-> QFT : 場としての量子論
+Relativity <-> QFT : 高エネルギー物理の基盤
+Relativity -> Cosmology : 重力宇宙論
+QFT -> Particle : 素粒子物理の言語
+QFT -> Condensed : 物性への応用
+Hawking1974 -> QFT : 曲がった時空の量子場
+Hawking1974 -> Cosmology : ブラックホール熱力学
+Notice -- Physics : 色分け方針の注記
 </script>
 <!-- FLOWLITE_SOURCE_EDITABLE_END -->
 
@@ -214,22 +295,6 @@ Alice -> Exit : 目が覚める
 <script type="application/json" id="flowlite-saves">
 [
   {
-    "title": "不思議の国のアリス 形デモ",
-    "name": "アリス形デモ",
-    "savedAt": "初期サンプル",
-    "source": "title: 不思議の国のアリス 形デモ\ndirection: Focus\n\n#nodes\nAlice((アリス)) +Hero +ShapeDemo\nWonderland((不思議の国)) +Place +Core\nWhiteRabbit[白ウサギ\nいつも急いでいる] +Guide +Creature\nRabbitHole[(ウサギ穴)] +Place +Portal\nDoor[小さな扉] +Object +Portal\nGoldenKey[金の鍵] +Object +Key\nDrinkMeBottle[(Drink Me の瓶)] +Object +Transform\nEatMeCake[(Eat Me のケーキ)] +Object +Transform\nCheshireCat[チェシャ猫\n現れたり消えたりする] +Guide +Creature\nMadHatter[帽子屋] +TeaParty +Character\nMarchHare[三月ウサギ] +TeaParty +Character\nDormouse[眠りネズミ] +TeaParty +Character\nTeaParty((狂ったお茶会)) +Event +TeaParty\nQueenOfHearts[ハートの女王] +Royal +Heart\nKingOfHearts[ハートの王] +Royal +Heart\nCardSoldiers[トランプ兵] +Royal +Heart\nTrial[裁判] +Event +Royal\nCaterpillar[芋虫] +Guide +Creature\nAdvice[あなたはだれ？] +Question\nGrowthChange[大きさの変化] +Transform\nExit((目が覚める)) +End\n\n#styles\n+Hero color:#fde68a\n+Place color:#e0f2fe\n+Guide color:#dcfce7\n+Object color:#ede9fe\n+TeaParty color:#fef9c3\n+Royal color:#fecaca\n+Event color:#fbcfe8\n+Question color:#f5f5f5\n+Transform color:#fed7aa\n+End color:#e5e7eb\n\n@Alice color:#fde68a shape:star size:l\n@Wonderland color:#dcfce7 shape:circle size:l\n@WhiteRabbit color:#e0f2fe shape:ellipse size:m\n@RabbitHole color:#bfdbfe shape:circle size:m\n@Door color:#dbeafe shape:rect\n@GoldenKey color:#fcd34d shape:star\n@DrinkMeBottle color:#ddd6fe shape:document\n@EatMeCake color:#fed7aa shape:document\n@CheshireCat color:#c4b5fd shape:star size:m\n@MadHatter color:#fef9c3 shape:diamond size:m\n@MarchHare color:#ffedd5 shape:ellipse\n@Dormouse color:#f5f5f5 shape:circle\n@TeaParty color:#fef3c7 shape:double size:m\n@QueenOfHearts color:#fbcfe8 shape:heart size:l\n@KingOfHearts color:#fecaca shape:heart size:m\n@CardSoldiers color:#fee2e2 shape:heart\n@Trial color:#e5e7eb shape:hexagon size:m\n@Caterpillar color:#bbf7d0 shape:ellipse\n@Advice color:#f8fafc shape:parallelogram\n@GrowthChange color:#fed7aa shape:trapezoid size:m\n@Exit color:#e5e7eb shape:circle\n\n#edges\nAlice -> WhiteRabbit : 追いかける\nWhiteRabbit -> RabbitHole : 入り口へ導く\nRabbitHole -> Wonderland : 不思議の国への入口\nWonderland -> Door : 小さな扉がある\nGoldenKey -> Door : 扉を開ける\nDoor -x-> Alice : 大きすぎると通れない\nDrinkMeBottle -> GrowthChange : アリスを小さくする\nEatMeCake -> GrowthChange : アリスを大きくする\nGrowthChange -> Door : 通れる条件を変える\nWonderland -> CheshireCat : チェシャ猫が現れる\nCheshireCat -> Alice : 謎めいた助言をする\nCheshireCat -> QueenOfHearts : 女王の方角を示す\nWonderland -> Caterpillar : 芋虫がいる\nCaterpillar -> Advice : 問いかける\nAdvice -> Alice : 自分が誰かを揺さぶる\nWonderland -> TeaParty : お茶会が開かれる\nMadHatter => TeaParty : 主催者\nMarchHare => TeaParty : 主催者\nDormouse => TeaParty : 参加者\nAlice -> TeaParty : 訪れる\nQueenOfHearts -> CardSoldiers : 命令する\nKingOfHearts -- QueenOfHearts : 王と女王\nQueenOfHearts -x-> Alice : 脅かす\nCardSoldiers -> Trial : 秩序を守る\nAlice -> Trial : 裁判に出る\nTrial -> QueenOfHearts : 女王に支配される\nTrial -> KingOfHearts : 王が裁く\nTrial -> Exit : 物語が解ける\nAlice -> Exit : 目が覚める\n",
-    "layout": {},
-    "manualMeta": {}
-  },
-  {
-    "title": "ハンバーガー縦積み構造",
-    "name": "ハンバーガー構造",
-    "savedAt": "初期サンプル",
-    "source": "title: ハンバーガー縦積み構造\ndirection: Vertical\n\n#nodes\nBurger((ハンバーガー)) +Core\nTopBun[(上バンズ)] +Bread\nTopSauce[ソース] +Sauce\nEgg[目玉焼き] +Protein\nBacon[ベーコン] +Protein\nCheese[チーズ] +Dairy\nPatty[パティ] +Protein\nTomato[トマト] +Vegetable\nLettuce[レタス] +Vegetable\nBaseSauce[ソース] +Sauce\nBottomBun[(下バンズ)] +Bread\nSkewer[ピック] +Tool\nPlate[(皿)] +Tool\nLayerNote>この例は手順ではなく、縦に積み上がる構造を表します。] +Note\n\n#styles\n+Core color:#fde68a\n+Bread color:#fed7aa\n+Sauce color:#fbcfe8\n+Vegetable color:#dcfce7\n+Protein color:#fee2e2\n+Dairy color:#fef9c3\n+Tool color:#e5e7eb\n+Note color:#f5f5f5\n@Burger shape:circle color:#fde68a size:l\n@TopBun shape:ellipse color:#fed7aa size:m\n@BottomBun shape:ellipse color:#fed7aa size:m\n@Egg shape:circle color:#fef9c3\n@Cheese shape:diamond color:#fde68a\n@Bacon shape:parallelogram color:#fecaca\n@Lettuce shape:document color:#bbf7d0\n@Tomato shape:circle color:#fca5a5\n@Skewer shape:rect color:#e5e7eb\n@Plate shape:ellipse color:#e0f2fe\n\n#edges\nTopBun -> TopSauce : 上から1層目\nTopSauce -> Egg : 風味をつなぐ\nEgg -> Bacon : 卵の下に重ねる\nBacon -> Cheese : 塩味を加える\nCheese -> Patty : 熱で少し溶ける\nPatty -> Tomato : 肉と野菜をつなぐ\nTomato -> Lettuce : 水分と食感\nLettuce -> BaseSauce : 下層のソース\nBaseSauce -> BottomBun : 最下層\nSkewer -> Burger : 全体を固定\nBurger -> Plate : 皿に置く\nLayerNote -- Burger : 構造の説明\n",
-    "layout": {},
-    "manualMeta": {}
-  },
-  {
     "title": "近代物理学の主要論文と概念",
     "name": "物理学クラスタ例",
     "savedAt": "初期サンプル",
@@ -238,10 +303,26 @@ Alice -> Exit : 目が覚める
     "manualMeta": {}
   },
   {
+    "title": "不思議の国のアリス 形デモ",
+    "name": "アリス形デモ",
+    "savedAt": "初期サンプル",
+    "source": "title: 不思議の国のアリス 形デモ\ndirection: Focus\n\n#nodes\nAlice((アリス)) +Hero +ShapeDemo\nWonderland((不思議の国)) +Place +Core\nWhiteRabbit[白ウサギ\nいつも急いでいる] +Guide +Creature\nRabbitHole[(ウサギ穴)] +Place +Portal\nDoor[小さな扉] +Object +Portal\nGoldenKey[金の鍵] +Object +Key\nDrinkMeBottle[(Drink Me の瓶)] +Object +Transform\nEatMeCake[(Eat Me のケーキ)] +Object +Transform\nCheshireCat[チェシャ猫\n現れたり消えたりする] +Guide +Creature\nMadHatter[帽子屋] +TeaParty +Character\nMarchHare[三月ウサギ] +TeaParty +Character\nDormouse[眠りネズミ] +TeaParty +Character\nTeaParty((狂ったお茶会)) +Event +TeaParty\nQueenOfHearts[ハートの女王] +Royal +Heart\nKingOfHearts[ハートの王] +Royal +Heart\nCardSoldiers[トランプ兵] +Royal +Heart\nTrial[裁判] +Event +Royal\nCaterpillar[芋虫] +Guide +Creature\nAdvice[あなたはだれ？] +Question\nGrowthChange[大きさの変化] +Transform\nExit((目が覚める)) +End\n\n#styles\n+Hero color:#fde68a\n+Place color:#e0f2fe\n+Guide color:#dcfce7\n+Object color:#ede9fe\n+TeaParty color:#fef9c3\n+Royal color:#fecaca\n+Event color:#fbcfe8\n+Question color:#f5f5f5\n+Transform color:#fed7aa\n+End color:#e5e7eb\n\n@Alice color:#fde68a shape:star size:l\n@Wonderland color:#dcfce7 shape:circle size:l\n@WhiteRabbit color:#e0f2fe shape:ellipse size:m\n@RabbitHole color:#bfdbfe shape:circle size:m\n@Door color:#dbeafe shape:rect\n@GoldenKey color:#fcd34d shape:star\n@DrinkMeBottle color:#ddd6fe shape:document\n@EatMeCake color:#fed7aa shape:document\n@CheshireCat color:#c4b5fd shape:star size:m\n@MadHatter color:#fef9c3 shape:diamond size:m\n@MarchHare color:#ffedd5 shape:ellipse\n@Dormouse color:#f5f5f5 shape:circle\n@TeaParty color:#fef3c7 shape:double size:m\n@QueenOfHearts color:#fbcfe8 shape:heart size:l\n@KingOfHearts color:#fecaca shape:heart size:m\n@CardSoldiers color:#fee2e2 shape:heart\n@Trial color:#e5e7eb shape:hexagon size:m\n@Caterpillar color:#bbf7d0 shape:ellipse\n@Advice color:#f8fafc shape:parallelogram\n@GrowthChange color:#fed7aa shape:trapezoid size:m\n@Exit color:#e5e7eb shape:circle\n\n#edges\nAlice -> WhiteRabbit : 追いかける\nWhiteRabbit -> RabbitHole : 入り口へ導く\nRabbitHole -> Wonderland : 不思議の国への入口\nWonderland -> Door : 小さな扉がある\nGoldenKey -> Door : 扉を開ける\nDoor -x-> Alice : 大きすぎると通れない\nDrinkMeBottle -> GrowthChange : アリスを小さくする\nEatMeCake -> GrowthChange : アリスを大きくする\nGrowthChange -> Door : 通れる条件を変える\nWonderland -> CheshireCat : チェシャ猫が現れる\nCheshireCat -> Alice : 謎めいた助言をする\nCheshireCat -> QueenOfHearts : 女王の方角を示す\nWonderland -> Caterpillar : 芋虫がいる\nCaterpillar -> Advice : 問いかける\nAdvice -> Alice : 自分が誰かを揺さぶる\nWonderland -> TeaParty : お茶会が開かれる\nMadHatter => TeaParty : 主催者\nMarchHare => TeaParty : 主催者\nDormouse => TeaParty : 参加者\nAlice -> TeaParty : 訪れる\nQueenOfHearts -> CardSoldiers : 命令する\nKingOfHearts -- QueenOfHearts : 王と女王\nQueenOfHearts -x-> Alice : 脅かす\nCardSoldiers -> Trial : 秩序を守る\nAlice -> Trial : 裁判に出る\nTrial -> QueenOfHearts : 女王に支配される\nTrial -> KingOfHearts : 王が裁く\nTrial -> Exit : 物語が解ける\nAlice -> Exit : 目が覚める\n",
+    "layout": {},
+    "manualMeta": {}
+  },
+  {
     "title": "ゼウスとヘラの家族カテゴリ",
     "name": "ギリシア神話フォーカス例",
     "savedAt": "初期サンプル",
     "source": "title: ゼウスとヘラの家族カテゴリ\ndirection: Focus\n\n#nodes\nZeus((ゼウス\n天空と雷の神)) +Parent\nHera[ヘラ\n結婚と王権の女神] +Parent\nPoseidon[ポセイドン\n海の神] +Sibling\nHades[ハデス\n冥界の神] +Sibling\nDemeter[デメテル\n農耕の女神] +Sibling\nHestia[ヘスティア\n炉の女神] +Sibling\nAthena[アテナ\n知恵の女神] +Child\nApollo[アポロン\n予言と芸術の神] +Child\nArtemis[アルテミス\n狩猟の女神] +Child\nAres[アレス\n戦争の神] +Child\nHermes[ヘルメス\n伝令の神] +Child\nDionysus[ディオニュソス\n酒と陶酔の神] +Child\nPersephone[ペルセポネ\n冥界の女王] +Child\nHephaestus[ヘパイストス\n鍛冶の神] +Child\nSiblingsOrder[兄弟姉妹ネットワーク\nゼウス世代の神々]\nDivineFamily[神々の家族\n親・兄弟・子のカテゴリ]\nMarriageHera[ゼウスとヘラの結婚\n神々の王権を安定させる]\nBirthAthena[アテナの誕生\nゼウスの頭から生まれる]\nBirthTwins[アポロンとアルテミスの誕生\n双子神の成立]\nDionysusBirth[ディオニュソスの誕生\n二度生まれた神]\nPersephoneAbduction[ペルセポネの略奪\n冥界と季節の神話]\nThunderbolt[雷霆\nゼウスの武器]\nAegis[アイギス\n威厳と守護の象徴]\nMountOlympus[オリュンポス山\n神々の支配の座]\n\n#styles\n+Parent color:#fde68a\n+Sibling color:#dbeafe\n+Child color:#dcfce7\n\n#edges\nZeus <-> Hera : 夫婦\nZeus => DivineFamily : 親カテゴリ\nHera => DivineFamily : 親カテゴリ\nPoseidon => DivineFamily : 兄弟カテゴリ\nHades => DivineFamily : 兄弟カテゴリ\nDemeter => DivineFamily : 兄弟カテゴリ\nHestia => DivineFamily : 兄弟カテゴリ\nAthena => DivineFamily : 子カテゴリ\nApollo => DivineFamily : 子カテゴリ\nArtemis => DivineFamily : 子カテゴリ\nAres => DivineFamily : 子カテゴリ\nHermes => DivineFamily : 子カテゴリ\nDionysus => DivineFamily : 子カテゴリ\nPersephone => DivineFamily : 子カテゴリ\nHephaestus => DivineFamily : 子カテゴリ\nZeus <-> Poseidon : 兄弟\nZeus <-> Hades : 兄弟\nZeus <-> Demeter : 兄妹\nZeus <-> Hestia : 兄妹\nHera <-> Poseidon : 兄妹\nHera <-> Hades : 兄妹\nHera <-> Demeter : 姉妹\nHera <-> Hestia : 姉妹\nPoseidon <-> Hades : 兄弟\nDemeter <-> Hestia : 姉妹\nSiblingsOrder -- Zeus : 世代の中心\nSiblingsOrder -- Hera : 同世代の女王\nSiblingsOrder -- Poseidon : 兄弟\nSiblingsOrder -- Hades : 兄弟\nSiblingsOrder -- Demeter : 姉妹\nSiblingsOrder -- Hestia : 姉妹\nZeus -> Athena : 父\nZeus -> Apollo : 父\nZeus -> Artemis : 父\nZeus -> Ares : 父\nHera -> Ares : 母\nZeus -> Hermes : 父\nZeus -> Dionysus : 父\nZeus -> Persephone : 父\nDemeter -> Persephone : 母\nHera -> Hephaestus : 母\nZeus -- Hephaestus : 伝承によっては父\nApollo <-> Artemis : 双子\nHades <-> Persephone : 夫婦\nZeus -> MarriageHera : 結婚\nHera -> MarriageHera : 結婚\nMarriageHera -> DivineFamily : 親カテゴリの中心を作る\nZeus -> BirthAthena : 父\nBirthAthena -> Athena : 誕生\nZeus -> BirthTwins : 父\nBirthTwins -> Apollo : 誕生\nBirthTwins -> Artemis : 誕生\nZeus -> DionysusBirth : 父\nDionysusBirth -> Dionysus : 誕生\nPersephoneAbduction -> Persephone : 冥界へ移る\nPersephoneAbduction -> Demeter : 母の喪失と季節神話\nPersephoneAbduction -> Hades : 冥界の女王を得る\nZeus -> Thunderbolt : 武器として使う\nZeus -> Aegis : 威厳と守護の象徴\nZeus -> MountOlympus : ここから支配する\nHera -> MountOlympus : 女王として座す\n",
+    "layout": {},
+    "manualMeta": {}
+  },
+  {
+    "title": "ハンバーガー縦積み構造",
+    "name": "ハンバーガー構造",
+    "savedAt": "初期サンプル",
+    "source": "title: ハンバーガー縦積み構造\ndirection: Vertical\n\n#nodes\nBurger((ハンバーガー)) +Core\nTopBun[(上バンズ)] +Bread\nTopSauce[ソース] +Sauce\nEgg[目玉焼き] +Protein\nBacon[ベーコン] +Protein\nCheese[チーズ] +Dairy\nPatty[パティ] +Protein\nTomato[トマト] +Vegetable\nLettuce[レタス] +Vegetable\nBaseSauce[ソース] +Sauce\nBottomBun[(下バンズ)] +Bread\nSkewer[ピック] +Tool\nPlate[(皿)] +Tool\nLayerNote>この例は手順ではなく、縦に積み上がる構造を表します。] +Note\n\n#styles\n+Core color:#fde68a\n+Bread color:#fed7aa\n+Sauce color:#fbcfe8\n+Vegetable color:#dcfce7\n+Protein color:#fee2e2\n+Dairy color:#fef9c3\n+Tool color:#e5e7eb\n+Note color:#f5f5f5\n@Burger shape:circle color:#fde68a size:l\n@TopBun shape:ellipse color:#fed7aa size:m\n@BottomBun shape:ellipse color:#fed7aa size:m\n@Egg shape:circle color:#fef9c3\n@Cheese shape:diamond color:#fde68a\n@Bacon shape:parallelogram color:#fecaca\n@Lettuce shape:document color:#bbf7d0\n@Tomato shape:circle color:#fca5a5\n@Skewer shape:rect color:#e5e7eb\n@Plate shape:ellipse color:#e0f2fe\n\n#edges\nTopBun -> TopSauce : 上から1層目\nTopSauce -> Egg : 風味をつなぐ\nEgg -> Bacon : 卵の下に重ねる\nBacon -> Cheese : 塩味を加える\nCheese -> Patty : 熱で少し溶ける\nPatty -> Tomato : 肉と野菜をつなぐ\nTomato -> Lettuce : 水分と食感\nLettuce -> BaseSauce : 下層のソース\nBaseSauce -> BottomBun : 最下層\nSkewer -> Burger : 全体を固定\nBurger -> Plate : 皿に置く\nLayerNote -- Burger : 構造の説明\n",
     "layout": {},
     "manualMeta": {}
   },
@@ -500,7 +581,7 @@ Focus は中心性の高いノードを中央付近に置きます。
 <!-- FLOWLITE_RELATION_SPEC_END -->
 
 <div id="left">  <div id="toolbar">
-    <button onclick="copySpecText()">AIプロンプト</button>
+    <button onclick="copySpecText()" title="FlowLite依頼フォームを開く">AIプロンプト</button>
     <div class="toolbar-menu" id="dataMenu">
       <button onclick="toggleTopMenu('dataMenu')">データ</button>
       <div class="toolbar-flyout">
@@ -521,7 +602,7 @@ Focus は中心性の高いノードを中央付近に置きます。
   </div>
   <textarea id="editor" spellcheck="false"></textarea>
   <div id="help">ダブルクリック: ノードまたは線ラベルを編集<br>Ctrl/Cmd+クリック: 複数選択。複数選択後にドラッグ: まとめて移動。Ctrl/Cmd追加選択: 関係の深さを表示。Delete: 選択を削除<br>ホイール: ズーム。背景ドラッグ: 移動<br>戻す/進むの対象: 構造、配置、色、形、サイズ、線種、接続、削除 / 対象外: 保存スロット、HTML保存、SVG保存、ズーム、表示位置</div>
-  <div id="status">準備完了: データスロット1〜10に、アリス、ハンバーガー、物理学、ギリシア神話、海の円環、FizzBuzz、森の生態系、AIエージェント、Webアプリ、GitHubのサンプルが入っています。</div>
+  <div id="status">準備完了: データスロット1〜10に、物理学、アリス、ギリシア神話、ハンバーガー、海の円環、FizzBuzz、森の生態系、AIエージェント、Webアプリ、GitHubのサンプルが入っています。</div>
 </div>
 <div id="splitter" title="左右ペインの幅を変更"></div>
 <div id="toast">コピーしました</div>
@@ -537,7 +618,7 @@ Focus は中心性の高いノードを中央付近に置きます。
 <script>
 (function(){
   'use strict';
-  const FLOWLITE_VERSION='1.0.4';
+  const FLOWLITE_VERSION='1.0.5';
   const sourceEl=document.getElementById('flowlite-source');
   const layoutEl=document.getElementById('flowlite-layout');
   const manualMetaEl=document.getElementById('flowlite-manual-meta');
@@ -3099,113 +3180,252 @@ Focus は中心性の高いノードを中央付近に置きます。
     const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="${minX} ${minY} ${w} ${h}"><defs>${markerDefs}</defs><rect x="${minX}" y="${minY}" width="${w}" height="${h}" fill="${bg}"/>${edgeSvg}${nodeSvg}</svg>`;
     download(`${safeFileName(graph.meta&&graph.meta.title)}_${Date.now()}.svg`,svg,'image/svg+xml;charset=utf-8')
   };
-  window.copySpecText=async function(){
-    const currentText=editor.value.trim()||jsonToText(graph);
-    const promptText=[
-      '# FlowLite 平文編集依頼',
-      '',
-      '## 依頼',
-      '',
-      '',
-      '## 役割',
-      'あなたはFlowLite記法で書かれた構造図を編集する担当者です。',
-      '',
-      '## 指示',
-      '以下の仕様に従って、ユーザーの依頼を反映したFlowLite平文だけを返してください。',
-      'HTML、JSON、Markdownコードフェンス、説明文は返さないでください。',
-      '#styles ではタグ色に加えて、@NodeID shape:star size:l color:#RRGGBB x:100 y:200、@edge:EdgeID color:#RRGGBB、@canvas background:#RRGGBB のような平文スタイルも使えます。',
-      '',
-      '## 重要ルール',
-      '- 返答はFlowLite平文のみ。',
-      '- 既存ノードIDは可能な限り維持する。',
-      '- 接続は表示ラベルではなくノードIDで行う。',
-      '- ノードを削除する場合は、そのノードに接続するエッジも削除する。',
-      '- 見出しは #nodes / #styles / #edges を使う。# edges のように空白を入れない。',
-      '- direction は Horizontal / Vertical / Circle / Grid / Focus / Top / Flow / Compact / Lane / Cluster のいずれか。通常は Flow を使う。',
-      '- ラベルには改行を含められる。例: A[1行目\\n2行目]。',
-      '- 関係が曖昧な場合、無理に強いエッジ種別にしない。A -- B : 補足ラベル を使う。',
-      '- A -x-> B は、明確なブロック、禁止、反証にだけ使う。乱用しない。',
-      '- タグは任意。必要な場合は Node[Label] +Tag1 +Tag2 +Tag3 の形式で書く。',
-      '- 1ノードのタグは最大3個。4個目以降はエンジンが無視するため出力しない。',
-      '- タグはレイヤー、属性、状態、分類のメタデータであり、意味関係の代用ではない。',
-      '- 所属、因果、同一、ブロック、相互作用はタグではなくエッジで表す。',
-      '- 色分けする場合は、同じ次元のタグを使う。時代、役割、国、分野などを1つの色レイヤーに混ぜない。',
-      '- #styles はタグ色、およびノード・エッジ・キャンバスの見た目に使う。意味のない装飾は追加しない。',
-      '- 意味が明確な場合、不要なタグを増やさない。',
-      '- 色分けの目的がない場合、#styles を作らない。',
-      '- グラフを小さく保つため、横断的な分類はタグで表し、意味関係が必要な場合だけノード化する。',
-      '',
-      '## FlowLite記法',
-      'title: 図のタイトル',
-      'direction: Flow',
-      '',
-      '#nodes',
-      'A[通常ノード]',
-      'B{判断}',
-      'C((開始または終了))',
-      'D[(データ)]',
-      'N>注記]',
-      'TaggedNode[タグ付きノード] +Class +State +Important',
-      '',
-      '#styles',
-      '+Class color:#dbeafe',
-      '+State color:#dcfce7',
-      '@NodeID shape:star size:l color:#fde68a x:100 y:200',
-      '@edge:e_A_B color:#f59e0b',
-      '@canvas background:#f8fafc',
-      '',
-      '#edges',
-      'A -> B : 作用、流れ、因果、参照',
-      'A => B : 所属、包含、分類、構成、継承',
-      'A == B : 同一、等価、別名、対応',
-      'A -- B : 関連、未分類、補助関係',
-      'A <-> B : 相互作用、双方向関係',
-      'A -x-> B : ブロック、禁止、制約、反証',
-      '',
-      '## 基本原則',
-      '- ノードは対象です。',
-      '- エッジは対象同士の意味関係です。',
-      '- タグは対象に付くメタデータです。',
-      '- タグは任意です。',
-      '- 図の意味はエッジで表します。タグを関係の代用にしないでください。',
-      '',
-      '## エッジの意味',
-      '- A -> B : A が B に作用する、移動する、呼ぶ、使う、影響する、参照する。',
-      '- A => B : A は B の要素、部分集合、型、部品、実装、継承先である。',
-      '- A == B : A と B は同じ対象、概念、別名、明確な対応である。',
-      '- A -- B : A と B は関係するが、方向、所属、同一、相互作用、ブロックに明確分類しない。',
-      '- A <-> B : A と B が互いに作用する、同期する、交換する、双方向に関係する。',
-      '- A -x-> B : A が B を明確に止める、禁止する、否定する、反証する。',
-      '',
-      '## タグルール',
-      '- タグはノード行末に NodeID[Label] +Tag1 +Tag2 +Tag3 の形で追加する。',
-      '- タグは分類、状態、重要度、表示グループ、責任、レイヤー、種別などに使う。',
-      '- タグはノードでもエッジでもない。',
-      '- タグは意味関係を直接表さない。',
-      '- タグは最大3個。4個目以降は無視される。',
-      '',
-      '## 色とスタイル',
-      '- #styles は +Tag color:#RRGGBB でタグ色を定義できる。',
-      '- #styles は @NodeID でノード個別の色、形、サイズ、座標を定義できる。',
-      '- #styles は @edge:EdgeID で線色、@canvas で背景色を定義できる。',
-      '- 複数タグがある場合、FlowLiteは左から順に #styles を探し、最初に見つかったタグ色を使う。',
-      '- @NodeID の個別スタイルはタグ色や基本形より優先される。',
-      '',
-      '## 色分けの指針',
-      '- 色分けには同じ次元のタグを使う。',
-      '- 国別なら +Wei / +Shu / +Wu、役割別なら +Theory / +Experiment / +Synthesis、状態別なら +TODO / +Done / +Blocked のようにそろえる。',
-      '- 時代、役割、国、分野を1つの色レイヤーに混ぜると、意味のない装飾になりやすい。',
-      '- #styles は見せたいレイヤーに絞る。',
-      '- 2番目、3番目のタグは補助メタデータとして使える。必ず色を付ける必要はない。',
-      '- 意味関係にはノードとエッジを使い、分類だけで足りる場合はタグを使う。',
-      '- 意味が明確な場合、不要なタグを追加しない。',
-      '- 色分けの目的がない場合、#styles を作らない。',
-      '- 配置例: タグクラスタには direction: Cluster、工程には Flow、小さな面積には Compact、最初のタグ比較には Lane を使う。',
-      '',
-      '## 現在のFlowLite平文',
-      currentText
-    ].join('\\n');
-    try{await navigator.clipboard.writeText(promptText);setStatus('AIプロンプトをコピーしました');showToast('AIプロンプトをコピーしました')}catch(e){prompt('コピーできませんでした。手動でコピーしてください。',promptText);showToast('手動でコピーしてください')}
+  window.copySpecText=function(){
+    const ID='flowlite_ai_request_form_modal';
+    const old=document.getElementById(ID);
+    if(old)old.remove();
+    const SPEC=`# FlowLite 依頼用仕様書 v1.1.1準拠
+
+## 役割
+あなたはFlowLite記法で書かれた構造図を作成・編集する担当者です。
+
+## 目的
+ユーザーの依頼内容を、FlowLiteでそのまま開ける平文の関係図として出力してください。
+
+## 出力ルール
+- 出力はFlowLite平文のみ。
+- Markdownコードフェンス、HTML、JSON、説明文、前置き、後書きは出力しない。
+- 必ず title: と direction: を含める。
+- 必ず #nodes、#styles、#edges をこの表記で含める。# nodes のように空白を入れない。
+- セクション順は原則として title / direction / #nodes / #styles / #edges にする。
+- すべてのエッジ元・先は、表示ラベルではなくノードIDで指定する。
+- #edges に出すノードIDは、原則としてすべて #nodes で先に定義する。
+- 既存図を編集する場合、既存ノードIDは可能な限り維持する。
+- ノードを削除する場合、そのノードに接続するエッジも削除する。
+
+## 全体フォーマット
+
+title: 図のタイトル
+direction: Flow
+
+#nodes
+NodeID[表示ラベル] +PrimaryTag +SubTag +StateTag
+
+#styles
++PrimaryTag color:#dbeafe
+
+#edges
+NodeID -> OtherID : 関係ラベル
+
+## direction
+使用できる値:
+- Horizontal
+- Vertical
+- Circle
+- Grid
+- Focus
+- Top
+- Flow
+- Compact
+- Lane
+- Cluster
+
+既定は Flow。小さく詰めたい場合は Compact。第1タグごとに横レーンへ分けたい場合は Lane。第1タグごとにクラスタ表示したい場合は Cluster。
+
+## ノードIDルール
+- 推奨形式は半角英数字とアンダースコアのみ。例: MainCharacter / WhiteRabbit / Birth_Athena
+- 先頭は英字推奨。
+- 空白、[ ]、{ }、( )、: は使わない。
+- 同じIDを重複定義しない。
+- エッジでは必ずこのIDを使い、表示ラベルを使わない。
+
+## ノード記法
+A[通常ノード]
+B{判断ノード}
+C((開始・終了・中心ノード))
+D[(データ・場所・格納ノード)]
+N>注記ノード]
+
+ラベルを複数行にしたい場合は、1行内で \n を使う。
+例:
+Alice[Alice\n主人公]
+
+## タグ記法
+タグはノード行の末尾にだけ付ける。
+
+正しい形式:
+NodeID[表示ラベル] +Tag1 +Tag2 +Tag3
+
+固定ルール:
+- タグは必ず + で始める。
+- タグはノード定義の閉じ記号の後ろに、半角スペース区切りで置く。
+- 1ノード最大3タグまで。4つ目以降はFlowLite側で無視されるため出力しない。
+- タグ名は半角英数字とアンダースコア推奨。例: +Person +Place +Event +Parent +Child +Enemy +Important
+- タグ名に空白、:、#、,、+、[ ]、{ }、( ) は使わない。
+- 第1タグは主分類・色分け・Lane/Clusterの基準として扱う。
+- 第2・第3タグは補助分類、状態、重要度などに使う。
+- タグは属性・分類・状態を示す補助メタデータであり、関係そのものではない。
+
+タグで表してよいもの:
+- 分類: +Person / +Place / +Event
+- 役割: +Parent / +Child / +Guide / +Enemy
+- 状態: +TODO / +Done / +Blocked
+- 重要度: +Core / +Important
+- 表示グループ: +Frontend / +Backend / +Database
+
+タグで表してはいけないもの:
+- AがBに所属する
+- AがBを呼び出す
+- AがBを阻止する
+- AとBが同一である
+- AとBが相互作用する
+
+これらは必ず #edges で表す。
+
+## #styles 記法
+#styles ではタグ色、個別ノード装飾、エッジ色、キャンバス背景を指定できる。
+
+タグ色:
++Tag color:#RRGGBB
+
+個別ノード装飾:
+@NodeID color:#RRGGBB shape:star size:l x:100 y:200
+
+エッジ色:
+@edge:e_FromID_ToID color:#RRGGBB
+
+キャンバス背景:
+@canvas background:#RRGGBB
+
+スタイル固定ルール:
+- 色は #RRGGBB の6桁HEXにする。
+- タグ色は +Tag color:#RRGGBB の形式に固定する。
+- ノード個別装飾は必要な場合だけ使う。
+- 座標 x/y は手動配置を再現したい場合だけ使う。通常は不要。
+- shape に使える値は round, rect, circle, ellipse, diamond, parallelogram, hexagon, trapezoid, document, star, heart, double。
+- size に使える値は m または l。省略時は標準サイズ。
+
+色の優先順位:
+1. @NodeID の個別 color
+2. #styles で定義されたタグ色
+3. デフォルト色
+
+複数タグがある場合、FlowLiteは左から順に #styles に定義されたタグ色を探し、最初に見つかった色を使う。
+したがって、色分けしたい主分類タグを必ず一番左に置く。
+
+## 色分け方針
+- 色分けタグは同じ次元にそろえる。
+- 良い例: 役割だけで色分けする。+Theory / +Experiment / +Synthesis
+- 良い例: 陣営だけで色分けする。+Wei / +Shu / +Wu
+- 良い例: 状態だけで色分けする。+TODO / +Done / +Blocked
+- 悪い例: +Theory、+19thCentury、+Germany、+Quantum を同時に色分けする。
+- 色が意味を持たない場合、#styles を増やさない。
+- 意味関係を見せたい場合は、タグではなくノードとエッジを使う。
+
+## エッジ記法
+FromID -> ToID : 作用・流れ・因果・参照・使用
+FromID => ToID : 所属・分類・構成・包含・継承
+FromID == ToID : 同一・別名・等価・対応
+FromID -- ToID : 補足関係・弱い関連・分類不能な関係
+FromID <-> ToID : 相互作用・双方向関係
+FromID -x-> ToID : 阻止・禁止・否定・制約・反証
+
+エッジ固定ルール:
+- 左右には必ずノードIDを書く。
+- ラベルは : の後ろに短く書く。
+- 判断に迷う関係は -- を使う。
+- -x-> は強い否定・阻止・禁止・反証にだけ使い、弱い対立や比較には使わない。
+- 所属や親子関係をタグだけで済ませず、必要なら => または -> で明示する。
+
+## 設計方針
+- 中心概念を1つ置く。
+- 人物、場所、組織、出来事、道具、概念、状態を必要に応じてノード化する。
+- 重要な意味関係は必ずエッジラベルで説明する。
+- ノード数が多い場合は、HubノードやGroupノードを作って読みやすくする。
+- タグは分類補助、エッジは意味関係、#styles は見た目、という役割を崩さない。
+
+## 最小テンプレート
+
+title: Sample Diagram
+direction: Flow
+
+#nodes
+Center((中心概念)) +Core
+A[対象A] +Group1
+B[対象B] +Group2
+Note>補足説明] +Note
+
+#styles
++Core color:#fde68a
++Group1 color:#dbeafe
++Group2 color:#dcfce7
++Note color:#f5f5f5
+
+#edges
+Center -> A : 関係
+A -- B : 補足関係
+Note -- Center : 補足
+
+## 依頼内容
+ここに作成・編集したい関係図の内容を書く。`;
+    const host=document.createElement('div');
+    host.id=ID;
+    document.body.appendChild(host);
+    const root=host.attachShadow?host.attachShadow({mode:'open'}):host;
+    root.innerHTML=`<style>
+      :host{all:initial}*{box-sizing:border-box}.back{position:fixed;inset:0;z-index:2147483647;background:rgba(15,23,42,.46);display:flex;align-items:center;justify-content:center;padding:18px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:#0f172a}.panel{width:min(780px,100%);max-height:92vh;overflow:auto;background:#fff;border:1px solid #e2e8f0;border-radius:18px;box-shadow:0 24px 70px rgba(15,23,42,.28);padding:20px}h1{font-size:20px;line-height:1.35;margin:0 0 8px;letter-spacing:-.02em}p{font-size:13px;line-height:1.7;color:#475569;margin:6px 0 12px}label{display:block;font-size:12px;font-weight:800;color:#334155;margin:14px 0 6px}textarea,input,select{width:100%;border:1px solid #cbd5e1;border-radius:12px;background:#fff;color:#0f172a;font:13px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;padding:11px;outline:none}textarea:focus,input:focus,select:focus{border-color:#60a5fa;box-shadow:0 0 0 4px rgba(37,99,235,.14)}textarea{min-height:170px;resize:vertical}.row{display:grid;grid-template-columns:1fr 190px;gap:10px}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:center}.check{display:flex;align-items:flex-start;gap:8px;margin-top:12px;font:13px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:#334155}.check input{width:auto;margin-top:3px}.check span{display:block}.check small{display:block;color:#64748b;margin-top:2px}button{appearance:none;border:1px solid #e2e8f0;border-radius:12px;padding:10px 14px;font-size:13px;font-weight:800;cursor:pointer;background:#f1f5f9;color:#0f172a}button:hover{background:#e2e8f0}.primary{background:#0f172a;color:#fff;border-color:#0f172a}.primary:hover{background:#1e293b}.warn{background:#fffbeb;color:#78350f;border-color:#fbbf24}.danger{background:#fee2e2;color:#991b1b;border-color:#fecaca}.small{font-size:12px;color:#64748b}.output{display:none;margin-top:12px;min-height:150px}@media(max-width:640px){.row{grid-template-columns:1fr}.panel{padding:16px}}
+    </style><div class="back"><div class="panel" role="dialog" aria-modal="true" aria-label="FlowLite依頼フォーム"><h1>FlowLite依頼フォーム</h1><p>作りたい関係図、または現在の図への修正内容を入力すると、FlowLite v1.1.1準拠の仕様書と結合してクリップボードにコピーします。そのままAIの入力欄へ貼り付けてください。</p><label for="req">どんな関係図を書きたいですか？</label><textarea id="req" placeholder="例: スイミーの登場人物と出来事の関係図。スイミーを中心に、仲間、敵、行動、変化をノード化してください。タグは役割で分類してください。"></textarea><div class="row"><div><label for="title">希望タイトル 任意</label><input id="title" placeholder="例: スイミー関係図"></div><div><label for="dir">希望direction 任意</label><select id="dir"><option value="">自動選択</option><option>Flow</option><option>Focus</option><option>Cluster</option><option>Lane</option><option>Compact</option><option>Circle</option><option>Horizontal</option><option>Vertical</option><option>Grid</option><option>Top</option></select></div></div><label class="check"><input id="includeCurrent" type="checkbox"><span>現在の図を編集対象として含める<small>既存ノードIDを維持して修正させたい場合だけONにします。</small></span></label><div class="actions"><button id="copy" class="primary">仕様書＋依頼内容をコピー</button><button id="sample" class="warn">例文を入れる</button><button id="close" class="danger">閉じる</button><span class="small">Escでも閉じられます。</span></div><textarea id="out" class="output" readonly></textarea></div></div>`;
+    const q=s=>root.querySelector(s);
+    const req=q('#req'), title=q('#title'), dir=q('#dir'), includeCurrent=q('#includeCurrent'), out=q('#out');
+    const close=()=>{host.remove();removeEventListener('keydown',onkey)};
+    q('#close').addEventListener('click',close);
+    root.querySelector('.back').addEventListener('click',e=>{if(e.target.classList&&e.target.classList.contains('back'))close()});
+    const onkey=e=>{if(e.key==='Escape')close()};
+    addEventListener('keydown',onkey);
+    q('#sample').addEventListener('click',()=>{
+      req.value='中心テーマを1つ置き、主要人物・組織・出来事・場所・概念をノード化してください。タグは第1タグを主分類として統一し、重要な関係はすべて#edgesのラベルで明示してください。';
+      req.focus();
+    });
+    const currentFlowLiteText=()=>editor.value.trim()||jsonToText(graph);
+    const build=()=>{
+      const r=req.value.trim();
+      if(!r){alert('依頼内容を入力してください');req.focus();return ''}
+      const add=[];
+      if(title.value.trim())add.push('- 希望タイトル: '+title.value.trim());
+      if(dir.value)add.push('- 希望direction: '+dir.value);
+      let block='## 依頼内容\n'+r;
+      if(add.length)block+='\n\n## 追加指定\n'+add.join('\n');
+      if(includeCurrent.checked)block+='\n\n## 現在のFlowLite平文\n'+currentFlowLiteText();
+      return SPEC.replace(/## 依頼内容[\s\S]*$/,block);
+    };
+    const fallback=text=>{
+      out.style.display='block';
+      out.value=text;
+      out.focus();
+      out.select();
+      try{
+        if(document.execCommand('copy')){
+          setStatus('AIプロンプトをコピーしました');
+          showToast('AIプロンプトをコピーしました');
+          close();
+          return;
+        }
+      }catch(e){}
+      alert('自動コピーできませんでした。表示されたテキストを手動でコピーしてください。');
+    };
+    q('#copy').addEventListener('click',async()=>{
+      const promptText=build();
+      if(!promptText)return;
+      try{
+        await navigator.clipboard.writeText(promptText);
+        setStatus('AIプロンプトをコピーしました');
+        showToast('AIプロンプトをコピーしました');
+        close();
+      }catch(e){
+        fallback(promptText);
+      }
+    });
+    setTimeout(()=>req.focus(),50);
   };
   function download(name,content,type){const blob=new Blob([content],{type});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 

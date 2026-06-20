@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="FlowLite English edition. Create and edit interactive structural diagrams from plain text that can be passed to AI.">
-<title>FlowLite v1.0.1</title>
+<title>FlowLite v1.0.4</title>
 <style>
   :root{--bg:#f8fafc;--panel:#fff;--border:#e2e8f0;--text:#0f172a;--sub:#64748b;--accent:#2563eb;--edge:#94a3b8;--node:#fff;--shadow:0 8px 20px rgba(15,23,42,.08);--danger:#dc2626;--green:#16a34a}
   *{box-sizing:border-box} body{margin:0;height:100vh;display:flex;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--text);background:var(--bg);overflow:hidden}
@@ -113,98 +113,180 @@
 <body>
 <!-- FLOWLITE_SOURCE_EDITABLE_START: USER AND AI MAY EDIT THIS PLAINTEXT -->
 <script type="text/plain" id="flowlite-source">
-title: Alice in Wonderland Shape Demo
-direction: Focus
+title: Core Papers and Concepts in Modern Physics (Role Layer Example)
+direction: Cluster
 
 #nodes
-Alice((Alice)) +Hero +ShapeDemo
-Wonderland((Wonderland)) +Place +Core
-WhiteRabbit[White Rabbit
-always in a hurry] +Guide +Creature
-RabbitHole[(Rabbit Hole)] +Place +Portal
-Door[Small Door] +Object +Portal
-GoldenKey[Golden Key] +Object +Key
-DrinkMeBottle[(Drink Me Bottle)] +Object +Transform
-EatMeCake[(Eat Me Cake)] +Object +Transform
-CheshireCat[Cheshire Cat
-appears and disappears] +Guide +Creature
-MadHatter[Mad Hatter] +TeaParty +Character
-MarchHare[March Hare] +TeaParty +Character
-Dormouse[Dormouse] +TeaParty +Character
-TeaParty((Mad Tea Party)) +Event +TeaParty
-QueenOfHearts[Queen of Hearts] +Royal +Heart
-KingOfHearts[King of Hearts] +Royal +Heart
-CardSoldiers[Card Soldiers] +Royal +Heart
-Trial[Trial] +Event +Royal
-Caterpillar[Caterpillar] +Guide +Creature
-Advice[Who are you?] +Question
-GrowthChange[Size changes] +Transform
-Exit((Wake Up)) +End
+Physics((Modern Physics)) +Core
+Newton1687[Newton 1687
+Principia] +Theory +Classical
+Maxwell1865[Maxwell 1865
+Field Equations] +Theory +Electromagnetism
+Boltzmann1877[Boltzmann 1877
+Statistical Mechanics] +Theory +Statistics
+MichelsonMorley1887[Michelson-Morley 1887
+Ether Problem] +Experiment +Relativity
+Planck1900[Planck 1900
+Blackbody Radiation] +Theory +Quantum
+Einstein1905Photo[Einstein 1905
+Light Quantum] +Theory +Quantum
+Einstein1905SR[Einstein 1905
+Special Relativity] +Theory +Relativity +Core
+Einstein1905Mass[Einstein 1905
+Mass-Energy] +Theory +Relativity
+Einstein1905Brownian[Einstein 1905
+Brownian Motion] +Theory +Statistics
+Minkowski1908[Minkowski 1908
+Spacetime] +Synthesis +Relativity
+Einstein1915GR[Einstein 1915
+General Relativity] +Theory +Relativity
+Friedmann1922[Friedmann 1922
+Expanding-Universe Solutions] +Theory +Cosmology
+Hubble1929[Hubble 1929
+Galactic Recession] +Experiment +Cosmology
+Rutherford1911[Rutherford 1911
+Nuclear Model] +Experiment +Quantum
+Bohr1913[Bohr 1913
+Atomic Model] +Theory +Quantum
+DeBroglie1924[de Broglie 1924
+Matter Waves] +Theory +Quantum
+Heisenberg1925[Heisenberg 1925
+Matrix Mechanics] +Theory +Quantum
+Schrodinger1926[Schrodinger 1926
+Wave Mechanics] +Theory +Quantum
+Born1926[Born 1926
+Probabilistic Interpretation] +Interpretation +Quantum
+Dirac1928[Dirac 1928
+Relativistic Electron] +Synthesis +Quantum +Relativity
+EPR1935[EPR 1935
+Quantum Nonlocality Problem] +Problem +Quantum
+Bell1964[Bell 1964
+Bell Inequality] +Problem +Quantum
+Aspect1982[Aspect 1982
+Bell Test Experiment] +Experiment +Quantum
+Feynman1948[Feynman 1948
+Path Integral] +Synthesis +Quantum
+YangMills1954[Yang-Mills 1954
+Gauge Theory] +Synthesis +FieldTheory
+BCS1957[BCS 1957
+Superconductivity] +Theory +CondensedMatter
+GellMann1964[Gell-Mann 1964
+Quark Model] +Theory +Particle
+Higgs1964[Higgs 1964
+Mass-Generation Mechanism] +Theory +Particle
+Weinberg1967[Weinberg 1967
+Electroweak Unification] +Synthesis +Particle
+Wilson1971[Wilson 1971
+Renormalization Group] +Synthesis +FieldTheory
+Hawking1974[Hawking 1974
+Black Hole Radiation] +Synthesis +Gravity +Quantum
+Classical[(Classical Physics)] +Field +Classical
+Electromagnetism[(Electromagnetism)] +Field +Electromagnetism
+Statistical[(Statistical Physics)] +Field +Statistics
+Quantum[(Quantum Theory)] +Field +Quantum
+Relativity[(Relativity)] +Field +Relativity
+Cosmology[(Cosmology)] +Field +Cosmology
+QFT[(Quantum Field Theory)] +Field +FieldTheory
+Particle[(Particle Physics)] +Field +Particle
+Condensed[(Condensed Matter Physics)] +Field +CondensedMatter
+Notice>Colors represent epistemic roles, not fields. The first tag determines color; later tags provide detail.] +Note
 
 #styles
-+Hero color:#fde68a
-+Place color:#e0f2fe
-+Guide color:#dcfce7
-+Object color:#ede9fe
-+TeaParty color:#fef9c3
-+Royal color:#fecaca
-+Event color:#fbcfe8
-+Question color:#f5f5f5
-+Transform color:#fed7aa
-+End color:#e5e7eb
-
-@Alice color:#fde68a shape:star size:l
-@Wonderland color:#dcfce7 shape:circle size:l
-@WhiteRabbit color:#e0f2fe shape:ellipse size:m
-@RabbitHole color:#bfdbfe shape:circle size:m
-@Door color:#dbeafe shape:rect
-@GoldenKey color:#fcd34d shape:star
-@DrinkMeBottle color:#ddd6fe shape:document
-@EatMeCake color:#fed7aa shape:document
-@CheshireCat color:#c4b5fd shape:star size:m
-@MadHatter color:#fef9c3 shape:diamond size:m
-@MarchHare color:#ffedd5 shape:ellipse
-@Dormouse color:#f5f5f5 shape:circle
-@TeaParty color:#fef3c7 shape:double size:m
-@QueenOfHearts color:#fbcfe8 shape:heart size:l
-@KingOfHearts color:#fecaca shape:heart size:m
-@CardSoldiers color:#fee2e2 shape:heart
-@Trial color:#e5e7eb shape:hexagon size:m
-@Caterpillar color:#bbf7d0 shape:ellipse
-@Advice color:#f8fafc shape:parallelogram
-@GrowthChange color:#fed7aa shape:trapezoid size:m
-@Exit color:#e5e7eb shape:circle
++Core color:#fde68a
++Theory color:#dbeafe
++Experiment color:#dcfce7
++Interpretation color:#fef9c3
++Synthesis color:#fbcfe8
++Problem color:#fed7aa
++Field color:#e5e7eb
++Note color:#f5f5f5
 
 #edges
-Alice -> WhiteRabbit : follows
-WhiteRabbit -> RabbitHole : leads to
-RabbitHole -> Wonderland : entrance
-Wonderland -> Door : contains
-GoldenKey -> Door : opens
-Door -x-> Alice : blocks when too large
-DrinkMeBottle -> GrowthChange : makes Alice smaller
-EatMeCake -> GrowthChange : makes Alice larger
-GrowthChange -> Door : changes access
-Wonderland -> CheshireCat : contains
-CheshireCat -> Alice : gives cryptic guidance
-CheshireCat -> QueenOfHearts : points toward
-Wonderland -> Caterpillar : contains
-Caterpillar -> Advice : asks
-Advice -> Alice : challenges identity
-Wonderland -> TeaParty : contains
-MadHatter => TeaParty : host
-MarchHare => TeaParty : host
-Dormouse => TeaParty : guest
-Alice -> TeaParty : visits
-QueenOfHearts -> CardSoldiers : commands
-KingOfHearts -- QueenOfHearts : royal pair
-QueenOfHearts -x-> Alice : threatens
-CardSoldiers -> Trial : enforce order
-Alice -> Trial : attends
-Trial -> QueenOfHearts : ruled by
-Trial -> KingOfHearts : presided over
-Trial -> Exit : story resolves
-Alice -> Exit : wakes up
+Physics => Classical : prehistory
+Physics => Electromagnetism : classical electromagnetism
+Physics => Statistical : probability and many particles
+Physics => Quantum : microscopic world
+Physics => Relativity : spacetime and gravity
+Physics => Cosmology : structure of the universe
+Physics => QFT : quantum theory and fields
+Physics => Particle : elementary particles
+Physics => Condensed : condensed matter
+
+Newton1687 => Classical : classical mechanics
+Maxwell1865 => Electromagnetism : electromagnetism
+Boltzmann1877 => Statistical : statistical mechanics
+Planck1900 => Quantum : quantum hypothesis
+Einstein1905SR => Relativity : special relativity
+Einstein1915GR => Relativity : general relativity
+Friedmann1922 => Cosmology : dynamic universe
+Hubble1929 => Cosmology : observational cosmology
+Heisenberg1925 => Quantum : quantum mechanics
+Schrodinger1926 => Quantum : quantum mechanics
+Born1926 => Quantum : probabilistic interpretation
+Dirac1928 => QFT : relativistic quantum theory
+YangMills1954 => QFT : gauge theory
+GellMann1964 => Particle : hadron classification
+Higgs1964 => Particle : mass generation
+Weinberg1967 => Particle : electroweak unification
+BCS1957 => Condensed : many-body quantum theory
+Wilson1971 => QFT : reconstruction of field theory
+Wilson1971 => Condensed : understanding critical phenomena
+
+Newton1687 -> Einstein1905SR : revises absolute spacetime
+Maxwell1865 -> Einstein1905SR : constant speed of light problem
+MichelsonMorley1887 -> Einstein1905SR : pressure on ether hypothesis
+Einstein1905SR -> Einstein1905Mass : mass-energy relation
+Einstein1905SR -> Minkowski1908 : geometric spacetime
+Minkowski1908 -> Einstein1915GR : geometric theory of gravity
+Einstein1915GR -> Friedmann1922 : solutions to field equations
+Friedmann1922 -> Hubble1929 : observational support for expansion
+Einstein1915GR -> Hawking1974 : basis for black-hole theory
+
+Boltzmann1877 -> Planck1900 : statistical background to blackbody radiation
+Boltzmann1877 -> Einstein1905Brownian : atomism and stochastic processes
+Einstein1905Brownian -> Statistical : supports the reality of atoms
+Boltzmann1877 -> Born1926 : basis for probabilistic worldview
+
+Planck1900 -> Einstein1905Photo : extends quantum hypothesis to light
+Einstein1905Photo -> Quantum : particle nature of light
+Rutherford1911 -> Bohr1913 : provides nuclear model
+Planck1900 -> Bohr1913 : quantum condition
+Bohr1913 -> DeBroglie1924 : from old quantum theory to matter waves
+DeBroglie1924 -> Schrodinger1926 : basis of wave mechanics
+Bohr1913 -> Heisenberg1925 : toward observable-centered formulation
+Heisenberg1925 == Schrodinger1926 : equivalent formulations
+Schrodinger1926 -> Born1926 : meaning of the wave function
+
+Einstein1905SR -> Dirac1928 : relativistic constraints
+Schrodinger1926 -> Dirac1928 : extension of quantum equations
+Dirac1928 -> QFT : antiparticles, spin, and field theory
+Schrodinger1926 == Feynman1948 : alternative formulation
+Feynman1948 -> QFT : path-integral computation
+Dirac1928 -> Feynman1948 : development of relativistic quantum theory
+Feynman1948 -> YangMills1954 : extends field-theoretic thinking
+
+Born1926 -> EPR1935 : challenge to probabilistic interpretation
+EPR1935 -> Bell1964 : makes nonlocality testable
+Bell1964 -> Aspect1982 : leads to experimental tests
+Aspect1982 -> Quantum : empirical support for quantum correlations
+
+YangMills1954 -> GellMann1964 : theoretical background for strong interaction
+YangMills1954 -> Weinberg1967 : foundation for electroweak theory
+Higgs1964 -> Weinberg1967 : symmetry breaking and mass generation
+Weinberg1967 -> Particle : path to the Standard Model
+Wilson1971 -> YangMills1954 : clarifies renormalization
+Wilson1971 -> BCS1957 : connects many-body physics and field theory
+
+Quantum <-> Relativity : unification problem
+Quantum <-> QFT : quantum theory as fields
+Relativity <-> QFT : basis of high-energy physics
+Relativity -> Cosmology : gravitational cosmology
+QFT -> Particle : language of particle physics
+QFT -> Condensed : applications to condensed matter
+Hawking1974 -> QFT : quantum fields in curved spacetime
+Hawking1974 -> Cosmology : black-hole thermodynamics
+
+Notice -- Physics : note on color policy
 </script>
 <!-- FLOWLITE_SOURCE_EDITABLE_END -->
 
@@ -220,22 +302,6 @@ Alice -> Exit : wakes up
 <script type="application/json" id="flowlite-saves">
 [
   {
-    "title": "Alice in Wonderland Shape Demo",
-    "name": "Alice Shape Demo",
-    "savedAt": "Initial sample",
-    "source": "title: Alice in Wonderland Shape Demo\ndirection: Focus\n\n#nodes\nAlice((Alice)) +Hero +ShapeDemo\nWonderland((Wonderland)) +Place +Core\nWhiteRabbit[White Rabbit\nalways in a hurry] +Guide +Creature\nRabbitHole[(Rabbit Hole)] +Place +Portal\nDoor[Small Door] +Object +Portal\nGoldenKey[Golden Key] +Object +Key\nDrinkMeBottle[(Drink Me Bottle)] +Object +Transform\nEatMeCake[(Eat Me Cake)] +Object +Transform\nCheshireCat[Cheshire Cat\nappears and disappears] +Guide +Creature\nMadHatter[Mad Hatter] +TeaParty +Character\nMarchHare[March Hare] +TeaParty +Character\nDormouse[Dormouse] +TeaParty +Character\nTeaParty((Mad Tea Party)) +Event +TeaParty\nQueenOfHearts[Queen of Hearts] +Royal +Heart\nKingOfHearts[King of Hearts] +Royal +Heart\nCardSoldiers[Card Soldiers] +Royal +Heart\nTrial[Trial] +Event +Royal\nCaterpillar[Caterpillar] +Guide +Creature\nAdvice[Who are you?] +Question\nGrowthChange[Size changes] +Transform\nExit((Wake Up)) +End\n\n#styles\n+Hero color:#fde68a\n+Place color:#e0f2fe\n+Guide color:#dcfce7\n+Object color:#ede9fe\n+TeaParty color:#fef9c3\n+Royal color:#fecaca\n+Event color:#fbcfe8\n+Question color:#f5f5f5\n+Transform color:#fed7aa\n+End color:#e5e7eb\n\n@Alice color:#fde68a shape:star size:l\n@Wonderland color:#dcfce7 shape:circle size:l\n@WhiteRabbit color:#e0f2fe shape:ellipse size:m\n@RabbitHole color:#bfdbfe shape:circle size:m\n@Door color:#dbeafe shape:rect\n@GoldenKey color:#fcd34d shape:star\n@DrinkMeBottle color:#ddd6fe shape:document\n@EatMeCake color:#fed7aa shape:document\n@CheshireCat color:#c4b5fd shape:star size:m\n@MadHatter color:#fef9c3 shape:diamond size:m\n@MarchHare color:#ffedd5 shape:ellipse\n@Dormouse color:#f5f5f5 shape:circle\n@TeaParty color:#fef3c7 shape:double size:m\n@QueenOfHearts color:#fbcfe8 shape:heart size:l\n@KingOfHearts color:#fecaca shape:heart size:m\n@CardSoldiers color:#fee2e2 shape:heart\n@Trial color:#e5e7eb shape:hexagon size:m\n@Caterpillar color:#bbf7d0 shape:ellipse\n@Advice color:#f8fafc shape:parallelogram\n@GrowthChange color:#fed7aa shape:trapezoid size:m\n@Exit color:#e5e7eb shape:circle\n\n#edges\nAlice -> WhiteRabbit : follows\nWhiteRabbit -> RabbitHole : leads to\nRabbitHole -> Wonderland : entrance\nWonderland -> Door : contains\nGoldenKey -> Door : opens\nDoor -x-> Alice : blocks when too large\nDrinkMeBottle -> GrowthChange : makes Alice smaller\nEatMeCake -> GrowthChange : makes Alice larger\nGrowthChange -> Door : changes access\nWonderland -> CheshireCat : contains\nCheshireCat -> Alice : gives cryptic guidance\nCheshireCat -> QueenOfHearts : points toward\nWonderland -> Caterpillar : contains\nCaterpillar -> Advice : asks\nAdvice -> Alice : challenges identity\nWonderland -> TeaParty : contains\nMadHatter => TeaParty : host\nMarchHare => TeaParty : host\nDormouse => TeaParty : guest\nAlice -> TeaParty : visits\nQueenOfHearts -> CardSoldiers : commands\nKingOfHearts -- QueenOfHearts : royal pair\nQueenOfHearts -x-> Alice : threatens\nCardSoldiers -> Trial : enforce order\nAlice -> Trial : attends\nTrial -> QueenOfHearts : ruled by\nTrial -> KingOfHearts : presided over\nTrial -> Exit : story resolves\nAlice -> Exit : wakes up",
-    "layout": {},
-    "manualMeta": {}
-  },
-  {
-    "title": "Hamburger Assembly Flow",
-    "name": "Hamburger Assembly",
-    "savedAt": "Initial sample",
-    "source": "title: Hamburger Assembly Flow\ndirection: Flow\n\n#nodes\nBurger((Hamburger)) +Core\nPrep[Prepare ingredients] +Process\nBottomBun[(Bottom bun)] +Bread\nBaseSauce[Spread sauce] +Sauce\nLettuce[Lettuce] +Vegetable\nPatty[Cook patty] +Protein\nCheese[Add cheese] +Dairy\nCheeseMelted{Cheese melted?} +Decision\nBacon[Crisp bacon] +Protein\nEgg[Fry egg] +Protein\nEggDone{Egg cooked?} +Decision\nTomato[Tomato slices] +Vegetable\nStack[Stack the burger] +Process\nTopBun[(Top bun)] +Bread\nSkewer[Hold together] +Process\nServe((Serve)) +Output\nHeat[Heat source] +Tool\nPlate[(Plate)] +Tool\nNote>Layer order is part of the recipe, not just decoration.] +Note\n\n#styles\n+Core color:#fde68a\n+Process color:#dbeafe\n+Bread color:#fed7aa\n+Sauce color:#fbcfe8\n+Vegetable color:#dcfce7\n+Protein color:#fee2e2\n+Dairy color:#fef9c3\n+Decision color:#e0f2fe\n+Tool color:#e5e7eb\n+Output color:#bbf7d0\n+Note color:#f5f5f5\n\n#edges\nBurger -> Prep : start\nPrep -> BottomBun : first layer\nBottomBun -> BaseSauce : spread on bun\nBaseSauce -> Lettuce : add crisp layer\nLettuce -> Patty : place patty\nHeat -> Patty : cooks\nPatty -> Cheese : add while hot\nCheese -> CheeseMelted : check\nCheeseMelted -> Bacon : Yes\nCheeseMelted -> Patty : No, keep heating\nBacon -> Egg : add next protein\nHeat -> Bacon : crisps\nHeat -> Egg : fries\nEgg -> EggDone : check\nEggDone -> Tomato : Yes\nEggDone -> Egg : No, cook longer\nTomato -> TopBun : final layer\nTopBun -> Stack : close burger\nStack -> Skewer : stabilize\nSkewer -> Plate : move to plate\nPlate -> Serve : ready\nCheeseMelted -x-> Bacon : if not melted yet\nEggDone -x-> Tomato : if egg is not ready\nNote -- Burger : explains layer meaning",
-    "layout": {},
-    "manualMeta": {}
-  },
-  {
     "title": "Core Papers and Concepts in Modern Physics (Role Layer Example)",
     "name": "Physics Cluster Example",
     "savedAt": "Initial sample",
@@ -244,10 +310,26 @@ Alice -> Exit : wakes up
     "manualMeta": {}
   },
   {
+    "title": "Alice in Wonderland Shape Demo",
+    "name": "Alice Shape Demo",
+    "savedAt": "Initial sample",
+    "source": "title: Alice in Wonderland Shape Demo\ndirection: Focus\n\n#nodes\nAlice((Alice)) +Hero +ShapeDemo\nWonderland((Wonderland)) +Place +Core\nWhiteRabbit[White Rabbit\nalways in a hurry] +Guide +Creature\nRabbitHole[(Rabbit Hole)] +Place +Portal\nDoor[Small Door] +Object +Portal\nGoldenKey[Golden Key] +Object +Key\nDrinkMeBottle[(Drink Me Bottle)] +Object +Transform\nEatMeCake[(Eat Me Cake)] +Object +Transform\nCheshireCat[Cheshire Cat\nappears and disappears] +Guide +Creature\nMadHatter[Mad Hatter] +TeaParty +Character\nMarchHare[March Hare] +TeaParty +Character\nDormouse[Dormouse] +TeaParty +Character\nTeaParty((Mad Tea Party)) +Event +TeaParty\nQueenOfHearts[Queen of Hearts] +Royal +Heart\nKingOfHearts[King of Hearts] +Royal +Heart\nCardSoldiers[Card Soldiers] +Royal +Heart\nTrial[Trial] +Event +Royal\nCaterpillar[Caterpillar] +Guide +Creature\nAdvice[Who are you?] +Question\nGrowthChange[Size changes] +Transform\nExit((Wake Up)) +End\n\n#styles\n+Hero color:#fde68a\n+Place color:#e0f2fe\n+Guide color:#dcfce7\n+Object color:#ede9fe\n+TeaParty color:#fef9c3\n+Royal color:#fecaca\n+Event color:#fbcfe8\n+Question color:#f5f5f5\n+Transform color:#fed7aa\n+End color:#e5e7eb\n\n@Alice color:#fde68a shape:star size:l\n@Wonderland color:#dcfce7 shape:circle size:l\n@WhiteRabbit color:#e0f2fe shape:ellipse size:m\n@RabbitHole color:#bfdbfe shape:circle size:m\n@Door color:#dbeafe shape:rect\n@GoldenKey color:#fcd34d shape:star\n@DrinkMeBottle color:#ddd6fe shape:document\n@EatMeCake color:#fed7aa shape:document\n@CheshireCat color:#c4b5fd shape:star size:m\n@MadHatter color:#fef9c3 shape:diamond size:m\n@MarchHare color:#ffedd5 shape:ellipse\n@Dormouse color:#f5f5f5 shape:circle\n@TeaParty color:#fef3c7 shape:double size:m\n@QueenOfHearts color:#fbcfe8 shape:heart size:l\n@KingOfHearts color:#fecaca shape:heart size:m\n@CardSoldiers color:#fee2e2 shape:heart\n@Trial color:#e5e7eb shape:hexagon size:m\n@Caterpillar color:#bbf7d0 shape:ellipse\n@Advice color:#f8fafc shape:parallelogram\n@GrowthChange color:#fed7aa shape:trapezoid size:m\n@Exit color:#e5e7eb shape:circle\n\n#edges\nAlice -> WhiteRabbit : follows\nWhiteRabbit -> RabbitHole : leads to\nRabbitHole -> Wonderland : entrance\nWonderland -> Door : contains\nGoldenKey -> Door : opens\nDoor -x-> Alice : blocks when too large\nDrinkMeBottle -> GrowthChange : makes Alice smaller\nEatMeCake -> GrowthChange : makes Alice larger\nGrowthChange -> Door : changes access\nWonderland -> CheshireCat : contains\nCheshireCat -> Alice : gives cryptic guidance\nCheshireCat -> QueenOfHearts : points toward\nWonderland -> Caterpillar : contains\nCaterpillar -> Advice : asks\nAdvice -> Alice : challenges identity\nWonderland -> TeaParty : contains\nMadHatter => TeaParty : host\nMarchHare => TeaParty : host\nDormouse => TeaParty : guest\nAlice -> TeaParty : visits\nQueenOfHearts -> CardSoldiers : commands\nKingOfHearts -- QueenOfHearts : royal pair\nQueenOfHearts -x-> Alice : threatens\nCardSoldiers -> Trial : enforce order\nAlice -> Trial : attends\nTrial -> QueenOfHearts : ruled by\nTrial -> KingOfHearts : presided over\nTrial -> Exit : story resolves\nAlice -> Exit : wakes up",
+    "layout": {},
+    "manualMeta": {}
+  },
+  {
     "title": "Zeus and Hera Family Categories",
     "name": "Greek Mythology Focus Example",
     "savedAt": "Initial sample",
     "source": "title: Zeus and Hera Family Categories\ndirection: Focus\n\n#nodes\nZeus((Zeus\nSky and thunder god)) +Parent\nHera[Hera\nGoddess of marriage and sovereignty] +Parent\nPoseidon[Poseidon\nGod of the sea] +Sibling\nHades[Hades\nGod of the underworld] +Sibling\nDemeter[Demeter\nGoddess of agriculture] +Sibling\nHestia[Hestia\nGoddess of the hearth] +Sibling\nAthena[Athena\nGoddess of wisdom] +Child\nApollo[Apollo\nGod of prophecy and arts] +Child\nArtemis[Artemis\nGoddess of the hunt] +Child\nAres[Ares\nGod of war] +Child\nHermes[Hermes\nMessenger god] +Child\nDionysus[Dionysus\nGod of wine and ecstasy] +Child\nPersephone[Persephone\nQueen of the underworld] +Child\nHephaestus[Hephaestus\nGod of smithing] +Child\nSiblingsOrder[Sibling network\nGods of Zeus's generation]\nDivineFamily[Divine family\nParent, sibling, and child categories]\nMarriageHera[Marriage of Zeus and Hera\nStabilizes divine sovereignty]\nBirthAthena[Birth of Athena\nBorn from the head of Zeus]\nBirthTwins[Birth of Apollo and Artemis\nFormation of the twin deities]\nDionysusBirth[Birth of Dionysus\nThe twice-born god]\nPersephoneAbduction[Abduction of Persephone\nUnderworld and seasonal myth]\nThunderbolt[Thunderbolt\nWeapon of Zeus]\nAegis[Aegis\nProtection and majesty]\nMountOlympus[Mount Olympus\nSeat of divine rule]\n\n#styles\n+Parent color:#fde68a\n+Sibling color:#dbeafe\n+Child color:#dcfce7\n\n#edges\nZeus <-> Hera : married couple\nZeus => DivineFamily : parent category\nHera => DivineFamily : parent category\nPoseidon => DivineFamily : sibling category\nHades => DivineFamily : sibling category\nDemeter => DivineFamily : sibling category\nHestia => DivineFamily : sibling category\nAthena => DivineFamily : child category\nApollo => DivineFamily : child category\nArtemis => DivineFamily : child category\nAres => DivineFamily : child category\nHermes => DivineFamily : child category\nDionysus => DivineFamily : child category\nPersephone => DivineFamily : child category\nHephaestus => DivineFamily : child category\nZeus <-> Poseidon : brothers\nZeus <-> Hades : brothers\nZeus <-> Demeter : siblings\nZeus <-> Hestia : siblings\nHera <-> Poseidon : siblings\nHera <-> Hades : siblings\nHera <-> Demeter : sisters\nHera <-> Hestia : sisters\nPoseidon <-> Hades : brothers\nDemeter <-> Hestia : sisters\nSiblingsOrder -- Zeus : generational center\nSiblingsOrder -- Hera : queen of the same generation\nSiblingsOrder -- Poseidon : sibling\nSiblingsOrder -- Hades : sibling\nSiblingsOrder -- Demeter : sibling\nSiblingsOrder -- Hestia : sibling\nZeus -> Athena : father\nZeus -> Apollo : father\nZeus -> Artemis : father\nZeus -> Ares : father\nHera -> Ares : mother\nZeus -> Hermes : father\nZeus -> Dionysus : father\nZeus -> Persephone : father\nDemeter -> Persephone : mother\nHera -> Hephaestus : mother\nZeus -- Hephaestus : father in some traditions\nApollo <-> Artemis : twins\nHades <-> Persephone : married couple\nZeus -> MarriageHera : marriage\nHera -> MarriageHera : marriage\nMarriageHera -> DivineFamily : forms the center of the parent category\nZeus -> BirthAthena : father\nBirthAthena -> Athena : birth\nZeus -> BirthTwins : father\nBirthTwins -> Apollo : birth\nBirthTwins -> Artemis : birth\nZeus -> DionysusBirth : father\nDionysusBirth -> Dionysus : birth\nPersephoneAbduction -> Persephone : moves to the underworld\nPersephoneAbduction -> Demeter : mother's loss and seasonal myth\nPersephoneAbduction -> Hades : gains queen of the underworld\nZeus -> Thunderbolt : uses as a weapon\nZeus -> Aegis : symbol of majesty and protection\nZeus -> MountOlympus : rules from this seat\nHera -> MountOlympus : sits as queen",
+    "layout": {},
+    "manualMeta": {}
+  },
+  {
+    "title": "Hamburger Assembly Flow",
+    "name": "Hamburger Assembly",
+    "savedAt": "Initial sample",
+    "source": "title: Hamburger Assembly Flow\ndirection: Flow\n\n#nodes\nBurger((Hamburger)) +Core\nPrep[Prepare ingredients] +Process\nBottomBun[(Bottom bun)] +Bread\nBaseSauce[Spread sauce] +Sauce\nLettuce[Lettuce] +Vegetable\nPatty[Cook patty] +Protein\nCheese[Add cheese] +Dairy\nCheeseMelted{Cheese melted?} +Decision\nBacon[Crisp bacon] +Protein\nEgg[Fry egg] +Protein\nEggDone{Egg cooked?} +Decision\nTomato[Tomato slices] +Vegetable\nStack[Stack the burger] +Process\nTopBun[(Top bun)] +Bread\nSkewer[Hold together] +Process\nServe((Serve)) +Output\nHeat[Heat source] +Tool\nPlate[(Plate)] +Tool\nNote>Layer order is part of the recipe, not just decoration.] +Note\n\n#styles\n+Core color:#fde68a\n+Process color:#dbeafe\n+Bread color:#fed7aa\n+Sauce color:#fbcfe8\n+Vegetable color:#dcfce7\n+Protein color:#fee2e2\n+Dairy color:#fef9c3\n+Decision color:#e0f2fe\n+Tool color:#e5e7eb\n+Output color:#bbf7d0\n+Note color:#f5f5f5\n\n#edges\nBurger -> Prep : start\nPrep -> BottomBun : first layer\nBottomBun -> BaseSauce : spread on bun\nBaseSauce -> Lettuce : add crisp layer\nLettuce -> Patty : place patty\nHeat -> Patty : cooks\nPatty -> Cheese : add while hot\nCheese -> CheeseMelted : check\nCheeseMelted -> Bacon : Yes\nCheeseMelted -> Patty : No, keep heating\nBacon -> Egg : add next protein\nHeat -> Bacon : crisps\nHeat -> Egg : fries\nEgg -> EggDone : check\nEggDone -> Tomato : Yes\nEggDone -> Egg : No, cook longer\nTomato -> TopBun : final layer\nTopBun -> Stack : close burger\nStack -> Skewer : stabilize\nSkewer -> Plate : move to plate\nPlate -> Serve : ready\nCheeseMelted -x-> Bacon : if not melted yet\nEggDone -x-> Tomato : if egg is not ready\nNote -- Burger : explains layer meaning",
     "layout": {},
     "manualMeta": {}
   },
@@ -537,7 +619,7 @@ Use direction: Flow by default. Use Compact to reduce area, Lane to separate nod
 
 <div id="left">
   <div id="toolbar">
-    <button onclick="copySpecText()">AI Prompt</button>
+    <button onclick="copySpecText()" title="Open FlowLite request form">AI Prompt</button>
     <div class="toolbar-menu" id="dataMenu">
       <button onclick="toggleTopMenu('dataMenu')">Data</button>
       <div class="toolbar-flyout">
@@ -558,7 +640,7 @@ Use direction: Flow by default. Use Compact to reduce area, Lane to separate nod
   </div>
   <textarea id="editor" spellcheck="false"></textarea>
   <div id="help">Double-click: edit node or edge label<br>Ctrl/Cmd+click: multi-select; Drag after multi-select: move as group; Ctrl/Cmd additional selection: show relationship depth; Delete: delete selection<br>Wheel: zoom; Drag background: pan<br>Undo applies to: structure, layout, color, shape, size, edge kind, connection, deletion / Not included: save slots, HTML save, SVG save, zoom, pan</div>
-  <div id="status">Ready: Data slots 1-10 contain Alice, Hamburger, Physics, Greek Mythology, Ocean Circular Flow, FizzBuzz, Forest Ecosystem, AI Agent, Web App, and GitHub examples.</div>
+  <div id="status">Ready: Data slots 1-10 contain Physics, Alice, Greek Mythology, Hamburger, Ocean Circular Flow, FizzBuzz, Forest Ecosystem, AI Agent, Web App, and GitHub examples.</div>
 </div>
 <div id="splitter" title="Resize left and right panes"></div>
 <div id="toast">Copied</div>
@@ -574,7 +656,7 @@ Use direction: Flow by default. Use Compact to reduce area, Lane to separate nod
 <script>
 (function(){
   'use strict';
-  const FLOWLITE_VERSION='1.0.1';
+  const FLOWLITE_VERSION='1.0.2';
   const sourceEl=document.getElementById('flowlite-source');
   const layoutEl=document.getElementById('flowlite-layout');
   const manualMetaEl=document.getElementById('flowlite-manual-meta');
@@ -3136,111 +3218,253 @@ Edges connected to selected nodes will also be deleted.`))return;
     const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="${minX} ${minY} ${w} ${h}"><defs>${markerDefs}</defs><rect x="${minX}" y="${minY}" width="${w}" height="${h}" fill="${bg}"/>${edgeSvg}${nodeSvg}</svg>`;
     download(`${safeFileName(graph.meta&&graph.meta.title)}_${Date.now()}.svg`,svg,'image/svg+xml;charset=utf-8')
   };
-  window.copySpecText=async function(){
-    const currentText=editor.value.trim()||jsonToText(graph);
-    const promptText=[
-      '# FlowLite Plain-Text Editing Request',
-      '',
-      '## Request',
-      '',
-      '',
-      '## Role',
-      'You are an editor for structural diagrams written in FlowLite notation.',
-      '',
-      '## Instructions',
-      'Return only FlowLite plain text that reflects the user request and follows the specification below.',
-      'Do not return coordinates, HTML, JSON, Markdown code fences, or explanatory prose.',
-      'Use #styles for tag colors and optional plain-text visual styles such as @NodeID shape:star size:l color:#RRGGBB x:100 y:200, @edge:EdgeID color:#RRGGBB, and @canvas background:#RRGGBB.',
-      '',
-      '## Important Rules',
-      '- Return FlowLite plain text only.',
-      '- Preserve existing node IDs as much as possible.',
-      '- Connect nodes by node ID, not by display label.',
-      '- If you delete a node, also delete edges connected to it.',
-      '- Use #nodes / #styles / #edges as headings. Do not write # edges with a space.',
-      '- direction must be one of Horizontal / Vertical / Circle / Grid / Focus / Top / Flow / Compact / Lane / Cluster. Use Flow by default.',
-      '- Labels can include line breaks, for example A[Line 1\\nLine 2].',
-      '- When a relationship is ambiguous, do not force a strong edge kind. Use A -- B : supplemental label.',
-      '- Use A -x-> B only for strong blocking, prohibition, or refutation. Do not overuse it.',
-      '- Tags are optional. When needed, write them as Node[Label] +Tag1 +Tag2 +Tag3.',
-      '- Use at most 3 tags per node. The engine ignores fourth and later tags, so do not output them.',
-      '- Tags are metadata for layers, attributes, states, or classifications. They are not substitutes for semantic relationships.',
-      '- Express membership, causality, identity, blocking, and interaction as edges, not tags.',
-      '- When color-coding, use tags from the same dimension. Do not mix era, role, country, field, and other dimensions in one color layer.',
-      '- Define #styles for tag colors and optional node/edge/canvas visual properties. Do not add decorative styles without purpose.',
-      '- Do not add tags when the meaning is already clear without them.',
-      '- Do not create #styles when there is no color-coding purpose.',
-      '- To keep the graph minimal, represent cross-cutting classifications as tags and only turn them into nodes when you need semantic relationships.',
-      '',
-      '## FlowLite Notation',
-      'title: Diagram Title',
-      'direction: Flow',
-      '',
-      '#nodes',
-      'A[Normal process]',
-      'B{Decision}',
-      'C((Start or End))',
-      'D[(Data)]',
-      'N>Note]',
-      'TaggedNode[Tagged node] +Class +State +Important',
-      '',
-      '#styles',
-      '+Class color:#dbeafe',
-      '+State color:#dcfce7',
-      '',
-      '#edges',
-      'A -> B : action, flow, causality, reference',
-      'A => B : membership, containment, classification, composition, inheritance',
-      'A == B : identity, equivalence, alias, correspondence',
-      'A -- B : association, unclassified, supplemental relationship',
-      'A <-> B : interaction, bidirectional relationship',
-      'A -x-> B : blocking, prohibition, constraint, refutation',
-      '',
-      '## Core Principles',
-      '- Nodes are objects.',
-      '- Edges are relationships between objects.',
-      '- Tags are metadata layers, attributes, states, or classifications attached to objects.',
-      '- Tags are optional.',
-      '- Diagram semantics should be represented by edges. Do not use tags as substitutes for relationships.',
-      '',
-      '## Edge Semantics',
-      '- A -> B : A acts on, moves to, calls, uses, affects, or refers to B.',
-      '- A => B : A is an element, subset, subtype, component, implementation, or inheriting object of B.',
-      '- A == B : A and B are logically the same entity, concept, alias, or clear correspondence.',
-      '- A -- B : A and B are related, but not clearly directional, membership, identity, interaction, or blocking.',
-      '- A <-> B : A and B affect each other, synchronize, exchange, or act bidirectionally.',
-      '- A -x-> B : A clearly stops, prohibits, denies, refutes, or prevents B.',
-      '',
-      '## Tag Rules',
-      '- Add tags at the end of a node line, for example NodeID[Label] +Tag1 +Tag2 +Tag3.',
-      '- Tags are metadata layers, attributes, states, or classifications attached to nodes.',
-      '- Tags are not nodes and not edges.',
-      '- Tags do not directly represent semantic relationships.',
-      '- Use at most 3 tags. The engine ignores fourth and later tags.',
-      '- Good tag content: classification, state, importance, work target, review target, display group, responsibility, layer, type, use case.',
-      '',
-      '## Tags and Styles',
-      '- #styles can define tag colors using +Tag color:#RRGGBB.',
-      '- The initial #styles specification supports only color.',
-      '- If multiple tags exist, FlowLite searches #styles from left to right and applies the first matching color.',
-      '- GUI per-node colors have the highest priority.',
-      '',
-      '## Color-Coding Guidelines',
-      '- Use tags from the same dimension for color coding.',
-      '- For country use +Wei / +Shu / +Wu; for role use +Theory / +Experiment / +Synthesis; for state use +TODO / +Done / +Blocked.',
-      '- Mixing era, role, country, and field in one color layer tends to produce meaningless decoration.',
-      '- Define #styles only for the layer you want to focus on.',
-      '- Use second and third tags as optional supplemental metadata. They do not need colors.',
-      '- Use nodes and edges for semantic relationships; use tags when classification support is enough.',
-      '- Do not add tags when the meaning is clear without them.',
-      '- Do not create #styles when there is no color-coding purpose.',
-      '- Define #styles only for tags from the same dimension. Do not make the diagram colorful without meaning.',
-      '- Layout examples: use direction: Cluster for tag-based clusters, Flow for process flows, Compact for readability in a small area, and Lane for comparing first-tag lanes.',
-      '',
-      '## Current Relationship Text',
-      currentText
-    ].join('\\n');
-    try{await navigator.clipboard.writeText(promptText);setStatus('AI prompt copied');showToast('AI prompt copied')}catch(e){prompt('Could not copy. Copy manually.',promptText);showToast('Copy manually')}
+  window.copySpecText=function(){
+    const ID='flowlite_ai_request_form_modal';
+    const old=document.getElementById(ID);
+    if(old)old.remove();
+    const SPEC=`# FlowLite Request Specification v1.1.1 compatible
+
+## Role
+You are a diagram editor that creates and edits structural diagrams written in FlowLite notation.
+
+## Goal
+Convert the user's request into plain FlowLite text that can be opened directly in FlowLite.
+
+## Output rules
+- Output FlowLite plain text only.
+- Do not output Markdown code fences, HTML, JSON, explanations, prefaces, or afterwords.
+- Always include title: and direction:.
+- Always include #nodes, #styles, and #edges exactly in this form. Do not write # nodes with a space.
+- Use this section order by default: title / direction / #nodes / #styles / #edges.
+- All edge endpoints must use node IDs, not display labels.
+- Every node ID used in #edges should normally be defined first in #nodes.
+- When editing an existing diagram, preserve existing node IDs as much as possible.
+- When deleting a node, also delete edges connected to that node.
+
+## Overall format
+
+title: Diagram Title
+direction: Flow
+
+#nodes
+NodeID[Display label] +PrimaryTag +SubTag +StateTag
+
+#styles
++PrimaryTag color:#dbeafe
+
+#edges
+NodeID -> OtherID : relationship label
+
+## direction
+Allowed values:
+- Horizontal
+- Vertical
+- Circle
+- Grid
+- Focus
+- Top
+- Flow
+- Compact
+- Lane
+- Cluster
+
+Use Flow by default. Use Compact when the diagram should be dense. Use Lane when the first tag should separate nodes into horizontal lanes. Use Cluster when the first tag should create visual clusters.
+
+## Node ID rules
+- Recommended format: ASCII letters, numbers, and underscores only. Examples: MainCharacter / WhiteRabbit / Birth_Athena
+- Starting with a letter is recommended.
+- Do not use spaces, [ ], { }, ( ), or : in node IDs.
+- Do not define the same ID more than once.
+- In edges, always use the node ID, not the display label.
+
+## Node notation
+A[Normal node]
+B{Decision node}
+C((Start, end, or central node))
+D[(Data, place, or storage node)]
+N>Note node]
+
+To make a multi-line label, use 
+ inside the label.
+Example:
+Alice[Alice
+Protagonist]
+
+## Tag notation
+Tags are attached only at the end of a node line.
+
+Correct form:
+NodeID[Display label] +Tag1 +Tag2 +Tag3
+
+Fixed rules:
+- Tags must start with +.
+- Tags must be placed after the node closing symbol, separated by spaces.
+- Use no more than 3 tags per node. FlowLite ignores a fourth tag and beyond, so do not output them.
+- Tag names should use ASCII letters, numbers, and underscores. Examples: +Person +Place +Event +Parent +Child +Enemy +Important
+- Do not use spaces, :, #, commas, +, [ ], { }, or ( ) inside tag names.
+- The first tag is used as the main classification, color layer, and Lane/Cluster grouping key.
+- The second and third tags are for auxiliary classification, state, or importance.
+- Tags are auxiliary metadata for attributes, classifications, and states. They are not relationships.
+
+Things tags may represent:
+- Classification: +Person / +Place / +Event
+- Role: +Parent / +Child / +Guide / +Enemy
+- State: +TODO / +Done / +Blocked
+- Importance: +Core / +Important
+- Display group: +Frontend / +Backend / +Database
+
+Things tags must not replace:
+- A belongs to B
+- A calls B
+- A blocks B
+- A is identical to B
+- A interacts with B
+
+Represent these with #edges instead.
+
+## #styles notation
+#styles can define tag colors, individual node styling, edge colors, and the canvas background.
+
+Tag color:
++Tag color:#RRGGBB
+
+Individual node styling:
+@NodeID color:#RRGGBB shape:star size:l x:100 y:200
+
+Edge color:
+@edge:e_FromID_ToID color:#RRGGBB
+
+Canvas background:
+@canvas background:#RRGGBB
+
+Style rules:
+- Colors must use 6-digit HEX values in the form #RRGGBB.
+- Tag colors must use +Tag color:#RRGGBB.
+- Use individual node styling only when needed.
+- Use x/y coordinates only when manual layout must be reproduced. They are usually unnecessary.
+- Allowed shape values: round, rect, circle, ellipse, diamond, parallelogram, hexagon, trapezoid, document, star, heart, double.
+- Allowed size values: m or l. If omitted, the default size is used.
+
+Color priority:
+1. Individual @NodeID color
+2. Tag color defined in #styles
+3. Default color
+
+When a node has multiple tags, FlowLite checks tags from left to right and uses the first tag that has a color in #styles. Therefore, put the color-classification tag first.
+
+## Color policy
+- Use color tags from one consistent dimension.
+- Good: color by role only, such as +Theory / +Experiment / +Synthesis.
+- Good: color by faction only, such as +Wei / +Shu / +Wu.
+- Good: color by state only, such as +TODO / +Done / +Blocked.
+- Bad: mixing +Theory, +19thCentury, +Germany, and +Quantum as the same color layer.
+- If color has no meaning, do not add extra #styles.
+- If you need to show semantic relationships, use nodes and edges instead of tags.
+
+## Edge notation
+FromID -> ToID : action, flow, causality, reference, use
+FromID => ToID : membership, classification, composition, containment, inheritance
+FromID == ToID : identity, alias, equivalence, correspondence
+FromID -- ToID : supplemental or weak association
+FromID <-> ToID : interaction or bidirectional relationship
+FromID -x-> ToID : blocking, prohibition, negation, constraint, refutation
+
+Edge rules:
+- Always write node IDs on both sides.
+- Keep labels short after the colon.
+- When unsure, use --.
+- Use -x-> only for strong blocking, prohibition, negation, or refutation. Do not use it for weak contrast or comparison.
+- Do not express membership or parent-child relationships only with tags. If needed, make them explicit with => or ->.
+
+## Design policy
+- Place one central concept.
+- Convert people, places, organizations, events, tools, concepts, and states into nodes as needed.
+- Explain important semantic relationships with edge labels.
+- If there are many nodes, create hub nodes or group nodes to keep the diagram readable.
+- Keep the roles separate: tags are classifications, edges are semantic relationships, and #styles controls appearance.
+
+## Minimal template
+
+title: Sample Diagram
+direction: Flow
+
+#nodes
+Center((Central concept)) +Core
+A[Object A] +Group1
+B[Object B] +Group2
+Note>Supplemental note] +Note
+
+#styles
++Core color:#fde68a
++Group1 color:#dbeafe
++Group2 color:#dcfce7
++Note color:#f5f5f5
+
+#edges
+Center -> A : relationship
+A -- B : supplemental relationship
+Note -- Center : note
+
+## Request
+Describe the diagram you want to create or edit here.`;
+    const host=document.createElement('div');
+    host.id=ID;
+    document.body.appendChild(host);
+    const root=host.attachShadow?host.attachShadow({mode:'open'}):host;
+    root.innerHTML=`<style>
+      :host{all:initial}*{box-sizing:border-box}.back{position:fixed;inset:0;z-index:2147483647;background:rgba(15,23,42,.46);display:flex;align-items:center;justify-content:center;padding:18px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:#0f172a}.panel{width:min(780px,100%);max-height:92vh;overflow:auto;background:#fff;border:1px solid #e2e8f0;border-radius:18px;box-shadow:0 24px 70px rgba(15,23,42,.28);padding:20px}h1{font-size:20px;line-height:1.35;margin:0 0 8px;letter-spacing:-.02em}p{font-size:13px;line-height:1.7;color:#475569;margin:6px 0 12px}label{display:block;font-size:12px;font-weight:800;color:#334155;margin:14px 0 6px}textarea,input,select{width:100%;border:1px solid #cbd5e1;border-radius:12px;background:#fff;color:#0f172a;font:13px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;padding:11px;outline:none}textarea:focus,input:focus,select:focus{border-color:#60a5fa;box-shadow:0 0 0 4px rgba(37,99,235,.14)}textarea{min-height:170px;resize:vertical}.row{display:grid;grid-template-columns:1fr 190px;gap:10px}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:center}.check{display:flex;align-items:flex-start;gap:8px;margin-top:12px;font:13px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:#334155}.check input{width:auto;margin-top:3px}.check span{display:block}.check small{display:block;color:#64748b;margin-top:2px}button{appearance:none;border:1px solid #e2e8f0;border-radius:12px;padding:10px 14px;font-size:13px;font-weight:800;cursor:pointer;background:#f1f5f9;color:#0f172a}button:hover{background:#e2e8f0}.primary{background:#0f172a;color:#fff;border-color:#0f172a}.primary:hover{background:#1e293b}.warn{background:#fffbeb;color:#78350f;border-color:#fbbf24}.danger{background:#fee2e2;color:#991b1b;border-color:#fecaca}.small{font-size:12px;color:#64748b}.output{display:none;margin-top:12px;min-height:150px}@media(max-width:640px){.row{grid-template-columns:1fr}.panel{padding:16px}}
+    </style><div class="back"><div class="panel" role="dialog" aria-modal="true" aria-label="FlowLite Request Form"><h1>FlowLite Request Form</h1><p>Enter the diagram you want to create, or describe how you want to revise the current diagram. This form combines your request with the FlowLite v1.1.1 specification and copies the full prompt to the clipboard. Paste it directly into an AI chat.</p><label for="req">What diagram do you want to create or edit?</label><textarea id="req" placeholder="Example: Create a relationship map for Swimmy. Put Swimmy at the center, and turn the characters, enemy, actions, changes, and story events into nodes. Use role-based tags."></textarea><div class="row"><div><label for="title">Preferred title optional</label><input id="title" placeholder="Example: Swimmy Relationship Map"></div><div><label for="dir">Preferred direction optional</label><select id="dir"><option value="">Auto select</option><option>Flow</option><option>Focus</option><option>Cluster</option><option>Lane</option><option>Compact</option><option>Circle</option><option>Horizontal</option><option>Vertical</option><option>Grid</option><option>Top</option></select></div></div><label class="check"><input id="includeCurrent" type="checkbox"><span>Include the current diagram as the edit target<small>Turn this on only when you want the AI to preserve existing node IDs while revising the current diagram.</small></span></label><div class="actions"><button id="copy" class="primary">Copy specification + request</button><button id="sample" class="warn">Insert example</button><button id="close" class="danger">Close</button><span class="small">Esc also closes this form.</span></div><textarea id="out" class="output" readonly></textarea></div></div>`;
+    const q=s=>root.querySelector(s);
+    const req=q('#req'), title=q('#title'), dir=q('#dir'), includeCurrent=q('#includeCurrent'), out=q('#out');
+    const close=()=>{host.remove();removeEventListener('keydown',onkey)};
+    q('#close').addEventListener('click',close);
+    root.querySelector('.back').addEventListener('click',e=>{if(e.target.classList&&e.target.classList.contains('back'))close()});
+    const onkey=e=>{if(e.key==='Escape')close()};
+    addEventListener('keydown',onkey);
+    q('#sample').addEventListener('click',()=>{
+      req.value='Place one central theme, turn the key people, organizations, events, places, and concepts into nodes, keep the first tag as the main classification, and describe all important relationships with #edges labels.';
+      req.focus();
+    });
+    const currentFlowLiteText=()=>editor.value.trim()||jsonToText(graph);
+    const build=()=>{
+      const r=req.value.trim();
+      if(!r){alert('Please enter your request.');req.focus();return ''}
+      const add=[];
+      if(title.value.trim())add.push('- Preferred title: '+title.value.trim());
+      if(dir.value)add.push('- Preferred direction: '+dir.value);
+      let block='## Request\n'+r;
+      if(add.length)block+='\n\n## Additional instructions\n'+add.join('\n');
+      if(includeCurrent.checked)block+='\n\n## Current FlowLite plain text\n'+currentFlowLiteText();
+      return SPEC.replace(/## Request[\s\S]*$/,block);
+    };
+    const fallback=text=>{
+      out.style.display='block';
+      out.value=text;
+      out.focus();
+      out.select();
+      try{
+        if(document.execCommand('copy')){
+          setStatus('AI request prompt copied');
+          showToast('AI request copied');
+          close();
+          return;
+        }
+      }catch(e){}
+      alert('Automatic copy failed. Please copy the displayed text manually.');
+    };
+    q('#copy').addEventListener('click',async()=>{
+      const promptText=build();
+      if(!promptText)return;
+      try{
+        await navigator.clipboard.writeText(promptText);
+        setStatus('AI request prompt copied');
+        showToast('AI request copied');
+        close();
+      }catch(e){
+        fallback(promptText);
+      }
+    });
+    setTimeout(()=>req.focus(),50);
   };
   function download(name,content,type){const blob=new Blob([content],{type});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 
